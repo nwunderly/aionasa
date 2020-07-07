@@ -46,11 +46,11 @@ class APOD:
         if date is None:  # parameter will be left out of the query.
             date = ''
         else:
-            date = date.strftime('%Y-%M-%d') + '&'
+            date = 'date=' + date.strftime('%Y-%m-%d') + '&'
         if hd is None:  # parameter will be left out of the query.
             hd = ''
         else:
-            hd = str(hd) + '&'
+            hd = 'hd=' + str(hd) + '&'
 
         request = f"https://api.nasa.gov/planetary/apod?{date}{hd}api_key=DEMO_KEY"
 
