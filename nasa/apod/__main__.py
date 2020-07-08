@@ -20,10 +20,12 @@ VALID_FILE_TYPES = ['csv', 'json', 'yaml']
 parser = argparse.ArgumentParser()
 
 parser.add_argument('--date', '-d')
-parser.add_argument('--start-date', '-start')
-parser.add_argument('--end-date', '-end')
+parser.add_argument('--start-date', '-from')
+parser.add_argument('--end-date', '-to')
+parser.add_argument('--since')
 parser.add_argument('--print', '-p', action='store_true')
-parser.add_argument('--dump', '-D')
+parser.add_argument('--dump')
+parser.add_argument('--download', action='store_true')
 
 
 def process_date(day):
@@ -57,7 +59,7 @@ def dump_to_yaml(data, filename):
         yaml.dump(data, f, yaml.Dumper)
 
 
-async def get(day, _print, dump):
+async def get(day, _print, dump, download):
     day = process_date(day)
 
     apod = APOD()
@@ -83,8 +85,19 @@ async def get(day, _print, dump):
         elif ext.lower() == 'yaml':
             dump_to_yaml(response, dump)
 
+    if download:
+        async with aiohttp.ClientSession() as session:
+            url = response.get('hdurl')
+            url = url if url else response['url']
 
-async def batch_get(start_date, end_date, _print, dump):
+            async with session.get(url) as image_response:
+                image = await image_response.read()
+
+            with open(url.split('/')[-1], 'wb') as f:
+                f.write(image)
+
+
+async def batch_get(start_date, end_date, _print, dump, download):
     start_date = process_date(start_date)
     end_date = process_date(end_date)
 
@@ -113,6 +126,25 @@ async def batch_get(start_date, end_date, _print, dump):
         elif ext.lower() in {'yaml', 'yml'}:
             dump_to_yaml(response, dump)
 
+    if download:  # todo: fucking clean this up
+        async with aiohttp.ClientSession() as session:
+            for entry in response:
+                url = entry.get('hdurl')
+                url = url if url else entry['url']
+
+                # do this with regex later
+                if url.startswith('http://apod.nasa.gov') or url.startswith('https://apod.nasa.gov'):
+                    filename = url.split('/')[-1]
+
+                else:  # todo: add support for non-apod images (youtube etc)
+                    continue
+
+                async with session.get(url) as image_response:
+                    image = await image_response.read()
+
+                with open(filename, 'wb') as f:
+                    f.write(image)
+
 
 
 async def main():
@@ -120,21 +152,28 @@ async def main():
     _date = args.date
     start_date = args.start_date
     end_date = args.end_date
+    since = args.since
     _print = args.print
     dump = args.dump
+    download = args.download
 
     if _date:
+        if start_date or end_date or since:
+            raise argparse.ArgumentError("date and start-date/end-date/since are not compatible arguments.")
+        await get(_date, _print, dump, download)
+
+    elif since:
         if start_date or end_date:
-            raise argparse.ArgumentError("date and start-date/end-date are not compatible arguments.")
-        await get(_date, _print, dump)
+            raise argparse.ArgumentError("since and start-date/end-date are not compatible arguments.")
+        await batch_get(since, 'today', _print, dump, download)
 
     elif start_date or end_date:
         if not (start_date and end_date):
             raise argparse.ArgumentError("start-date and end-date are both required arguments when requesting a range.")
-        await batch_get(start_date, end_date, _print, dump)
+        await batch_get(start_date, end_date, _print, dump, download)
 
     else:
-        await get('today', _print, dump)
+        await get('today', _print, dump, download)
 
 
 
