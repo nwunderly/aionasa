@@ -1,3 +1,3 @@
 
-from .client import APOD
+from .apod_client import APOD
 

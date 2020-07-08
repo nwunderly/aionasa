@@ -29,6 +29,9 @@ class APOD:
         if self._session:
             await self._session.close()
 
+    # def __call__(self, date: datetime.date = None, hd: bool = None, as_json: bool = False):
+    #     return self.get(date, hd, as_json)
+
     async def get(self, date: datetime.date = None, hd: bool = None, as_json: bool = False):
         """
         Performs a GET request to NASA's APOD API.
@@ -52,7 +55,7 @@ class APOD:
         else:
             hd = 'hd=' + str(hd) + '&'
 
-        request = f"https://api.nasa.gov/planetary/apod?{date}{hd}api_key=DEMO_KEY"
+        request = f"https://api.nasa.gov/planetary/apod?{date}{hd}api_key={self._api_key}"
 
         async with self._session.get(request) as response:
             json = await response.json()

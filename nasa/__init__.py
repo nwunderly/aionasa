@@ -1,3 +1,3 @@
 
-from .client import NASA
+from .nasa_client import NASA
 

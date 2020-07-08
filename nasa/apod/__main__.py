@@ -1,4 +1,4 @@
-from .client import APOD
+from .apod_client import APOD
 import aiohttp
 import asyncio
 import argparse
