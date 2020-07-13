@@ -4,11 +4,13 @@ import datetime
 
 from collections import namedtuple
 
+from ..base_client import BaseClient
+
 
 ApodEntry = namedtuple('ApodEntry', ['date', 'copyright', 'title', 'explanation', 'url', 'hdurl', 'media_type', 'service_version'])
 
 
-class APOD:
+class APOD(BaseClient):
     """
     Client for NASA Astronomy Picture of the Day.
 
@@ -19,26 +21,6 @@ class APOD:
         - hd: Bool indicating whether to retrieve the URL for the high resolution image. Defaults to 'False'.
         - concept_tags: DISABLED FOR THIS ENDPOINT.
     """
-
-    def __init__(self, api_key='DEMO_KEY', session=None):
-        """
-        Initializes the APOD class.
-
-        :param api_key: api.nasa.gov key for expanded usage.
-        :param session:
-        """
-        self._api_key = api_key
-        self._session = session if session else aiohttp.ClientSession()
-
-    async def __aenter__(self):
-        return self
-
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        if self._session:
-            await self._session.close()
-
-    # def __call__(self, date: datetime.date = None, hd: bool = None, as_json: bool = False):
-    #     return self.get(date, hd, as_json)
 
     async def get(self, date: datetime.date = None, hd: bool = None, as_json: bool = False):
         """
@@ -142,10 +124,6 @@ class APOD:
                 result.append(entry)
 
             return result
-
-    async def close(self):
-        if self._session:
-            await self._session.close()
 
 
 
