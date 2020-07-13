@@ -74,8 +74,8 @@ class APOD(BaseClient):
         """
         Retrieves multiple items from NASA's APOD API. Returns a list of APOD entries.
 
-        :param start_date: The first date to return when requesting a list of dates.
-        :param end_date: The last date to return when requesting a list of dates. Range is inclusive.
+        :param start_date: The first date to return when requesting a range of dates.
+        :param end_date: The last date to return when requesting a range of dates. Range is inclusive.
         :param hd: Retrieve the URL for the high resolution image. Defaults to 'False'.
         :param as_json: Bool indicating whether to return a dict containing the raw returned json data instead of the normal named tuple.
         :return: A list of named tuples containing data returned by the API.
