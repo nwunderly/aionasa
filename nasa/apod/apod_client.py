@@ -82,7 +82,7 @@ class APOD(BaseClient):
         """
         if not isinstance(start_date, datetime.date):
             raise TypeError("Argument 'start_date' must be an instance of 'datetime.date'.")
-        if not isinstance(start_date, datetime.date):
+        if not isinstance(end_date, datetime.date):
             raise TypeError("Argument 'end_date' must be an instance of 'datetime.date'.")
         if not (isinstance(hd, bool) or hd is None):
             raise TypeError("Argument 'hd' must be an instance of 'bool'.")
