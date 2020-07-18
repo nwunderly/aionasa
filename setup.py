@@ -1,15 +1,21 @@
 
 import setuptools
 
-with open("README.md", "r") as fh:
+with open("./README.md", "r") as fh:
     long_description = fh.read()
 
+with open('./aionasa/__init__.py', 'r') as f:
+    # FIRST LINE:
+    # __version__ = '<version>'
+    line = f.readline()
+    version = eval(line[14:])
+
 setuptools.setup(
-    name="aio-nasa",
-    version="0.0.1",
+    name="aionasa",
+    version=version,
     author="nwunderly",
     author_email="",
-    description="An async python wrapper for NASA APIs.",
+    description="An async python wrapper for NASA open APIs.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/nwunderly/aio-nasa",
