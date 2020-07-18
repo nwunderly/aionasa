@@ -12,4 +12,4 @@
 
 - handle rate limiting
 
-- naxt API: InSight?
+- next API: InSight?

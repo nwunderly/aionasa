@@ -37,7 +37,7 @@ def process_date(day):
     if day in keywords.keys():
         return keywords[day]
 
-    dt = datetime.strptime(day, '%Y-%m-%d')
+    dt = datetime.strptime(day, f'%Y-%m-%d')
     return date(dt.year, dt.month, dt.day)
 
 
@@ -166,17 +166,17 @@ async def main():
 
     if _date:
         if start_date or end_date or since:
-            raise argparse.ArgumentError("date and start-date/end-date/since are not compatible arguments.")
+            raise Exception("date and start-date/end-date/since are not compatible arguments.")
         await get(_date, _print, dump, download, key)
 
     elif since:
         if start_date or end_date:
-            raise argparse.ArgumentError("since and start-date/end-date are not compatible arguments.")
+            raise Exception("since and start-date/end-date are not compatible arguments.")
         await batch_get(since, 'today', _print, dump, download, key)
 
     elif start_date or end_date:
         if not (start_date and end_date):
-            raise argparse.ArgumentError("start-date and end-date are both required arguments when requesting a range.")
+            raise Exception("start-date and end-date are both required arguments when requesting a range.")
         await batch_get(start_date, end_date, _print, dump, download, key)
 
     else:
