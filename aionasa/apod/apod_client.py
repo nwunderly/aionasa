@@ -78,15 +78,15 @@ class APOD(BaseClient):
         """
         Retrieves multiple items from NASA's APOD API. Returns a list of APOD entries.
 
-        :param start_date: The first date to return when requesting a list of dates.
-        :param end_date: The last date to return when requesting a list of dates. Range is inclusive.
+        :param start_date: The first date to return when requesting a range of dates.
+        :param end_date: The last date to return when requesting a range of dates. Range is inclusive.
         :param hd: Retrieve the URL for the high resolution image. Defaults to 'False'.
         :param as_json: Bool indicating whether to return a dict containing the raw returned json data instead of the normal named tuple.
         :return: A list of named tuples containing data returned by the API.
         """
         if not isinstance(start_date, datetime.date):
             raise TypeError("Argument 'start_date' must be an instance of 'datetime.date'.")
-        if not isinstance(start_date, datetime.date):
+        if not isinstance(end_date, datetime.date):
             raise TypeError("Argument 'end_date' must be an instance of 'datetime.date'.")
         if not (isinstance(hd, bool) or hd is None):
             raise TypeError("Argument 'hd' must be an instance of 'bool'.")

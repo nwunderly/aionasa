@@ -9,24 +9,26 @@ import yaml
 from datetime import date, timedelta, datetime
 
 
-"""
-TEST SCRIPT FOR APOD API WRAPPER
+__doc__ = """
+
+CLI TOOL FOR APOD API WRAPPER
+
 """
 
 VALID_FILE_TYPES = ['csv', 'json', 'yaml']
 
 
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description="CLI tool for APOD API wrapper.")
 
-parser.add_argument('--date', '-d')
-parser.add_argument('--from')
-parser.add_argument('--to')
-parser.add_argument('--since')
-parser.add_argument('--print', '-p', action='store_true')
-parser.add_argument('--dump')
-parser.add_argument('--download')
-parser.add_argument('--key')
+parser.add_argument('--date', '-d', help="Request APOD data for a single date.")
+parser.add_argument('--start-date', '--from', help="The first date to return when requesting a range of dates.")
+parser.add_argument('--end-date', '--to', help="The last date to return when requesting a range of dates. Range is inclusive.")
+parser.add_argument('--since', help="Shorthand that selects date range up to the current date")
+parser.add_argument('--print', '-p', action='store_true', help="Flag indicating that data should be printed in a human-readable format In addition to other actions.")
+parser.add_argument('--dump', help="Indicates that data should be dumped to a file. Supports json and yaml/yml extensions.")
+parser.add_argument('--download', help="After data is retrieved, downloads images to the given directory.")
+parser.add_argument('--key', help="Manual input option for API key. If this is left out, uses DEMO_KEY.")
 
 
 def process_date(day):
@@ -185,4 +187,5 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
