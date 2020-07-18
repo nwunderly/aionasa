@@ -2,13 +2,11 @@
 import aiohttp
 import asyncio
 import datetime
+import pandas
 
 from collections import namedtuple
 
 from ..base_client import BaseClient
-
-
-MarsWeatherData = namedtuple('MarsWeatherData', ['sols', 'sol_keys', 'validity_checks'])
 
 
 
@@ -29,26 +27,33 @@ class InSight(BaseClient):
 
         :param feedtype: The format of what is returned. Currently the default is JSON and only JSON works.
         :param as_json: Bool indicating whether to return a dict containing the raw returned json data instead of the normal named tuple.
-        :return: A named tuple containing data returned by the API.
+        :return: A pandas DataFrame containing data returned by the API.
         """
 
         request = f"https://api.nasa.gov/insight_weather/?ver=1.0&feedtype={feedtype}&api_key={self._api_key}"
 
         async with self._session.get(request) as response:
             json = await response.json()
-
+        
         if as_json:
             return json
 
         else:
             sol_keys = json.pop('sol_keys')
             validity_checks = json.pop('validity_checks')
-            data = MarsWeatherData(
-                sols=json,
-                sol_keys=sol_keys,
-                validity_checks=validity_checks
-            )
-            return data
+            data = {'sol': [], 'AT': [], 'HWS': [], 'PRE': [], 'WD': [], 'Season': [], 'First_UTC':[], 'Last_UTC': [], 'validity_checks': []}
+            for sol, sol_data in json.items():
+                data['sol'].append(sol)
+                for col_name, value in sol_data.items():
+                    data[col_name].append(value)
+                sol_validity_checks = validity_checks.get(sol)
+                if sol_validity_checks:
+                    data['validity_checks'].append(sol_validity_checks)
+                else:
+                    data['validity_checks'].append({})
+            
+            table = pandas.DataFrame(data)
+            return table
 
 
 

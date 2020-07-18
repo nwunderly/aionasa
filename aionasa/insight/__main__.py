@@ -7,8 +7,9 @@ from .insight_client import InSight
 
 async def main():
     async with InSight() as insight:
-        data = await insight.get(as_json=True)
-        print(json.dumps(data, sort_keys=True, indent=4))
+        data = await insight.get()
+        print(data)
+        # print(json.dumps(data, sort_keys=True, indent=4))
 
 
 
