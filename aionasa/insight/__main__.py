@@ -6,12 +6,14 @@ from .insight_client import InSight
 
 
 async def main():
-    insight = InSight()
-    data = await insight.get()
-    print(json.dumps(data, sort_keys=True, indent=4))
+    async with InSight() as insight:
+        data = await insight.get()
+        print(data)
+        # print(json.dumps(data, sort_keys=True, indent=4))
 
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
 
