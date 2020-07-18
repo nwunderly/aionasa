@@ -6,7 +6,7 @@ import datetime
 from collections import namedtuple
 
 from ..base_client import BaseClient
-
+from ..errors import APIException
 
 
 class InSight(BaseClient):
@@ -27,6 +27,10 @@ class InSight(BaseClient):
         request = f"https://api.nasa.gov/insight_weather/?ver=1.0&feedtype={feedtype}&api_key={self._api_key}"
 
         async with self._session.get(request) as response:
+
+            if response.status != 200:  # not a success
+                raise APIException(response.reason)
+
             json = await response.json()
 
         return json

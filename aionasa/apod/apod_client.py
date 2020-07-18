@@ -5,9 +5,9 @@ import datetime
 from collections import namedtuple
 
 from ..base_client import BaseClient
+from ..errors import APIException
+from .apod_data import AstronomyPicture
 
-
-ApodEntry = namedtuple('ApodEntry', ['date', 'copyright', 'title', 'explanation', 'url', 'hdurl', 'media_type', 'service_version'])
 
 
 class APOD(BaseClient):
@@ -51,13 +51,17 @@ class APOD(BaseClient):
         request = f"https://api.nasa.gov/planetary/apod?{date}{hd}api_key={self._api_key}"
 
         async with self._session.get(request) as response:
+
+            if response.status != 200:  # not success
+                raise APIException(f"{response.status} - {response.reason"})
+
             json = await response.json()
 
         if as_json:
             return json
 
         else:
-            entry = ApodEntry(
+            entry = AstronomyPicture(
                 date=json.get('date'),
                 copyright=json.get('copyright'),
                 title=json.get('title'),
@@ -65,7 +69,7 @@ class APOD(BaseClient):
                 url=json.get('url'),
                 hdurl=json.get('hdurl'),
                 media_type=json.get('media_type'),
-                service_version=json.get('service_version')
+                service_version=json.get('service_version'),
             )
             return entry
 
@@ -101,6 +105,10 @@ class APOD(BaseClient):
         request = f"https://api.nasa.gov/planetary/apod?{start_date}{end_date}{hd}api_key={self._api_key}"
 
         async with self._session.get(request) as response:
+            
+            if response.status != 200:  # not a success
+                raise APIException(response.reason)
+
             json = await response.json()
 
         if as_json:
@@ -111,7 +119,7 @@ class APOD(BaseClient):
 
             for item in json:
 
-                entry = ApodEntry(
+                entry = AstronomyPicture(
                     date=item.get('date'),
                     copyright=item.get('copyright'),
                     title=item.get('title'),
