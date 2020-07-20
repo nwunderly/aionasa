@@ -53,7 +53,7 @@ class APOD(BaseClient):
         async with self._session.get(request) as response:
 
             if response.status != 200:  # not success
-                raise APIException(f"{response.status} - {response.reason"})
+                raise APIException(f"{response.status} - {response.reason}")
 
             json = await response.json()
 
