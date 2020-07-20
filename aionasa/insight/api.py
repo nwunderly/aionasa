@@ -2,7 +2,7 @@
 import aiohttp
 import asyncio
 import datetime
-import pandas
+# import pandas
 
 from collections import namedtuple
 

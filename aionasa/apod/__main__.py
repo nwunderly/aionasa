@@ -41,8 +41,7 @@ def process_date(day):
     if day in keywords.keys():
         return keywords[day]
 
-    dt = datetime.strptime(day, f'%Y-%m-%d')
-    return date(dt.year, dt.month, dt.day)
+    return datetime.strptime(day, f'%Y-%m-%d').date()
 
 
 def dump_to_json(data, filename):
@@ -68,29 +67,28 @@ async def get(day, _print, dump, download, key):
     day = process_date(day)
 
     async with APOD(key if key else 'DEMO_KEY') as apod:
-        response = await apod.get(day, as_json=True)
+        picture = await apod.get(day)
+        data = picture.json()
 
-    if _print:
-        s = ""
-        for key, value in response.items():
-            s += f"{key}: {value}\n"
-        print(s)
+        if _print:
+            s = ""
+            for key, value in data.items():
+                s += f"{key}: {value}\n"
+            print(s)
 
-    if dump:
-        split = dump.split('.')
-        ext = split[-1]
+        if dump:
+            split = dump.split('.')
+            ext = split[-1]
 
-        if ext.lower() == 'json':
-            dump_to_json(response, dump)
-        elif ext.lower() == 'csv':
-            dump_to_csv(response, dump)
-        elif ext.lower() == 'yaml':
-            dump_to_yaml(response, dump)
+            if ext.lower() == 'json':
+                dump_to_json(data, dump)
+            elif ext.lower() == 'csv':
+                dump_to_csv(data, dump)
+            elif ext.lower() == 'yaml':
+                dump_to_yaml(data, dump)
 
-    if download:
-        async with aiohttp.ClientSession() as session:
-            url = response.get('hdurl')
-            url = url if url else response['url']
+        if download:
+            url = picture.hdurl if picture.hdurl else picture.url
 
             if url.startswith('http://apod.nasa.gov') or url.startswith('https://apod.nasa.gov'):
                 filename = url.split('/')[-1]
@@ -98,8 +96,7 @@ async def get(day, _print, dump, download, key):
             else:  # todo: add support for non-apod images (youtube etc)
                 raise NotImplementedError("URL not supported by download function. File could not be downloaded.")
 
-            async with session.get(url) as image_response:
-                image = await image_response.read()
+            image = await picture.read()
 
             filepath = download + '/' + filename
             with open(filepath, 'wb') as f:
@@ -112,13 +109,13 @@ async def batch_get(start_date, end_date, _print, dump, download, key):
 
     apod = APOD(key if key else 'DEMO_KEY')
 
-    response = await apod.batch_get(start_date, end_date, as_json=True)
+    data = await apod.batch_get(start_date, end_date, as_json=True)
 
     await apod.close()
 
     if _print:
         s = ""
-        for entry in response:
+        for entry in data:
             for key, value in entry.items():
                 s += f"{key}: {value}\n"
             s += "\n"
@@ -129,15 +126,15 @@ async def batch_get(start_date, end_date, _print, dump, download, key):
         ext = split[-1]
 
         if ext.lower() == 'json':
-            dump_to_json(response, dump)
+            dump_to_json(data, dump)
         elif ext.lower() == 'csv':
-            dump_to_csv(response, dump)
+            dump_to_csv(data, dump)
         elif ext.lower() in {'yaml', 'yml'}:
-            dump_to_yaml(response, dump)
+            dump_to_yaml(data, dump)
 
     if download:  # todo: fucking clean this up
         async with aiohttp.ClientSession() as session:
-            for entry in response:
+            for entry in data:
                 url = entry.get('hdurl')
                 url = url if url else entry['url']
 

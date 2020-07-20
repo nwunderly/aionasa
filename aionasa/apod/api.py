@@ -54,9 +54,13 @@ class APOD(BaseClient):
             return json
 
         else:
+
+            date = json.get('date')
+            date = datetime.datetime.strptime(date, '%Y-%m-%d').date() if date else None
+
             entry = AstronomyPicture(
                 client=self,
-                date=json.get('date'),
+                date=date,
                 copyright=json.get('copyright'),
                 title=json.get('title'),
                 explanation=json.get('explanation'),
@@ -104,9 +108,12 @@ class APOD(BaseClient):
 
             for item in json:
 
+                date = item.get('date')
+                date = datetime.datetime.strptime(date, '%Y-%m-%d').date() if date else None
+
                 entry = AstronomyPicture(
                     client=self,
-                    date=item.get('date'),
+                    date=date,
                     copyright=item.get('copyright'),
                     title=item.get('title'),
                     explanation=item.get('explanation'),

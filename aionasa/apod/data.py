@@ -19,6 +19,18 @@ class AstronomyPicture:
         self.media_type = kwargs.get('media_type')
         self.service_version = kwargs.get('service_version')
 
+    def json(self):
+        return {
+            'date': self.date.strftime('%Y-%m-%d'),
+            'copyright': self.copyright,
+            'title': self.title,
+            'explanation': self.explanation,
+            'url': self.url,
+            'hdurl': self.hdurl,
+            'media_type': self.media_type,
+            'service_version': self.service_version,
+        }
+
     async def read(self, hdurl: bool = True) -> bytes:
         """
         Downloads the image associated with this AstronomyPicture.
