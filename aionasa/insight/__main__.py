@@ -2,7 +2,7 @@
 import asyncio
 import json
 
-from .insight_client import InSight
+from .api import InSight
 
 
 async def main():

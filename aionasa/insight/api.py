@@ -6,7 +6,7 @@ import pandas
 
 from collections import namedtuple
 
-from ..base_client import BaseClient
+from ..client import BaseClient
 from ..errors import APIException
 
 

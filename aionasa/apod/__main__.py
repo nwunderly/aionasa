@@ -1,4 +1,3 @@
-from .apod_client import APOD
 import aiohttp
 import asyncio
 import argparse
@@ -7,6 +6,9 @@ import json
 import yaml
 
 from datetime import date, timedelta, datetime
+
+from .api import APOD
+from ..errors import ArgumentError
 
 
 __doc__ = """
@@ -94,7 +96,7 @@ async def get(day, _print, dump, download, key):
                 filename = url.split('/')[-1]
 
             else:  # todo: add support for non-apod images (youtube etc)
-                raise Exception("URL not supported by download function. File could not be downloaded.")
+                raise NotImplementedError("URL not supported by download function. File could not be downloaded.")
 
             async with session.get(url) as image_response:
                 image = await image_response.read()
@@ -168,17 +170,17 @@ async def main():
 
     if _date:
         if start_date or end_date or since:
-            raise Exception("date and start-date/end-date/since are not compatible arguments.")
+            raise ArgumentError("date and start-date/end-date/since are not compatible arguments.")
         await get(_date, _print, dump, download, key)
 
     elif since:
         if start_date or end_date:
-            raise Exception("since and start-date/end-date are not compatible arguments.")
+            raise ArgumentError("since and start-date/end-date are not compatible arguments.")
         await batch_get(since, 'today', _print, dump, download, key)
 
     elif start_date or end_date:
         if not (start_date and end_date):
-            raise Exception("start-date and end-date are both required arguments when requesting a range.")
+            raise ArgumentError("start-date and end-date are both required arguments when requesting a range.")
         await batch_get(start_date, end_date, _print, dump, download, key)
 
     else:

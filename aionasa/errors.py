@@ -12,5 +12,6 @@ class APIException(NASAException):
     pass
 
 
-
+class ArgumentError(NASAException):
+    pass
 

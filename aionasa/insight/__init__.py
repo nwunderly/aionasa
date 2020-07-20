@@ -1,4 +1,4 @@
 
-from .insight_client import InSight
+from .api import InSight
 
 

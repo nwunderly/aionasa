@@ -4,9 +4,9 @@ import datetime
 
 from collections import namedtuple
 
-from ..base_client import BaseClient
+from ..client import BaseClient
 from ..errors import APIException
-from .apod_data import AstronomyPicture
+from .data import AstronomyPicture
 
 
 
@@ -31,13 +31,6 @@ class APOD(BaseClient):
         :param as_json: Bool indicating whether to return a dict containing the raw returned json data instead of the normal named tuple.
         :return: A named tuple containing data returned by the API.
         """
-        if not (isinstance(date, datetime.date) or date is None):
-            raise TypeError("Argument 'date' must be an instance of 'datetime.date'.")
-        if not (isinstance(hd, bool) or hd is None):
-            raise TypeError("Argument 'hd' must be an instance of 'bool'.")
-        if not isinstance(as_json, bool):
-            raise TypeError("Argument 'as_json' must be an instance of 'bool'.")
-
 
         if date is None:  # parameter will be left out of the query.
             date = ''
@@ -62,6 +55,7 @@ class APOD(BaseClient):
 
         else:
             entry = AstronomyPicture(
+                client=self,
                 date=json.get('date'),
                 copyright=json.get('copyright'),
                 title=json.get('title'),
@@ -84,15 +78,6 @@ class APOD(BaseClient):
         :param as_json: Bool indicating whether to return a dict containing the raw returned json data instead of the normal named tuple.
         :return: A list of named tuples containing data returned by the API.
         """
-        if not isinstance(start_date, datetime.date):
-            raise TypeError("Argument 'start_date' must be an instance of 'datetime.date'.")
-        if not isinstance(end_date, datetime.date):
-            raise TypeError("Argument 'end_date' must be an instance of 'datetime.date'.")
-        if not (isinstance(hd, bool) or hd is None):
-            raise TypeError("Argument 'hd' must be an instance of 'bool'.")
-        if not isinstance(as_json, bool):
-            raise TypeError("Argument 'as_json' must be an instance of 'bool'.")
-
 
         start_date = 'start_date=' + start_date.strftime('%Y-%m-%d') + '&'
         end_date = 'end_date=' + end_date.strftime('%Y-%m-%d') + '&'
@@ -120,6 +105,7 @@ class APOD(BaseClient):
             for item in json:
 
                 entry = AstronomyPicture(
+                    client=self,
                     date=item.get('date'),
                     copyright=item.get('copyright'),
                     title=item.get('title'),
