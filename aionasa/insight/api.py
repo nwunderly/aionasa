@@ -2,12 +2,16 @@
 import aiohttp
 import asyncio
 import datetime
-# import pandas
+
+try:
+    import pandas
+except ImportError:
+    pandas = None
 
 from collections import namedtuple
 
 from ..client import BaseClient
-from ..errors import APIException
+from ..errors import APIException, NASAException
 
 
 class InSight(BaseClient):
@@ -43,9 +47,13 @@ class InSight(BaseClient):
             return json
 
         else:
+
+            if not pandas:
+                raise NASAException("Package 'pandas' could not be imported. DataFrame data format cannot be used.")
+
             sol_keys = json.pop('sol_keys')
             validity_checks = json.pop('validity_checks')
-            data = {'sol': [], 'AT': [], 'HWS': [], 'PRE': [], 'WD': [], 'Season': [], 'First_UTC':[], 'Last_UTC': [], 'validity_checks': []}
+            data = {'sol': [], 'AT': [], 'HWS': [], 'PRE': [], 'WD': [], 'Season': [], 'First_UTC': [], 'Last_UTC': [], 'validity_checks': []}
             for sol, sol_data in json.items():
                 data['sol'].append(sol)
                 for col_name, value in sol_data.items():
