@@ -11,7 +11,7 @@ except ImportError:
 from collections import namedtuple
 
 from ..client import BaseClient
-from ..errors import APIException, NASAException
+from ..errors import *
 
 
 class InSight(BaseClient):
@@ -49,7 +49,7 @@ class InSight(BaseClient):
         else:
 
             if not pandas:
-                raise NASAException("Package 'pandas' could not be imported. DataFrame data format cannot be used.")
+                raise PandasNotFound("Package 'pandas' could not be imported. DataFrame data format cannot be used.")
 
             sol_keys = json.pop('sol_keys')
             validity_checks = json.pop('validity_checks')

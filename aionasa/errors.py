@@ -15,3 +15,7 @@ class APIException(NASAException):
 class ArgumentError(NASAException):
     pass
 
+
+class PandasNotFound(NASAException):
+    pass
+

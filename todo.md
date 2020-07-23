@@ -7,7 +7,6 @@
     - add support for non-apod archived images (youtube etc)
 
 - InSight
-    - decide if using DataFrame or custom object to handle data
     - add other useful methods / functions
 
 - handle rate limiting
