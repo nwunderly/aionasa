@@ -3,7 +3,7 @@ import asyncio
 import time
 import logging
 
-logger = logging.getLogger('aionasa.rate_limit')
+logger = logging.getLogger('aionasa')
 
 
 
@@ -37,7 +37,7 @@ class RateLimiter:
         else:
             logger.debug(">0 requests remaining, sleep is not necessary.")
 
-    async def update(self, remaining):
+    def update(self, remaining):
         logger.debug(f"Updating rate limit: {remaining} requests remaining.")
         self._remaining = remaining
         self._requests.append(time.monotonic())

@@ -7,7 +7,7 @@ class BaseClient:
     Base class for NASA API clients.
     """
 
-    def __init__(self, api_key='DEMO_KEY', session=None):
+    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=None):
         """
         Initializes the client class.
 
@@ -16,6 +16,7 @@ class BaseClient:
         """
         self._api_key = api_key
         self._session = session if session else aiohttp.ClientSession()
+        self.rate_limiter = rate_limiter
 
     # def __call__(self, *args, **kwargs):
     #     return self.get(*args, **kwargs)

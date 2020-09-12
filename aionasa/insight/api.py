@@ -12,6 +12,7 @@ from collections import namedtuple
 
 from ..client import BaseClient
 from ..errors import *
+from ..rate_limit import insight_rate_limiter, demo_rate_limiter
 
 
 class InSight(BaseClient):
@@ -25,6 +26,11 @@ class InSight(BaseClient):
         - feedtype: The format of what is returned. Currently the default is JSON and only JSON works.
     """
 
+    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=insight_rate_limiter):
+        if api_key == 'DEMO_KEY' and rate_limiter:
+            rate_limiter = demo_rate_limiter
+        super().__init__(api_key, session, rate_limiter)
+
     async def get(self, feedtype='json', as_json=False):
         """
         Retrieves Mars weather data from the last seven available days.
@@ -36,13 +42,20 @@ class InSight(BaseClient):
 
         request = f"https://api.nasa.gov/insight_weather/?ver=1.0&feedtype={feedtype}&api_key={self._api_key}"
 
+        if self.rate_limiter:
+            await self.rate_limiter.wait()
+
         async with self._session.get(request) as response:
 
             if response.status != 200:  # not a success
                 raise APIException(response.reason)
 
             json = await response.json()
-        
+
+        if self.rate_limiter:
+            remaining = int(response.headers['X-RateLimit-Remaining'])
+            self.rate_limiter.update(remaining)
+
         if as_json:
             return json
 

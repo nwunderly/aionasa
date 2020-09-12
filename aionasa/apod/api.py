@@ -1,13 +1,17 @@
 
 import aiohttp
 import datetime
+import logging
 
 from collections import namedtuple
 
 from ..client import BaseClient
 from ..errors import APIException
+from ..rate_limit import default_rate_limiter, demo_rate_limiter
 from .data import AstronomyPicture
 
+
+logger = logging.getLogger('aionasa.apod')
 
 
 class APOD(BaseClient):
@@ -21,6 +25,11 @@ class APOD(BaseClient):
         - hd: Bool indicating whether to retrieve the URL for the high resolution image. Defaults to 'False'.
         - concept_tags: DISABLED FOR THIS ENDPOINT.
     """
+
+    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):
+        if api_key == 'DEMO_KEY' and rate_limiter:
+            rate_limiter = demo_rate_limiter
+        super().__init__(api_key, session, rate_limiter)
 
     async def get(self, date: datetime.date = None, hd: bool = None, as_json: bool = False):
         """
@@ -36,25 +45,29 @@ class APOD(BaseClient):
             date = ''
         else:
             date = 'date=' + date.strftime('%Y-%m-%d') + '&'
-        if hd is None:  # parameter will be left out of the query.
+        if hd is None:  # parameter will be left out of the query.ev
             hd = ''
         else:
             hd = 'hd=' + str(hd) + '&'
 
         request = f"https://api.nasa.gov/planetary/apod?{date}{hd}api_key={self._api_key}"
 
-        async with self._session.get(request) as response:
+        if self.rate_limiter:
+            await self.rate_limiter.wait()
 
+        async with self._session.get(request) as response:
             if response.status != 200:  # not success
                 raise APIException(f"{response.status} - {response.reason}")
-
             json = await response.json()
+
+        if self.rate_limiter:
+            remaining = int(response.headers['X-RateLimit-Remaining'])
+            self.rate_limiter.update(remaining)
 
         if as_json:
             return json
 
         else:
-
             date = json.get('date')
             date = datetime.datetime.strptime(date, '%Y-%m-%d').date() if date else None
 
@@ -93,12 +106,18 @@ class APOD(BaseClient):
 
         request = f"https://api.nasa.gov/planetary/apod?{start_date}{end_date}{hd}api_key={self._api_key}"
 
+        if self.rate_limiter:
+            await self.rate_limiter.wait()
+
         async with self._session.get(request) as response:
-            
             if response.status != 200:  # not a success
                 raise APIException(response.reason)
 
             json = await response.json()
+
+        if self.rate_limiter:
+            remaining = int(response.headers['X-RateLimit-Remaining'])
+            self.rate_limiter.update(remaining)
 
         if as_json:
             return json
