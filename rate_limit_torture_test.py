@@ -15,7 +15,7 @@ async def main():
 
         while True:
 
-            await apod.get()
+            await apod.get(date=datetime.date.today()-datetime.timedelta(days=1))
 
             print(apod.rate_limiter.remaining)
 

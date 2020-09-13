@@ -6,7 +6,7 @@ import logging
 from collections import namedtuple
 
 from ..client import BaseClient
-from ..errors import APIException
+from ..errors import *
 from ..rate_limit import default_rate_limiter, demo_rate_limiter
 from .data import AstronomyPicture
 
@@ -24,6 +24,11 @@ class APOD(BaseClient):
         - end_date: The last date to return when requesting a list of dates. Range is inclusive.
         - hd: Bool indicating whether to retrieve the URL for the high resolution image. Defaults to 'False'.
         - concept_tags: DISABLED FOR THIS ENDPOINT.
+
+    Note:
+        If 'today' is used as the requested date (this is the default value) and the current date (according to UTC) does not have an APOD entry yet,
+        the API will return a 404 and this library will raise a NotFound exception.
+        If you would like to avoid this, you will need to catch the NotFound exception, and instead make a request for the previous day's APOD data.
     """
 
     def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):
@@ -45,7 +50,7 @@ class APOD(BaseClient):
             date = ''
         else:
             date = 'date=' + date.strftime('%Y-%m-%d') + '&'
-        if hd is None:  # parameter will be left out of the query.ev
+        if hd is None:  # parameter will be left out of the query.
             hd = ''
         else:
             hd = 'hd=' + str(hd) + '&'
@@ -57,7 +62,10 @@ class APOD(BaseClient):
 
         async with self._session.get(request) as response:
             if response.status != 200:  # not success
-                raise APIException(f"{response.status} - {response.reason}")
+                if response.status == 404:
+                    raise NotFound(f"{response.status} - {response.reason}")
+                else:
+                    raise APIException(f"{response.status} - {response.reason}")
             json = await response.json()
 
         if self.rate_limiter:
