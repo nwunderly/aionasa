@@ -9,7 +9,10 @@ class NASAException(Exception):
 
 
 class APIException(NASAException):
-    pass
+    def __init__(self, code, reason):
+        self.code = code
+        self.reason = reason
+        super().__init__(f"{code} - {reason}")
 
 
 class ArgumentError(NASAException):
@@ -20,5 +23,9 @@ class PandasNotFound(NASAException):
     pass
 
 
-class NotFound(APIException):
-    pass
+# class NotFound(APIException):
+#     pass
+#
+#
+# class TooManyRequests(APIException):
+#     pass

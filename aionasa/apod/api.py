@@ -62,10 +62,8 @@ class APOD(BaseClient):
 
         async with self._session.get(request) as response:
             if response.status != 200:  # not success
-                if response.status == 404:
-                    raise NotFound(f"{response.status} - {response.reason}")
-                else:
-                    raise APIException(f"{response.status} - {response.reason}")
+                raise APIException(response.status, response.reason)
+
             json = await response.json()
 
         if self.rate_limiter:
@@ -118,8 +116,8 @@ class APOD(BaseClient):
             await self.rate_limiter.wait()
 
         async with self._session.get(request) as response:
-            if response.status != 200:  # not a success
-                raise APIException(response.reason)
+            if response.status != 200:  # not success
+                raise APIException(response.status, response.reason)
 
             json = await response.json()
 

@@ -48,7 +48,7 @@ class InSight(BaseClient):
         async with self._session.get(request) as response:
 
             if response.status != 200:  # not a success
-                raise APIException(response.reason)
+                raise APIException(response.code, response.reason)
 
             json = await response.json()
 
