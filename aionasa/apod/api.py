@@ -42,7 +42,7 @@ class APOD(BaseClient):
 
         :param date: The date of the APOD image to retrieve. Defaults to 'today'.
         :param hd: Retrieve the URL for the high resolution image. Defaults to 'False'.
-        :param as_json: Bool indicating whether to return a dict containing the raw returned json data instead of the normal named tuple.
+        :param as_json: Bool indicating whether to return the raw returned json data instead of the normal AstronomyPicture objects.
         :return: A named tuple containing data returned by the API.
         """
 

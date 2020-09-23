@@ -127,3 +127,5 @@ dmypy.json
 # extra
 .idea/
 API_KEY.py
+misc
+logs

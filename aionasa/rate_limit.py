@@ -3,6 +3,8 @@ import asyncio
 import time
 import logging
 
+from collections import deque
+
 logger = logging.getLogger('aionasa')
 
 
@@ -15,19 +17,18 @@ class RateLimiter:
 
     def __init__(self, limit):
         logger.debug("Initializing `RateLimiter`")
-        self._requests = []
+        self._requests = deque(iterable=[time.monotonic()]*limit, maxlen=limit)
         self._limit = limit
         self._remaining = limit
 
     @property
     def remaining(self):
-        logger.debug(f"`RateLimiter.remaining` property was accessed. Value: {self._remaining}")
         return self._remaining
 
     async def wait(self):
         logger.debug("`RateLimiter.wait()` was called.")
         if self._remaining < 1:
-            timestamp = self._requests.pop(0)
+            timestamp = self._requests.popleft()
             time_to_wait = 3600 - (time.monotonic() - timestamp)
             if time_to_wait > 0:
                 logger.debug(f"Sleeping for {time_to_wait} seconds.")
