@@ -7,7 +7,7 @@ This module is still in the testing phase.
 ### Installing
 aionasa can be installed directly from source with
 ```
-pip install git+https://github.com/nwunderly/aio-nasa.git
+python3 -m pip install git+https://github.com/nwunderly/aio-nasa.git
 ```
 
 ### Python Example - APOD
