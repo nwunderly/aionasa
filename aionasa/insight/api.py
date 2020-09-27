@@ -2,6 +2,7 @@
 import aiohttp
 import asyncio
 import datetime
+import logging
 
 try:
     import pandas
@@ -13,6 +14,9 @@ from collections import namedtuple
 from ..client import BaseClient
 from ..errors import *
 from ..rate_limit import insight_rate_limiter, demo_rate_limiter
+
+
+logger = logging.getLogger('aionasa.insight')
 
 
 class InSight(BaseClient):

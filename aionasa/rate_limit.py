@@ -5,7 +5,7 @@ import logging
 
 from collections import deque
 
-logger = logging.getLogger('aionasa')
+logger = logging.getLogger('aionasa.rate_limit')
 
 
 

@@ -1,6 +1,9 @@
-
-
 from ..errors import *
+
+"""
+To anyone reading this:
+    I'm sorry.
+"""
 
 
 class _QueryString:
@@ -87,6 +90,15 @@ xml = _Format('xml')
 vo_table = _Format('vo_table')
 json = _Format('json')
 
+
+# =====================================================================================================================================================
+
+class _Table:  # my god... this is going to be an ugly one.
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return self.name
 
 
 
