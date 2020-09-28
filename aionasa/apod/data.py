@@ -19,7 +19,10 @@ class AstronomyPicture:
         self.media_type = kwargs.get('media_type')
         self.service_version = kwargs.get('service_version')
 
-    def json(self):
+    def json(self) -> dict:
+        """
+        :return: a dict containing the JSON representation of this object.
+        """
         return {
             'date': self.date.strftime('%Y-%m-%d'),
             'copyright': self.copyright,
@@ -49,7 +52,7 @@ class AstronomyPicture:
 
         async with self.client._session.get(url) as response:
             if response.status != 200:
-                raise APIException(f"{response.status} - {response.reason}")
+                raise APIException(response.status, response.reason)
             image = await response.read()
 
         return image
@@ -74,7 +77,7 @@ class AstronomyPicture:
 
         async with self.client._session.get(url) as response:
             if response.status != 200:
-                raise APIException(f"{response.status} - {response.reason}")
+                raise APIException(response.status, response.reason)
             image = await response.read()
 
         with open(path, 'wb') as f:

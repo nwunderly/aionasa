@@ -50,9 +50,8 @@ class InSight(BaseClient):
             await self.rate_limiter.wait()
 
         async with self._session.get(request) as response:
-
             if response.status != 200:  # not a success
-                raise APIException(response.code, response.reason)
+                raise APIException(response.status, response.reason)
 
             json = await response.json()
 

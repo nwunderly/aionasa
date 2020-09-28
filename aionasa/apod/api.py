@@ -43,7 +43,7 @@ class APOD(BaseClient):
         :param date: The date of the APOD image to retrieve. Defaults to 'today'.
         :param hd: Retrieve the URL for the high resolution image. Defaults to 'False'.
         :param as_json: Bool indicating whether to return the raw returned json data instead of the normal AstronomyPicture objects.
-        :return: A named tuple containing data returned by the API.
+        :return: An AstronomyPicture containing data returned by the API.
         """
 
         if date is None:  # parameter will be left out of the query.
@@ -98,8 +98,8 @@ class APOD(BaseClient):
         :param start_date: The first date to return when requesting a range of dates.
         :param end_date: The last date to return when requesting a range of dates. Range is inclusive.
         :param hd: Retrieve the URL for the high resolution image. Defaults to 'False'.
-        :param as_json: Bool indicating whether to return a dict containing the raw returned json data instead of the normal named tuple.
-        :return: A list of named tuples containing data returned by the API.
+        :param as_json: Bool indicating whether to return a list of dicts containing the raw returned json data instead of the normal list of AstronomyPictures.
+        :return: A list of AstronomyPicture objects containing data returned by the API.
         """
 
         start_date = 'start_date=' + start_date.strftime('%Y-%m-%d') + '&'
