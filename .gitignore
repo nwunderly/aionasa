@@ -129,3 +129,16 @@ dmypy.json
 API_KEY.py
 misc
 logs
+
+*.json
+*.egg-info
+venv
+docs/_build
+docs/crowdin.py
+*.buildinfo
+*.mp3
+*.m4a
+*.wav
+*.png
+*.jpg
+*.flac
