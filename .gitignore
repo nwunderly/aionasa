@@ -133,7 +133,7 @@ logs
 *.json
 *.egg-info
 venv
-docs/_build
+docs/_build/
 docs/crowdin.py
 *.buildinfo
 *.mp3
