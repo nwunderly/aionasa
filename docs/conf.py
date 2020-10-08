@@ -22,6 +22,9 @@ project = 'aionasa'
 copyright = '2020, nwunderly'
 author = 'nwunderly'
 
+master_doc = 'index'
+
+
 # The full version, including alpha/beta/rc tags
 release = '0.1.0'
 
