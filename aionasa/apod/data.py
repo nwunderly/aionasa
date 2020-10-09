@@ -1,7 +1,6 @@
 
 import datetime
 
-from . import APOD
 from ..errors import APIException, NASAException
 
 
