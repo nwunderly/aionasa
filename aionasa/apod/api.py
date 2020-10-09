@@ -2,6 +2,7 @@
 import aiohttp
 import datetime
 import logging
+from typing import List
 
 from collections import namedtuple
 
@@ -17,18 +18,6 @@ logger = logging.getLogger('aionasa.apod')
 class APOD(BaseClient):
     """
     Client for NASA Astronomy Picture of the Day.
-
-    Parameters for APOD API:
-        - date: The date of the APOD image to retrieve. Defaults to 'today'.
-        - start_date: The first date to return when requesting a list of dates.
-        - end_date: The last date to return when requesting a list of dates. Range is inclusive.
-        - hd: Bool indicating whether to retrieve the URL for the high resolution image. Defaults to 'False'.
-        - concept_tags: DISABLED FOR THIS ENDPOINT.
-
-    Note:
-        If 'today' is used as the requested date (this is the default value) and the current date (according to UTC) does not have an APOD entry yet,
-        the API will return a 404 and this library will raise a NotFound exception.
-        If you would like to avoid this, you will need to catch the NotFound exception, and instead make a request for the previous day's APOD data.
     """
 
     def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):
@@ -36,7 +25,7 @@ class APOD(BaseClient):
             rate_limiter = demo_rate_limiter
         super().__init__(api_key, session, rate_limiter)
 
-    async def get(self, date: datetime.date = None, hd: bool = None, as_json: bool = False):
+    async def get(self, date: datetime.date = None, hd: bool = None, as_json: bool = False) -> AstronomyPicture:
         """
         Retrieves a single item from NASA's APOD API.
 
@@ -91,7 +80,7 @@ class APOD(BaseClient):
             return entry
 
     async def batch_get(self, start_date: datetime.date, end_date: datetime.date,
-                        hd: bool = None, as_json: bool = False):
+                        hd: bool = None, as_json: bool = False) -> List[AstronomyPicture]:
         """
         Retrieves multiple items from NASA's APOD API. Returns a list of APOD entries.
 

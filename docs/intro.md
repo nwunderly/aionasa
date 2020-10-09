@@ -1,15 +1,15 @@
 # Introduction to aionasa
 
-### Disclaimer:
+#### Disclaimer:
 This module is still in the testing phase.
 
-### Installing
+#### Installing
 aionasa can be installed directly from source with
 ```shell script
 python3 -m pip install git+https://github.com/nwunderly/aio-nasa.git
 ```
 
-### Python Example - APOD
+#### Python Example - APOD
 This is a simple script that will return the title, explanation, and url from the most recent Astronomy Picture of the Day site,
 then download and save the image.
 ```python
@@ -26,7 +26,7 @@ asyncio.run(main())
 ```
 
 
-### CLI Example - APOD
+#### CLI Example - APOD
 This command, like the above python script, will print data returned by the APOD API, then download and save the image.
 ```shell script
 python3 -m aionasa.apod --print --download .
