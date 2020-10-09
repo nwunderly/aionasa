@@ -45,11 +45,11 @@ class RateLimiter:
 
 
 default_rate_limiter = RateLimiter(1000)
-default_rate_limiter.__repr__ = lambda: '<default_rate_limiter>'
+# default_rate_limiter.__repr__ = lambda: '<default_rate_limiter>'
 insight_rate_limiter = RateLimiter(2000)
-insight_rate_limiter.__repr__ = lambda: '<insight_rate_limiter>'
+# insight_rate_limiter.__repr__ = lambda: '<insight_rate_limiter>'
 demo_rate_limiter = RateLimiter(30)  # todo: figure out how to implement daily limit
-demo_rate_limiter.__repr__ = lambda: '<demo_rate_limiter>'
+# demo_rate_limiter.__repr__ = lambda: '<demo_rate_limiter>'
 
 
 # class RateLimiter:

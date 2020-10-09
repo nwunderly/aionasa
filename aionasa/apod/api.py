@@ -14,6 +14,14 @@ from .data import AstronomyPicture
 logger = logging.getLogger('aionasa.apod')
 
 
+class _DefaultRateLimiterRepr:
+    def __repr__(self):
+        return '<default_rate_limiter>'
+
+
+_default = _DefaultRateLimiterRepr()
+
+
 class APOD(BaseClient):
     """Client for NASA Astronomy Picture of the Day API.
 
@@ -27,9 +35,11 @@ class APOD(BaseClient):
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
     """
 
-    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=demo_rate_limiter):
+    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=_default):
         if api_key == 'DEMO_KEY' and rate_limiter:
             rate_limiter = demo_rate_limiter
+        elif rate_limiter is _default:
+            rate_limiter = default_rate_limiter
         super().__init__(api_key, session, rate_limiter)
 
     async def get(self, date: datetime.date = None, hd: bool = False, as_json: bool = False):
