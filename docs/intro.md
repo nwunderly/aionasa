@@ -1,5 +1,4 @@
-# aio-nasa
- An async python wrapper for NASA open APIs.
+# Introduction to aionasa
 
 ### Disclaimer:
 This module is still in the testing phase.
