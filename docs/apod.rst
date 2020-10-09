@@ -14,14 +14,20 @@ Parameters for APOD API:
 - concept_tags: DISABLED FOR THIS ENDPOINT.
 
 .. note::
-    If 'today' is used as the requested date (this is the default value) and the current date (according to UTC) does not have an APOD entry yet,
-    the API will return a 404 and this library will raise a NotFound exception.
-    If you would like to avoid this, you will need to catch the NotFound exception, and instead make a request for the previous day's APOD data.
+    If 'today' is used as the requested date (this is the default value) and the
+    current date (according to UTC) does not have an APOD entry yet, the API will
+    return a 404 and this library will raise a NotFound exception.
+    If you would like to avoid this, you will need to catch the NotFound exception,
+    and instead make a request for the previous day's APOD data.
 
+Client
+------
 
 .. autoclass:: APOD
     :members:
 
+Data Class
+----------
 
 .. autoclass:: AstronomyPicture
     :members:

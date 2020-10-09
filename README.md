@@ -6,7 +6,7 @@ This module is still in the testing phase.
 
 ### Installing
 aionasa can be installed directly from source with
-```shell script
+```
 python3 -m pip install git+https://github.com/nwunderly/aio-nasa.git
 ```
 
@@ -29,6 +29,6 @@ asyncio.run(main())
 
 ### CLI Example - APOD
 This command, like the above python script, will print data returned by the APOD API, then download and save the image.
-```shell script
+```
 python3 -m aionasa.apod --print --download .
 ```
