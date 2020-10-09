@@ -1,14 +1,13 @@
 
-import aiohttp
 import datetime
 import logging
 from typing import List
 
-from collections import namedtuple
+from aiohttp import ClientSession
 
 from ..client import BaseClient
 from ..errors import *
-from ..rate_limit import default_rate_limiter, demo_rate_limiter
+from ..rate_limit import default_rate_limiter, demo_rate_limiter, RateLimiter
 from .data import AstronomyPicture
 
 
@@ -16,23 +15,39 @@ logger = logging.getLogger('aionasa.apod')
 
 
 class APOD(BaseClient):
-    """
-    Client for NASA Astronomy Picture of the Day.
+    """Client for NASA Astronomy Picture of the Day API.
+
+    Parameters
+    ----------
+    api_key: :class:`str`
+        NASA API key to be used by the client.
+    session: Optional[:class:`aiohttp.ClientSession`]
+        Optional ClientSession to be used for requests made by this client. Creates a new session by default.
+    rate_limiter: Optional[:class:`RateLimiter`]
+        Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
     """
 
-    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):
+    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=demo_rate_limiter):
         if api_key == 'DEMO_KEY' and rate_limiter:
             rate_limiter = demo_rate_limiter
         super().__init__(api_key, session, rate_limiter)
 
-    async def get(self, date: datetime.date = None, hd: bool = None, as_json: bool = False) -> AstronomyPicture:
-        """
-        Retrieves a single item from NASA's APOD API.
+    async def get(self, date: datetime.date = None, hd: bool = False, as_json: bool = False):
+        """Retrieves a single item from NASA's APOD API.
 
-        :param date: The date of the APOD image to retrieve. Defaults to 'today'.
-        :param hd: Retrieve the URL for the high resolution image. Defaults to 'False'.
-        :param as_json: Bool indicating whether to return the raw returned json data instead of the normal AstronomyPicture objects.
-        :return: An AstronomyPicture containing data returned by the API.
+        Parameters
+        ----------
+        date: :class:`datetime.Date`
+            The date of the APOD image to retrieve. Defaults to ``'today'``.
+        hd: :class:`bool`
+            Bool indicating whether to retrieve the URL for the high resolution image. Defaults to ``False``.
+        as_json: :class:`bool`
+            Bool indicating whether to return the raw returned json data instead of the normal AstronomyPicture object. Defaults to ``False``.
+
+        Returns
+        -------
+        :class:`AstronomyPicture`
+            An AstronomyPicture containing data returned by the API.
         """
 
         if date is None:  # parameter will be left out of the query.
@@ -80,15 +95,24 @@ class APOD(BaseClient):
             return entry
 
     async def batch_get(self, start_date: datetime.date, end_date: datetime.date,
-                        hd: bool = None, as_json: bool = False) -> List[AstronomyPicture]:
-        """
-        Retrieves multiple items from NASA's APOD API. Returns a list of APOD entries.
+                        hd: bool = None, as_json: bool = False):
+        """Retrieves multiple items from NASA's APOD API. Returns a list of APOD entries.
 
-        :param start_date: The first date to return when requesting a range of dates.
-        :param end_date: The last date to return when requesting a range of dates. Range is inclusive.
-        :param hd: Retrieve the URL for the high resolution image. Defaults to 'False'.
-        :param as_json: Bool indicating whether to return a list of dicts containing the raw returned json data instead of the normal list of AstronomyPictures.
-        :return: A list of AstronomyPicture objects containing data returned by the API.
+        Parameters
+        ----------
+        start_date: :class:`datetime.Date`
+            The first date to return when requesting a range of dates.
+        end_date: :class:`datetime.Date`
+            The last date to return when requesting a range of dates. Range is inclusive.
+        hd: :class:`bool`
+            Bool indicating whether to retrieve the URL for the high resolution image. Defaults to ``False``.
+        as_json: :class:`bool`
+            Bool indicating whether to return a list of dicts containing the raw returned json data instead of the normal ``List[AstronomyPicture]``. Defaults to ``False``.
+
+        Returns
+        -------
+        List[:class:`AstronomyPicture`]
+            A list of AstronomyPicture objects containing data returned by the API.
         """
 
         start_date = 'start_date=' + start_date.strftime('%Y-%m-%d') + '&'
