@@ -49,7 +49,7 @@ class AstronomyPicture:
         """Convert this object to JSON format.
 
         Returns:
-        ````````
+        --------
         :class:`dict`
             The JSON data that was provided by the APOD API.
         """
