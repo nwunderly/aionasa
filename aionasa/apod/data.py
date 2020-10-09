@@ -45,12 +45,12 @@ class AstronomyPicture:
         site_formatted_date = f"{str(date.year)[2:]}{date.month:02d}{date.day:02d}"
         self.html_url = f"https://apod.nasa.gov/apod/ap{site_formatted_date}.html"
 
-    def json(self) -> dict:
+    def json(self):
         """Convert this object to JSON format.
 
         Returns:
         ````````
-        dict
+        :class:`dict`
             The JSON data that was provided by the APOD API.
         """
         return {
@@ -64,7 +64,7 @@ class AstronomyPicture:
             'service_version': self.service_version,
         }
 
-    async def read(self, hdurl: bool = True) -> bytes:
+    async def read(self, hdurl: bool = True):
         """Downloads the image associated with this AstronomyPicture.
 
         Parameters:
@@ -74,7 +74,7 @@ class AstronomyPicture:
 
         Returns:
         --------
-        bytes
+        :class:`bytes`
             The image, downloaded from the URL provided by the API.
         """
 
