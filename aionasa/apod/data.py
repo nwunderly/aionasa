@@ -7,8 +7,8 @@ from ..errors import APIException, NASAException
 class AstronomyPicture:
     """A class representing a single daily APOD picture.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     client: :class:`APOD`
         The APOD client that was used to retrieve this data.
     date: :class:`datetime.Date`
@@ -48,8 +48,8 @@ class AstronomyPicture:
     def json(self):
         """Convert this object to JSON format.
 
-        Returns:
-        --------
+        Returns
+        -------
         :class:`dict`
             The JSON data that was provided by the APOD API.
         """
@@ -67,13 +67,13 @@ class AstronomyPicture:
     async def read(self, hdurl: bool = True):
         """Downloads the image associated with this AstronomyPicture.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         hdurl: :class:`bool`
             Indicates that the HD image should be downloaded, if possible.
 
-        Returns:
-        --------
+        Returns
+        -------
         :class:`bytes`
             The image, downloaded from the URL provided by the API.
         """
@@ -96,8 +96,8 @@ class AstronomyPicture:
     async def save(self, path=None, hdurl: bool = True):
         """Downloads the image associated with this AstronomyPicture and saves to a file.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         path:
             The file path at which to save the image.
             If ``None``, saves the image to the working directory using the filename from the image url.
