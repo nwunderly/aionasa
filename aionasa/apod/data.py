@@ -1,12 +1,36 @@
 
 import datetime
 
+from . import APOD
 from ..errors import APIException, NASAException
 
 
 class AstronomyPicture:
-    """
-    A class representing a single daily APOD picture.
+    """A class representing a single daily APOD picture.
+
+    Attributes:
+    -----------
+    client: :class:`APOD`
+        The APOD client that was used to retrieve this data.
+    date: :class:`datetime.Date`
+        The date this image was uploaded to APOD.
+    copyright:
+        The owner of this image, if it is not public domain.
+    title:
+        The APOD entry's title.
+    explanation:
+        The explanation for this image, written by astronomers, from this image's APOD page.
+    url:
+        The image url.
+    hdurl:
+        The HD image url, if available. Can be ``None``.
+    html_url:
+        The url of the APOD HTML page. This is the page a user would find this image on.
+        This data is not provided by the API. This attribute has been added by the library for ease of use.
+    media_type:
+        The type of media. Will pretty much always be ``'image'``.
+    service_version:
+        The API service version. The API version is currently ``'v1'``.
     """
     def __init__(self, client, date: datetime.date, **kwargs):
         self.client = client
@@ -19,9 +43,16 @@ class AstronomyPicture:
         self.media_type = kwargs.get('media_type')
         self.service_version = kwargs.get('service_version')
 
+        site_formatted_date = f"{str(date.year)[2:]}{date.month:02d}{date.day:02d}"
+        self.html_url = f"https://apod.nasa.gov/apod/ap{site_formatted_date}.html"
+
     def json(self) -> dict:
-        """
-        :return: a dict containing the JSON representation of this object.
+        """Convert this object to JSON format.
+
+        Returns:
+        ````````
+        dict
+            The JSON data that was provided by the APOD API.
         """
         return {
             'date': self.date.strftime('%Y-%m-%d'),
@@ -35,11 +66,17 @@ class AstronomyPicture:
         }
 
     async def read(self, hdurl: bool = True) -> bytes:
-        """
-        Downloads the image associated with this AstronomyPicture.
+        """Downloads the image associated with this AstronomyPicture.
 
-        :param hdurl: Indicates that the HD image should be downloaded, if possible.
-        :return: bytes object containing the image.
+        Parameters:
+        -----------
+        hdurl: :class:`bool`
+            Indicates that the HD image should be downloaded, if possible.
+
+        Returns:
+        --------
+        bytes
+            The image, downloaded from the URL provided by the API.
         """
 
         if hdurl and self.hdurl:
@@ -58,11 +95,15 @@ class AstronomyPicture:
         return image
 
     async def save(self, path=None, hdurl: bool = True):
-        """
-        Downloads the image associated with this AstronomyPicture and saves to a file.
+        """Downloads the image associated with this AstronomyPicture and saves to a file.
 
-        :param path: The file path at which to save the image.
-        :param hdurl: Indicates that the HD image should be downloaded, if possible.
+        Parameters:
+        -----------
+        path:
+            The file path at which to save the image.
+            If ``None``, saves the image to the working directory using the filename from the image url.
+        hdurl: :class:`bool`
+            Indicates that the HD image should be downloaded, if possible.
         """
 
         if hdurl and self.hdurl:
