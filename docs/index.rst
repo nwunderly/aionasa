@@ -8,17 +8,18 @@ Welcome to aionasa's documentation!
 
 aionasa is an async python wrapper for the NASA Open APIs.
 
+Contents
+--------
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   intro
    apod
 
 
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
