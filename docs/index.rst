@@ -41,7 +41,7 @@ CLI example - APOD
 
 This command, like the above python script, will print data returned by the APOD API, then download and save the image.
 
-.. code-block::
+.. code-block:: sh
 
    python3 -m aionasa.apod --print --download .
 
