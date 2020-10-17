@@ -142,3 +142,4 @@ docs/crowdin.py
 *.png
 *.jpg
 *.flac
+rate_limit_torture_test.py
