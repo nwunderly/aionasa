@@ -15,11 +15,12 @@ class RateLimiter:
     This is necessary to ensure observation of rate limits even if multiple API endpoints are being used.
     """
 
-    def __init__(self, limit):
+    def __init__(self, limit, _repr=None):
         logger.debug("Initializing `RateLimiter`")
         self._requests = deque(iterable=[time.monotonic()]*limit, maxlen=limit)
         self._limit = limit
         self._remaining = limit
+        self._repr = _repr or f'<{self.__class__}>'
 
     @property
     def remaining(self):
@@ -43,8 +44,11 @@ class RateLimiter:
         self._remaining = remaining
         self._requests.append(time.monotonic())
 
+    def __repr__(self):
+        return self._repr
 
-default_rate_limiter = RateLimiter(1000)
+
+default_rate_limiter = RateLimiter(1000, '<default_rate_limiter>')
 # default_rate_limiter.__repr__ = lambda: '<default_rate_limiter>'
 insight_rate_limiter = RateLimiter(2000)
 # insight_rate_limiter.__repr__ = lambda: '<insight_rate_limiter>'
