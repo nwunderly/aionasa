@@ -2,12 +2,13 @@
 import datetime
 import logging
 from typing import List
-
 from aiohttp import ClientSession
 
 from ..client import BaseClient
 from ..errors import *
-from ..rate_limit import default_rate_limiter, demo_rate_limiter
+from ..rate_limit import default_rate_limiter, demo_rate_limiter, RateLimiter
+from .data import EarthImage
+
 
 logger = logging.getLogger('aionasa.epic')
 
@@ -18,9 +19,11 @@ logger = logging.getLogger('aionasa.epic')
 #   https://api.nasa.gov/EPIC/api/
 # ===============================
 
+
 # TODO:
 #   - plan methods for this class
 #   - data class for EPIC images
+
 
 class EPIC(BaseClient):
     """Client for NASA Earth Polychromatic Imaging Camera.
