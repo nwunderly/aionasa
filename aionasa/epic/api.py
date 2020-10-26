@@ -58,6 +58,18 @@ class EPIC(BaseClient):
             JSON data returned by the API.
         """
 
+        if date is None:
+            date = ''
+        else:
+            date = date.strftime('/date/%Y-%m-%d')
+
+        request = f'https://api.nasa.gov/EPIC/api/natural{date}?api_key={self._api_key}'
+
+        async with self._session.get(request) as response:
+            data = await response.json()
+
+        return data
+
 
 
 
