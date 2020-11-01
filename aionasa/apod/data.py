@@ -45,6 +45,8 @@ class AstronomyPicture:
         site_formatted_date = f"{str(date.year)[2:]}{date.month:02d}{date.day:02d}"
         self.html_url = f"https://apod.nasa.gov/apod/ap{site_formatted_date}.html"
 
+        self._response = None
+
     def json(self):
         """Convert this object to JSON format.
 
@@ -129,7 +131,39 @@ class AstronomyPicture:
 
         return bytes_written
 
+    async def read_chunk(self, chunk_size: int, hdurl: bool = True):
+        """Reads a chunk of the image associated with this AstronomyPicture.
 
+        Parameters
+        ----------
+        chunk_size: :class:`int`
+            Number of bytes to read.
+        hdurl: :class:`bool`
+            Indicates that the HD image should be downloaded, if possible.
 
+        Returns
+        -------
+        :class:`bytes`
+            The chunked data. Will be None if the image has been completely read.
+        """
 
+        if hdurl and self.hdurl:
+            url = self.hdurl
+        else:
+            url = self.url
 
+        if not (url.startswith('http://apod.nasa.gov') or url.startswith('https://apod.nasa.gov')):
+            raise NotImplementedError("URLs from outside apod.nasa.gov are not currently supported.")
+
+        if not self._response:
+            response = await self.client._session.get(url)
+            if response.status != 200:
+                await response.close()
+                raise APIException(response.status, response.reason)
+            self._response = response
+
+        chunk = await self._response.content.read(chunk_size)
+        if not chunk:
+            await self._response.close()
+            self._response = None
+        return chunk
