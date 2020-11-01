@@ -14,6 +14,7 @@ class EarthImage:
 
         for key, value in kwargs.items():
             setattr(self, key, value)
+            #hello
 
 
 
