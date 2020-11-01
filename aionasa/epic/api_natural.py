@@ -68,7 +68,17 @@ class EPIC(BaseClient):
         async with self._session.get(request) as response:
             data = await response.json()
 
-        return data
+        images = []
+
+        for item in data:
+
+            image = EarthImage(
+                client=self,
+                **item
+            )
+            images.append(image)
+
+        return images
 
 
 

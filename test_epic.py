@@ -1,7 +1,7 @@
 import asyncio
 import datetime
 
-from aionasa.epic import EPIC
+from aionasa.epic.api_natural import EPIC
 from API_KEY import API_KEY
 
 
@@ -11,10 +11,7 @@ async def main():
 
         data = await epic.natural()
 
-    yyyy, mm, dd = data[0]['date'].split()[0].split('-')
-
-    print(f"https://api.nasa.gov/EPIC/archive/natural/{yyyy}/{mm}/{dd}/png/{data[0]['image']}.png?api_key={API_KEY}")
-    print(len(data))
+    print(data)
 
 
 
