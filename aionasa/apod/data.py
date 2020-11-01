@@ -118,10 +118,18 @@ class AstronomyPicture:
         async with self.client._session.get(url) as response:
             if response.status != 200:
                 raise APIException(response.status, response.reason)
-            image = await response.read()
+            with open(path, 'wb') as f:
+                bytes_written = 0
+                while True:
+                    chunk = await response.content.read(10)
+                    bytes_written += len(chunk)
+                    if not chunk:
+                        break
+                    f.write(chunk)
 
-        with open(path, 'wb') as f:
-            f.write(image)
+        return bytes_written
+
+
 
 
 

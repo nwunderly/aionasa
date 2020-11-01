@@ -88,70 +88,54 @@ async def get(day, _print, dump, download, key):
                 dump_to_yaml(data, dump)
 
         if download:
-            url = picture.hdurl if picture.hdurl else picture.url
-
-            if url.startswith('http://apod.nasa.gov') or url.startswith('https://apod.nasa.gov'):
-                filename = url.split('/')[-1]
-
-            else:  # todo: add support for non-apod images (youtube etc)
-                raise NotImplementedError("URL not supported by download function. File could not be downloaded.")
-
-            image = await picture.read()
-
-            filepath = download + '/' + filename
-            with open(filepath, 'wb') as f:
-                f.write(image)
+            await download_image(picture, download)
 
 
 async def batch_get(start_date, end_date, _print, dump, download, key):
     start_date = process_date(start_date)
     end_date = process_date(end_date)
 
-    apod = APOD(key if key else 'DEMO_KEY')
+    async with APOD(key if key else 'DEMO_KEY') as apod:
 
-    data = await apod.batch_get(start_date, end_date, as_json=True)
+        data = await apod.batch_get(start_date, end_date)
+        json_data = [picture.json() for picture in data]
 
-    await apod.close()
+        if _print:
+            s = ""
+            for entry in json_data:
+                for key, value in entry.items():
+                    s += f"{key}: {value}\n"
+                s += "\n"
+            print(s)
 
-    if _print:
-        s = ""
-        for entry in data:
-            for key, value in entry.items():
-                s += f"{key}: {value}\n"
-            s += "\n"
-        print(s)
+        if dump:
+            split = dump.split('.')
+            ext = split[-1]
 
-    if dump:
-        split = dump.split('.')
-        ext = split[-1]
+            if ext.lower() == 'json':
+                dump_to_json(data, dump)
+            elif ext.lower() == 'csv':
+                dump_to_csv(data, dump)
+            elif ext.lower() in {'yaml', 'yml'}:
+                dump_to_yaml(data, dump)
 
-        if ext.lower() == 'json':
-            dump_to_json(data, dump)
-        elif ext.lower() == 'csv':
-            dump_to_csv(data, dump)
-        elif ext.lower() in {'yaml', 'yml'}:
-            dump_to_yaml(data, dump)
+        if download:
+            await asyncio.gather(*[download_image(picture, download, True) for picture in data])
 
-    if download:  # todo: fucking clean this up
-        async with aiohttp.ClientSession() as session:
-            for entry in data:
-                url = entry.get('hdurl')
-                url = url if url else entry['url']
 
-                # do this with regex later
-                if url.startswith('http://apod.nasa.gov') or url.startswith('https://apod.nasa.gov'):
-                    filename = url.split('/')[-1]
+async def download_image(picture, path, ignore_not_implemented=False):
+    url = picture.hdurl if picture.hdurl else picture.url
 
-                else:  # todo: add support for non-apod images (youtube etc)
-                    continue
+    if url.startswith('http://apod.nasa.gov') or url.startswith('https://apod.nasa.gov'):
+        filename = url.split('/')[-1]
 
-                async with session.get(url) as image_response:
-                    image = await image_response.read()
+    else:  # todo: add support for non-apod images (youtube etc)
+        if ignore_not_implemented:
+            return 0
+        raise NotImplementedError("URL not supported by download function. File could not be downloaded.")
 
-                filepath = download + '/' + filename
-                with open(filepath, 'wb') as f:
-                    f.write(image)
-
+    filepath = path + '/' + filename
+    return await picture.save(filepath)
 
 
 async def main():
