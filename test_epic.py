@@ -2,11 +2,12 @@ import asyncio
 import datetime
 
 from aionasa.epic.api_natural import EPIC
+from API_KEY import API_KEY
 
 
 async def main():
 
-    async with EPIC() as epic:
+    async with EPIC(api_key=API_KEY) as epic:
 
         data = await epic.natural()
 
