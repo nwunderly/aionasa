@@ -7,7 +7,7 @@ from aiohttp import ClientSession
 from ..client import BaseClient
 from ..errors import *
 from ..rate_limit import default_rate_limiter, demo_rate_limiter, RateLimiter
-from .data import EarthImage
+from .data_enhanced import EarthImage
 
 
 logger = logging.getLogger('aionasa.epic')
