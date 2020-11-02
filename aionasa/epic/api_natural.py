@@ -93,6 +93,13 @@ class EPIC(BaseClient):
         return images
 
     async def natural_all(self):
+        """Retrieve a listing of all dates with available natural color imagery.
+
+        Returns
+        -------
+        List[:class:`datetime.date`]
+            The dates returned by the API.
+        """
         api_key = f'?api_key={self._api_key}' if self._api_key else ''
         request = f'{self.base_url}/api/natural/all{api_key}'
 
@@ -110,6 +117,35 @@ class EPIC(BaseClient):
 
         for item in data:
             date = datetime.datetime.strptime(item['date'], '%Y-%m-%d').date()
+            dates.append(date)
+
+        return dates
+
+    async def natural_available(self):
+        """Retrieve a listing of all dates with available natural color imagery.
+
+        Returns
+        -------
+        List[:class:`datetime.date`]
+            The dates returned by the API.
+        """
+        api_key = f'?api_key={self._api_key}' if self._api_key else ''
+        request = f'{self.base_url}/api/natural/available{api_key}'
+
+        if self.rate_limiter:
+            await self.rate_limiter.wait()
+
+        async with self._session.get(request) as response:
+            data = await response.json()
+
+        if self.rate_limiter:
+            remaining = int(response.headers['X-RateLimit-Remaining'])
+            self.rate_limiter.update(remaining)
+
+        dates = []
+
+        for item in data:
+            date = datetime.datetime.strptime(item, '%Y-%m-%d').date()
             dates.append(date)
 
         return dates

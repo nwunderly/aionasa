@@ -8,11 +8,8 @@ from API_KEY import API_KEY
 async def main():
 
     async with EPIC(True, api_key=API_KEY) as epic:
+        print(await epic.natural_all() == await epic.natural_available())
 
-        data = await epic.natural_all()
-
-    for x in data:
-        print(x)
 
 
 if __name__ == '__main__':
