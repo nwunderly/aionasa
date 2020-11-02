@@ -12,17 +12,12 @@ class EarthImage:
         self.client = client
         self.json = json
 
-        if self.client.use_nasa_mirror:
-            base_url = 'https://api.nasa.gov/EPIC'
-            api_key = f'?api_key={self.client._api_key}'
-        else:
-            base_url = 'https://epic.gsfc.nasa.gov'
-            api_key = ''
+        api_key = f'?api_key={self.client._api_key}' if self.client._api_key else ''
 
         yyyy, mm, dd = json['date'].split()[0].split('-')
-        self.png_url = f"{base_url}/archive/{collection}/{yyyy}/{mm}/{dd}/png/{json['image']}.png{api_key}"
-        self.jpg_url = f"{base_url}/archive/{collection}/{yyyy}/{mm}/{dd}/jpg/{json['image']}.jpg{api_key}"
-        self.thumb_url = f"{base_url}/archive/{collection}/{yyyy}/{mm}/{dd}/thumbs/{json['image']}.jpg{api_key}"
+        self.png_url = f"{self.client.base_url}/archive/{collection}/{yyyy}/{mm}/{dd}/png/{json['image']}.png{api_key}"
+        self.jpg_url = f"{self.client.base_url}/archive/{collection}/{yyyy}/{mm}/{dd}/jpg/{json['image']}.jpg{api_key}"
+        self.thumb_url = f"{self.client.base_url}/archive/{collection}/{yyyy}/{mm}/{dd}/thumbs/{json['image']}.jpg{api_key}"
 
         # 'date': '2020-10-24 00:41:06'
         self.date = datetime.datetime.strptime(json['date'], '%Y-%m-%d %H:%M:%S')

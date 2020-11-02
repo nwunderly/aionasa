@@ -44,10 +44,11 @@ class EPIC(BaseClient):
         if use_nasa_mirror:
             if api_key == 'DEMO_KEY' and rate_limiter:
                 rate_limiter = demo_rate_limiter
+            self.base_url = 'https://api.nasa.gov/EPIC'
         else:
             api_key = None
             rate_limiter = None
-        self.use_nasa_mirror = use_nasa_mirror
+            self.base_url = 'https://epic.gsfc.nasa.gov'
         super().__init__(api_key, session, rate_limiter)
 
     async def natural(self, date: datetime.date = None):
@@ -61,8 +62,8 @@ class EPIC(BaseClient):
 
         Returns
         -------
-        List[:class:`dict`]
-            JSON data returned by the API.
+        List[:class:`EarthImage`]
+            Data returned by the API.
         """
 
         if date is None:
@@ -70,10 +71,8 @@ class EPIC(BaseClient):
         else:
             date = date.strftime('/date/%Y-%m-%d')
 
-        if self.use_nasa_mirror:
-            request = f'https://api.nasa.gov/EPIC/api/natural{date}?api_key={self._api_key}'
-        else:
-            request = f'https://epic.gsfc.nasa.gov/api/natural{date}'
+        api_key = f'?api_key={self._api_key}' if self._api_key else ''
+        request = f'{self.base_url}/api/natural{date}{api_key}'
 
         if self.rate_limiter:
             await self.rate_limiter.wait()
@@ -93,7 +92,27 @@ class EPIC(BaseClient):
 
         return images
 
+    async def natural_all(self):
+        api_key = f'?api_key={self._api_key}' if self._api_key else ''
+        request = f'{self.base_url}/api/natural/all{api_key}'
 
+        if self.rate_limiter:
+            await self.rate_limiter.wait()
+
+        async with self._session.get(request) as response:
+            data = await response.json()
+
+        if self.rate_limiter:
+            remaining = int(response.headers['X-RateLimit-Remaining'])
+            self.rate_limiter.update(remaining)
+
+        dates = []
+
+        for item in data:
+            date = datetime.datetime.strptime(item['date'], '%Y-%m-%d').date()
+            dates.append(date)
+
+        return dates
 
 
 
