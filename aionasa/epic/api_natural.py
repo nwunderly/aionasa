@@ -30,6 +30,8 @@ class EPIC(BaseClient):
 
     Parameters
     ----------
+    use_nasa_mirror: :class:`bool`
+        Whether to use the api.nasa.gov mirror instead of epic.gsfc.nasa.gov
     api_key: :class:`str`
         NASA API key to be used by the client.
     session: Optional[:class:`aiohttp.ClientSession`]
@@ -38,9 +40,14 @@ class EPIC(BaseClient):
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
     """
 
-    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):
-        if api_key == 'DEMO_KEY' and rate_limiter:
-            rate_limiter = demo_rate_limiter
+    def __init__(self, use_nasa_mirror=False, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):
+        if use_nasa_mirror:
+            if api_key == 'DEMO_KEY' and rate_limiter:
+                rate_limiter = demo_rate_limiter
+        else:
+            api_key = None
+            rate_limiter = None
+        self.use_nasa_mirror = use_nasa_mirror
         super().__init__(api_key, session, rate_limiter)
 
     async def natural(self, date: datetime.date = None):
@@ -63,7 +70,10 @@ class EPIC(BaseClient):
         else:
             date = date.strftime('/date/%Y-%m-%d')
 
-        request = f'https://api.nasa.gov/EPIC/api/natural{date}?api_key={self._api_key}'
+        if self.use_nasa_mirror:
+            request = f'https://api.nasa.gov/EPIC/api/natural{date}?api_key={self._api_key}'
+        else:
+            request = f'https://epic.gsfc.nasa.gov/api/natural{date}'
 
         async with self._session.get(request) as response:
             data = await response.json()
@@ -71,11 +81,7 @@ class EPIC(BaseClient):
         images = []
 
         for item in data:
-
-            image = EarthImage(
-                client=self,
-                **item
-            )
+            image = EarthImage(client=self, json=item, collection='natural')
             images.append(image)
 
         return images

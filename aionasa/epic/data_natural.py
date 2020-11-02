@@ -8,22 +8,32 @@ class EarthImage:
     """A NASA EPIC image asset.
 
     """
-    def __init__(self, client, **kwargs):
+    def __init__(self, client, json, collection):
         self.client = client
+        self.json = json
 
-        yyyy, mm, dd = kwargs['date'].split()[0].split('-')
-        self.url = f"https://api.nasa.gov/EPIC/archive/natural/{yyyy}/{mm}/{dd}/png/{kwargs['image']}.png"
+        if self.client.use_nasa_mirror:
+            base_url = 'https://api.nasa.gov/EPIC'
+            api_key = f'?api_key={self.client._api_key}'
+        else:
+            base_url = 'https://epic.gsfc.nasa.gov'
+            api_key = ''
+
+        yyyy, mm, dd = json['date'].split()[0].split('-')
+        self.png_url = f"{base_url}/archive/{collection}/{yyyy}/{mm}/{dd}/png/{json['image']}.png{api_key}"
+        self.jpg_url = f"{base_url}/archive/{collection}/{yyyy}/{mm}/{dd}/jpg/{json['image']}.jpg{api_key}"
+        self.thumb_url = f"{base_url}/archive/{collection}/{yyyy}/{mm}/{dd}/thumbs/{json['image']}.jpg{api_key}"
 
         # 'date': '2020-10-24 00:41:06'
-        self.date = datetime.datetime.strptime(kwargs['date'], '%Y-%m-%d %H:%M:%S')
+        self.date = datetime.datetime.strptime(json['date'], '%Y-%m-%d %H:%M:%S')
 
-        self.image = kwargs['image']
-        self.caption = kwargs['caption']
-        self.centroid_coordinates = kwargs['centroid_coordinates']
-        self.dscovr_j2000_position = kwargs['dscovr_j2000_position']
-        self.sun_j2000_position = kwargs['sun_j2000_position']
-        self.attitude_quaternions = kwargs['attitude_quaternions']
-        self.coords = kwargs['coords']
+        self.image = json['image']
+        self.caption = json['caption']
+        self.centroid_coordinates = json['centroid_coordinates']
+        self.dscovr_j2000_position = json['dscovr_j2000_position']
+        self.sun_j2000_position = json['sun_j2000_position']
+        self.attitude_quaternions = json['attitude_quaternions']
+        self.coords = json['coords']
 
 
 
