@@ -31,6 +31,7 @@ parser.add_argument('--print', '-p', action='store_true', help="Flag indicating 
 parser.add_argument('--dump', help="Indicates that data should be dumped to a file. Supports json and yaml/yml extensions.")
 parser.add_argument('--download', help="After data is retrieved, downloads images to the given directory.")
 parser.add_argument('--key', help="Manual input option for API key. If this is left out, uses DEMO_KEY.")
+parser.add_argument('--timeout', type=int, help="Configures timeout settings for the underlying aiohttp.ClientSession. Overrides the 'total' attribute.")
 
 
 def process_date(day):
@@ -63,10 +64,14 @@ def dump_to_yaml(data, filename):
         yaml.dump(data, f, yaml.Dumper)
 
 
-async def get(day, _print, dump, download, key):
+async def get(day, _print, dump, download, key, timeout):
     day = process_date(day)
-
-    async with APOD(key if key else 'DEMO_KEY') as apod:
+    if timeout is not None:
+        timeout = aiohttp.ClientTimeout(total=timeout)
+    else:
+        timeout = aiohttp.ClientTimeout()
+        
+    async with APOD(key or 'DEMO_KEY', timeout=timeout) as apod:
         picture = await apod.get(day)
         data = picture.json()
 
@@ -91,12 +96,15 @@ async def get(day, _print, dump, download, key):
             await download_image(picture, download)
 
 
-async def batch_get(start_date, end_date, _print, dump, download, key):
+async def batch_get(start_date, end_date, _print, dump, download, key, timeout):
     start_date = process_date(start_date)
     end_date = process_date(end_date)
-
-    async with APOD(key if key else 'DEMO_KEY') as apod:
-
+    if timeout is not None:
+        timeout = aiohttp.ClientTimeout(total=timeout)
+    else:
+        timeout = aiohttp.ClientTimeout()
+    
+    async with APOD(key or 'DEMO_KEY', timeout=timeout) as apod:
         data = await apod.batch_get(start_date, end_date)
         json_data = [picture.json() for picture in data]
 
@@ -131,11 +139,18 @@ async def download_image(picture, path, ignore_not_implemented=False):
 
     else:  # todo: add support for non-apod images (youtube etc)
         if ignore_not_implemented:
+            print(f"Could not download url, skipping: {url}")
             return 0
         raise NotImplementedError("URL not supported by download function. File could not be downloaded.")
 
     filepath = path + '/' + filename
-    return await picture.save(filepath)
+    try:
+        print(f"Starting download: {url}")
+        b = await picture.save(filepath)
+        print(f"Downloaded: {url} ({b/1000} KB)")
+    except asyncio.TimeoutError:
+        print(f"Download failed: {url}")
+        raise
 
 
 async def main():
@@ -148,24 +163,25 @@ async def main():
     dump = args.dump
     download = args.download
     key = args.key
+    timeout = args.timeout
 
     if _date:
         if start_date or end_date or since:
             raise ArgumentError("date and start-date/end-date/since are not compatible arguments.")
-        await get(_date, _print, dump, download, key)
+        await get(_date, _print, dump, download, key, timeout)
 
     elif since:
         if start_date or end_date:
             raise ArgumentError("since and start-date/end-date are not compatible arguments.")
-        await batch_get(since, 'today', _print, dump, download, key)
+        await batch_get(since, 'today', _print, dump, download, key, timeout)
 
     elif start_date or end_date:
         if not (start_date and end_date):
             raise ArgumentError("start-date and end-date are both required arguments when requesting a range.")
-        await batch_get(start_date, end_date, _print, dump, download, key)
+        await batch_get(start_date, end_date, _print, dump, download, key, timeout)
 
     else:
-        await get('today', _print, dump, download, key)
+        await get('today', _print, dump, download, key, timeout)
 
 
 

@@ -7,7 +7,7 @@ class BaseClient:
     Base class for NASA API clients.
     """
 
-    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=None):
+    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=None, timeout=None):
         """
         Initializes the client class.
 
@@ -15,7 +15,8 @@ class BaseClient:
         :param session:
         """
         self._api_key = api_key
-        self._session = session if session else aiohttp.ClientSession()
+        timeout = timeout or aiohttp.ClientTimeout()
+        self._session = session or aiohttp.ClientSession(timeout=timeout)
         self.rate_limiter = rate_limiter
 
     # def __call__(self, *args, **kwargs):

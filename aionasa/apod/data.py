@@ -62,6 +62,7 @@ class AstronomyPicture:
             'explanation': self.explanation,
             'url': self.url,
             'hdurl': self.hdurl,
+            'html_url': self.html_url,
             'media_type': self.media_type,
             'service_version': self.service_version,
         }
@@ -123,7 +124,7 @@ class AstronomyPicture:
             with open(path, 'wb') as f:
                 bytes_written = 0
                 while True:
-                    chunk = await response.content.read(10)
+                    chunk = await response.content.read(1000)
                     bytes_written += len(chunk)
                     if not chunk:
                         break
