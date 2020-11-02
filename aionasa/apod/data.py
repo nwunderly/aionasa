@@ -131,6 +131,18 @@ class AstronomyPicture:
 
         return bytes_written
 
+    # def stream(self, hdurl: bool = True):
+    #     if hdurl and self.hdurl:
+    #         url = self.hdurl
+    #     else:
+    #         url = self.url
+    #
+    #     if not (url.startswith('http://apod.nasa.gov') or url.startswith('https://apod.nasa.gov')):
+    #         raise NotImplementedError("URLs from outside apod.nasa.gov are not currently supported.")
+    #
+    #     return _StreamReader(self, self.client._session.get(url))
+
+
     async def read_chunk(self, chunk_size: int, hdurl: bool = True):
         """Reads a chunk of the image associated with this AstronomyPicture.
 
@@ -167,3 +179,20 @@ class AstronomyPicture:
             await self._response.close()
             self._response = None
         return chunk
+
+
+# class _StreamReader:
+#     def __init__(self, picture, response):
+#         self.picture = picture
+#         self.response = response
+#
+#     async def __aenter__(self):
+#         await self.response.__aenter__()
+#         if self.response.status != 200:
+#             raise APIException(self.response.status, self.response.reason)
+#         return self
+#
+#     async def __aexit__(self, exc_type, exc_val, exc_tb):
+#         return await self.response.__aexit__(exc_type, exc_val, exc_tb)
+#
+#     async def read(self, num):
