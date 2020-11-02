@@ -9,10 +9,10 @@ async def main():
 
     async with EPIC(True, api_key=API_KEY) as epic:
 
-        data = await epic.natural()
+        data = await epic.natural_all()
 
-    for image in data:
-        print(image.png_url)
+    for x in data:
+        print(x)
 
 
 if __name__ == '__main__':
