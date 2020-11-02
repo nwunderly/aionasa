@@ -75,8 +75,15 @@ class EPIC(BaseClient):
         else:
             request = f'https://epic.gsfc.nasa.gov/api/natural{date}'
 
+        if self.rate_limiter:
+            await self.rate_limiter.wait()
+
         async with self._session.get(request) as response:
             data = await response.json()
+
+        if self.rate_limiter:
+            remaining = int(response.headers['X-RateLimit-Remaining'])
+            self.rate_limiter.update(remaining)
 
         images = []
 
