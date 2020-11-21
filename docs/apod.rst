@@ -31,3 +31,29 @@ Data Class
 
 .. autoclass:: AstronomyPicture
     :members:
+
+Example Script
+--------------
+This is a simple script that will return the title, explanation, and url from the most recent Astronomy Picture of the Day page,
+then download and save the image.
+
+.. code:: python
+    :linenos:
+
+    import asyncio
+    from aionasa import APOD
+
+    async def main():
+        async with APOD() as apod:
+            apod_entry = await apod.get()
+            print(f'{apod_entry.title}\n{apod_entry.explanation}\n{apod_entry.hdurl}')
+            await apod_entry.save()
+
+    asyncio.run(main())
+
+CLI Example
+-----------
+This command, like the above python script, will print data returned by the APOD API, then download and save the image.
+
+.. code:: sh
+    python3 -m aionasa.apod --print --download .
