@@ -8,6 +8,7 @@ Welcome to aionasa's documentation!
 
 aionasa is an async python wrapper for the NASA Open APIs.
 
+
 Contents
 --------
 
@@ -15,35 +16,49 @@ Contents
    :maxdepth: 2
 
    apod
+   insight
 
 
-Python example - APOD
----------------------
+Installing
+----------
 
-This is a simple script that will return the title, explanation, and url from the most recent Astronomy Picture of the Day site,
-then download and save the image.
+aionasa can be installed from pypi with the command:
+.. code:: sh
+   # Linux
+   python3 -m pip install -U aionasa
 
-.. code-block:: python
+   # Windows
+   python -m pip install -U aionasa
 
-   import asyncio
-   from aionasa import APOD
 
-   async def main():
-       async with APOD() as apod:
-           apod_entry = await apod.get()
-           print(f'{apod_entry.title}\n{apod_entry.explanation}\n{apod_entry.hdurl}')
-           await apod_entry.save()
+To install the development version of the library directly from source:
+.. code:: sh
+   $ git clone https://github.com/nwunderly/aionasa
+   $ cd aionasa
+   $ python3 -m pip install -U .
 
-   asyncio.run(main())
 
-CLI example - APOD
-------------------
+Quickstart
+-----------
 
-This command, like the above python script, will print data returned by the APOD API, then download and save the image.
+We'll be using IPython because it supports `await` expressions directly from the console.
+.. code:: sh
+   $ pip install aionasa ipython
+   $ ipython
 
-.. code-block:: sh
+.. code:: python
+   from aionasa import APOD, InSight
 
-   python3 -m aionasa.apod --print --download .
+   async with APOD() as apod:
+       picture = await apod.get()
+
+   picture.url # this will be the most recent APOD image URL.
+
+   async with InSight() as insight:
+       data = await insight.get()
+
+   data # this will be a dict containing the JSON data returned by the API.
+
 
 Indices and tables
 ------------------
