@@ -32,12 +32,13 @@ Data Class
 .. autoclass:: AstronomyPicture
     :members:
 
-Example Script
+Example Code
 --------------
+
 This is a simple script that will return the title, explanation, and url from the most recent Astronomy Picture of the Day page,
 then download and save the image.
 
-.. code:: python
+.. code-block:: python
     :linenos:
 
     import asyncio
@@ -53,7 +54,9 @@ then download and save the image.
 
 CLI Example
 -----------
+
 This command, like the above python script, will print data returned by the APOD API, then download and save the image.
 
-.. code:: sh
+.. code-block:: sh
+
     python3 -m aionasa.apod --print --download .

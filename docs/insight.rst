@@ -19,7 +19,8 @@ Client
 
 Example Code
 ------------
-.. code:: python
+
+.. code-block:: python
     :linenos:
     
     import asyncio

@@ -23,7 +23,9 @@ Installing
 ----------
 
 aionasa can be installed from pypi with the command:
-.. code:: sh
+
+.. code-block:: sh
+
    # Linux
    python3 -m pip install -U aionasa
 
@@ -32,7 +34,9 @@ aionasa can be installed from pypi with the command:
 
 
 To install the development version of the library directly from source:
-.. code:: sh
+
+.. code-block:: sh
+
    $ git clone https://github.com/nwunderly/aionasa
    $ cd aionasa
    $ python3 -m pip install -U .
@@ -42,11 +46,14 @@ Quickstart
 -----------
 
 We'll be using IPython because it supports `await` expressions directly from the console.
-.. code:: sh
+
+.. code-block:: sh
+
    $ pip install aionasa ipython
    $ ipython
 
-.. code:: python
+.. code-block:: python
+
    from aionasa import APOD, InSight
 
    async with APOD() as apod:
