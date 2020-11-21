@@ -5,14 +5,14 @@ An async python wrapper for NASA open APIs. ([api.nasa.gov](https://api.nasa.gov
 This module is still in the development/testing phase.
 Bugs are still being worked out and breaking changes are common.
 
-#### Current Progress: 1/17 APIs
+#### Current Progress: 2/17 APIs
 - APOD: NASA Astronomy Picture of the Day
     - API: **complete**
     - CLI: **complete**
-    - Documentation: **needs work**
+    - Documentation: **complete**
 - InSight: Mars Weather Data
-    - API: **needs work**
-    - Documentaion: **needs work**
+    - API: **complete**
+    - Documentaion: **complete**
 - Exoplanet: NASA Exoplanet Database
     - API: **incomplete**
 - Asteroids-NeoWs: Near Earth Object Web Service
