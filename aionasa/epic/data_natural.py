@@ -31,5 +31,18 @@ class EarthImage:
         self.coords = json['coords']
 
 
+class J2000Coordinates:
+    """Coordinates of an object according to the J2000_ coordinate system.
+
+    .. _J2000: https://
+    """
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+
+
+
+
 
 
