@@ -51,6 +51,34 @@ class EPIC(BaseClient):
             self.base_url = 'https://epic.gsfc.nasa.gov'
         super().__init__(api_key, session, rate_limiter)
 
+    async def _get_metadata(self, collection, date=None):
+        """Retrieve metadata for imagery available for a given date.
+
+        Parameters
+        ----------
+        collection: :class:`str`
+            Should be `natural` or `enhanced`.
+        date: :class:`Optional[Date]`
+            The date to query the API for. Defaults to the most recent date.
+        Returns
+        -------
+
+        """
+
+    async def _get_listing(self, collection, parameter):
+        """Retrieve a listing of all dates with available natural color imagery.
+
+        Parameters
+        ----------
+        collection: :class:`str`
+            Should be `natural` or `enhanced`.
+        parameter: :class:`str`
+            Should be `all` or `available`.
+        Returns
+        -------
+
+        """
+
     async def natural(self, date: datetime.date = None):
         """Retrieves metadata for natural color imagery for a given date.
         Defaults to most recent date.
