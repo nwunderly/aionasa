@@ -2,12 +2,11 @@
 import datetime
 import logging
 from typing import List
-from aiohttp import ClientSession
 
 from ..client import BaseClient
 from ..errors import *
-from ..rate_limit import default_rate_limiter, demo_rate_limiter, RateLimiter
-from .data_natural import EarthImage
+from ..rate_limit import default_rate_limiter, demo_rate_limiter
+from .data import EarthImage
 
 
 logger = logging.getLogger('aionasa.epic')
@@ -51,48 +50,23 @@ class EPIC(BaseClient):
             self.base_url = 'https://epic.gsfc.nasa.gov'
         super().__init__(api_key, session, rate_limiter)
 
-    async def _get_metadata(self, collection, date=None):
-        """Retrieve metadata for imagery available for a given date.
+    async def _get_metadata(self, collection, date):
+        """Retrieves metadata for imagery for a given collection and date.
 
         Parameters
         ----------
         collection: :class:`str`
-            Should be `natural` or `enhanced`.
-        date: :class:`Optional[Date]`
-            The date to query the API for. Defaults to the most recent date.
-        Returns
-        -------
-
-        """
-
-    async def _get_listing(self, collection, parameter):
-        """Retrieve a listing of all dates with available natural color imagery.
-
-        Parameters
-        ----------
-        collection: :class:`str`
-            Should be `natural` or `enhanced`.
-        parameter: :class:`str`
-            Should be `all` or `available`.
-        Returns
-        -------
-
-        """
-
-    async def natural(self, date: datetime.date = None):
-        """Retrieves metadata for natural color imagery for a given date.
-        Defaults to most recent date.
-
-        Parameters
-        ----------
+            The collection to search. Should be 'natural' or 'enhanced'.
         date: :class:`datetime.date`
-            The date to request data for.
+            The date to retrieve data for.
 
         Returns
         -------
-        List[:class:`EarthImage`]
+        :class:`List[EarthImage]`
             Data returned by the API.
         """
+        if collection not in ('natural', 'enhanced'):
+            raise ArgumentError(f"collection expected be 'natural' or 'enhanced' got {collection}")
 
         if date is None:
             date = ''
@@ -100,7 +74,7 @@ class EPIC(BaseClient):
             date = date.strftime('/date/%Y-%m-%d')
 
         api_key = f'?api_key={self._api_key}' if self._api_key else ''
-        request = f'{self.base_url}/api/natural{date}{api_key}'
+        request = f'{self.base_url}/api/{collection}{date}{api_key}'
 
         if self.rate_limiter:
             await self.rate_limiter.wait()
@@ -115,50 +89,29 @@ class EPIC(BaseClient):
         images = []
 
         for item in data:
-            image = EarthImage(client=self, json=item, collection='natural')
+            image = EarthImage(client=self, json=item, collection=collection)
             images.append(image)
 
         return images
 
-    async def natural_all(self):
-        """Retrieve a listing of all dates with available natural color imagery.
+    async def _get_listing(self, collection):
+        """Retrieves a listing of dates with available images in the requested collection.
+
+        Parameters
+        ----------
+        collection: :class:`str`
+            The collection to get a listing for. Should be 'natural' or 'enhanced'.
 
         Returns
         -------
-        List[:class:`datetime.date`]
-            The dates returned by the API.
+        :class:`List[datetime.date`
+            List of dates with available imagery.
         """
+        if collection not in ('natural', 'enhanced'):
+            raise ArgumentError(f"collection expected be 'natural' or 'enhanced' got {collection}")
+
         api_key = f'?api_key={self._api_key}' if self._api_key else ''
-        request = f'{self.base_url}/api/natural/all{api_key}'
-
-        if self.rate_limiter:
-            await self.rate_limiter.wait()
-
-        async with self._session.get(request) as response:
-            data = await response.json()
-
-        if self.rate_limiter:
-            remaining = int(response.headers['X-RateLimit-Remaining'])
-            self.rate_limiter.update(remaining)
-
-        dates = []
-
-        for item in data:
-            date = datetime.datetime.strptime(item['date'], '%Y-%m-%d').date()
-            dates.append(date)
-
-        return dates
-
-    async def natural_available(self):
-        """Retrieve a listing of all dates with available natural color imagery.
-
-        Returns
-        -------
-        List[:class:`datetime.date`]
-            The dates returned by the API.
-        """
-        api_key = f'?api_key={self._api_key}' if self._api_key else ''
-        request = f'{self.base_url}/api/natural/available{api_key}'
+        request = f'{self.base_url}/api/{collection}/available{api_key}'
 
         if self.rate_limiter:
             await self.rate_limiter.wait()
@@ -178,5 +131,56 @@ class EPIC(BaseClient):
 
         return dates
 
+    async def natural_images(self, date: datetime.date = None):
+        """Retrieves metadata for natural color imagery for a given date.
+        Defaults to most recent date.
+
+        Parameters
+        ----------
+        date: :class:`datetime.date`
+            The date to request data for.
+
+        Returns
+        -------
+        List[:class:`EarthImage`]
+            Data returned by the API.
+        """
+        return await self._get_metadata('natural', date)
+
+    async def natural_listing(self):
+        """Retrieve a listing of all dates with available natural color imagery.
+
+        Returns
+        -------
+        List[:class:`datetime.date`]
+            The dates returned by the API.
+        """
+        return await self._get_listing('natural')
+
+    async def enhanced_images(self, date: datetime.date = None):
+        """Retrieves metadata for enhanced color imagery for a given date.
+        Defaults to most recent date.
+
+        Parameters
+        ----------
+        date: :class:`datetime.date`
+            The date to request data for.
+
+        Returns
+        -------
+        List[:class:`EarthImage`]
+            Data returned by the API.
+        """
+        return await self._get_metadata('enhanced', date)
+
+    async def enhanced_listing(self):
+        """Retrieve a listing of all dates with available enhanced color imagery.
+
+        Returns
+        -------
+        List[:class:`datetime.date`]
+            The dates returned by the API.
+        """
+        return await self._get_listing('enhanced')
 
 
