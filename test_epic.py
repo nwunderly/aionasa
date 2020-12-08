@@ -11,7 +11,18 @@ async def main():
 
         data = await epic.natural_images()
 
-    print(data)
+        i = data[0]
+        print(i)
+        print(i.centroid_coordinates)
+        print(i.dscovr_j2000_position)
+        print(i.sun_j2000_position)
+        print(i.attitude_quaternions)
+        print(i.thumb_url)
+        print(i.jpg_url)
+        print(i.png_url)
+        print(i.filename)
+
+        print(await i.read())
 
 
 
