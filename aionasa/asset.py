@@ -12,7 +12,7 @@ class Asset:
         self.filename = filename
 
     def __str__(self):
-        return f"aionasa.Asset({self.filename})"
+        return f"{self.__class__.__name__}({self.filename})"
 
     async def read(self, url=None):
         """Downloads the file associated with this Asset.
