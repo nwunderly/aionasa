@@ -1,10 +1,21 @@
-import PySimpleGUI as sg
 import os.path
+
+import PySimpleGUI as sg
+
+
+def scan_folder(folder):
+    try:
+        # Get list of files in folder
+        file_list = os.listdir(folder)
+    except Exception as e:
+        print(f'error reading folder {folder}\n{e.__class__.__name__}: {e}')
+        file_list = []
+
+    return [f for f in file_list if os.path.isfile(os.path.join(folder, f)) and f.lower().endswith((".png", ".gif", ",jpg"))]
 
 
 def open_gui(img_folder):
     # First the window layout in 2 columns
-
     file_list_column = [
         [
             sg.Text("Image Folder"),
@@ -36,34 +47,23 @@ def open_gui(img_folder):
 
     window = sg.Window("Image Viewer", layout)
 
-    folder = img_folder
-    try:
-        # Get list of files in folder
-        file_list = os.listdir(folder)
-    except Exception as e:
-        print(f'error reading folder {folder}\n{e.__class__.__name__}: {e}')
-        file_list = []
-
-    fnames = [f for f in file_list if os.path.isfile(os.path.join(folder, f)) and f.lower().endswith((".png", ".gif", ",jpg"))]
+    # automatically read the folder we dumped the images to
+    fnames = scan_folder(img_folder)
     window.finalize()
     window["-FILE LIST-"].update(fnames)
 
+    # event loop
     while True:
         event, values = window.read()
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
+
         # Folder name was filled in, make a list of files in the folder
         if event == "-FOLDER-":
             folder = values["-FOLDER-"]
-            try:
-                # Get list of files in folder
-                file_list = os.listdir(folder)
-            except Exception as e:
-                print(f'error reading folder {folder}\n{e.__class__.__name__}: {e}')
-                file_list = []
-
-            fnames = [f for f in file_list if os.path.isfile(os.path.join(folder, f)) and f.lower().endswith((".png", ".gif", ".jpg"))]
+            fnames = scan_folder(folder)
             window["-FILE LIST-"].update(fnames)
+
         elif event == "-FILE LIST-":  # A file was chosen from the listbox
             try:
                 filename = os.path.join(
@@ -71,5 +71,5 @@ def open_gui(img_folder):
                 )
                 window["-TOUT-"].update(filename)
                 window["-IMAGE-"].update(filename=filename)
-            except:
-                pass
+            except Exception as e:
+                print(f'error reading file {filename}\n{e.__class__.__name__}: {e}')

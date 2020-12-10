@@ -1,14 +1,15 @@
 import datetime
 from collections import namedtuple
 
-from ..errors import *
 from ..asset import Asset
+from ..errors import *
 
 
 class EarthImage(Asset):
     """A NASA EPIC image asset.
 
     """
+
     def __init__(self, client, json, collection):
         self.json = json
         self.client = client
@@ -32,7 +33,7 @@ class EarthImage(Asset):
         self.attitude_quaternions = Attitude(**json['attitude_quaternions'])
         # self.coords = json['coords']
 
-        super().__init__(client, self.png_url, json['image']+'.png')
+        super().__init__(client, self.png_url, json['image'] + '.png')
 
     async def read(self, filetype='png'):
         url = {'png': self.png_url,

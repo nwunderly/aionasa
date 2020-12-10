@@ -1,13 +1,11 @@
-
 import datetime
 import logging
 from typing import List
 
+from .data import EarthImage
 from ..client import BaseClient
 from ..errors import *
 from ..rate_limit import default_rate_limiter, demo_rate_limiter
-from .data import EarthImage
-
 
 logger = logging.getLogger('aionasa.epic')
 
@@ -182,5 +180,3 @@ class EPIC(BaseClient):
             The dates returned by the API.
         """
         return await self._get_listing('enhanced')
-
-
