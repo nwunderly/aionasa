@@ -1,8 +1,10 @@
+import os
 import argparse
 import asyncio
 
 from .api import EPIC
 from ..utils import date_strptime
+from .img_viewer import opengui
 
 
 def argument_parser():
@@ -15,16 +17,19 @@ def argument_parser():
 
 
 async def setup(date, path):
+    if not os.path.exists(path):
+        os.mkdir(path)
     async with EPIC() as epic:
-        images = await epic.natural_images(date)
+        images = await epic.natural_images()
+        print(images)
         for image in images:
-            await image.save(path + image.image)
+            await image.save(path + '/' + image.filename)
 
 
 async def main():
     args = argument_parser().parse_args()
     await setup(args.date, args.img_folder)
-    # open_window(img_folder)
+    opengui(args.img_folder)
 
 
 
