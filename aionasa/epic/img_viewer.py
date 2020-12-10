@@ -2,7 +2,7 @@
 import PySimpleGUI as sg
 import os.path
 
-def opengui(folder_name):
+def opengui(_):
 
 
 # First the window layout in 2 columns
@@ -43,8 +43,8 @@ def opengui(folder_name):
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
         # Folder name was filled in, make a list of files in the folder
-        if event == folder_name:
-            folder = values[folder_name]
+        if event == "-FOLDER-":
+            folder = values["-FOLDER-"]
             try:
             # Get list of files in folder
                 file_list = os.listdir(folder)
@@ -67,3 +67,4 @@ def opengui(folder_name):
                 window["-IMAGE-"].update(filename=filename)
             except:
                 pass
+
