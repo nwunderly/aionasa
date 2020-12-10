@@ -5,40 +5,27 @@ from .api import EPIC
 from ..utils import date_strptime
 
 
-async def listing_subcommand(args):
-    raise NotImplementedError
-
-
-async def metadata_subcommand(args):
-    raise NotImplementedError
-
-
-async def gui_subcommand(args):
-    raise NotImplementedError
-
-
 def argument_parser():
     parser = argparse.ArgumentParser()
-    subcommands = parser.add_subparsers()
 
-    listing = subcommands.add_parser('listing')
-    listing.add_argument('--print', action='store_true')
-    listing.add_argument('--dump')
-    listing.set_defaults(subcommand='listing', func=listing_subcommand)
-
-    metadata = subcommands.add_parser('metadata')
-    metadata.add_argument('date', type=date_strptime)
-    metadata.set_defaults(subcommand='metadata', func=metadata_subcommand)
-
-    gui = subcommands.add_parser('gui')
-    gui.set_defaults(subcommand='gui', gui=gui_subcommand)
+    parser.add_argument('--date', '-d', type=date_strptime)
+    parser.add_argument('img_folder')
 
     return parser
 
 
+async def setup(date, path):
+    async with EPIC() as epic:
+        images = await epic.natural_images(date)
+        for image in images:
+            await image.save(path + image.image)
+
+
 async def main():
     args = argument_parser().parse_args()
-    await args.func(args)
+    await setup(args.date, args.img_folder)
+    # open_window(img_folder)
+
 
 
 if __name__ == '__main__':
