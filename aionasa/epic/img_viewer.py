@@ -1,19 +1,17 @@
-
 import PySimpleGUI as sg
 import os.path
 
-def opengui(_):
 
-
-# First the window layout in 2 columns
+def open_gui(img_folder):
+    # First the window layout in 2 columns
 
     file_list_column = [
         [
             sg.Text("Image Folder"),
             sg.In(size=(25, 1), enable_events=True, key="-FOLDER-"),
             sg.FolderBrowse(),
-       ],
-    [
+        ],
+        [
             sg.Listbox(
                 values=[], enable_events=True, size=(40, 20), key="-FILE LIST-"
             )
@@ -23,20 +21,32 @@ def opengui(_):
     # For now will only show the name of the file that was chosen
     image_viewer_column = [
         [sg.Text("Choose an image from list on left:")],
-            [sg.Text(size=(40, 1), key="-TOUT-")],
+        [sg.Text(size=(40, 1), key="-TOUT-")],
         [sg.Image(key="-IMAGE-")],
     ]
 
     # ----- Full layout -----
     layout = [
         [
-           sg.Column(file_list_column),
+            sg.Column(file_list_column),
             sg.VSeperator(),
             sg.Column(image_viewer_column),
         ]
     ]
 
     window = sg.Window("Image Viewer", layout)
+
+    folder = img_folder
+    try:
+        # Get list of files in folder
+        file_list = os.listdir(folder)
+    except Exception as e:
+        print(f'error reading folder {folder}\n{e.__class__.__name__}: {e}')
+        file_list = []
+
+    fnames = [f for f in file_list if os.path.isfile(os.path.join(folder, f)) and f.lower().endswith((".png", ".gif", ",jpg"))]
+    window.finalize()
+    window["-FILE LIST-"].update(fnames)
 
     while True:
         event, values = window.read()
@@ -46,17 +56,13 @@ def opengui(_):
         if event == "-FOLDER-":
             folder = values["-FOLDER-"]
             try:
-            # Get list of files in folder
+                # Get list of files in folder
                 file_list = os.listdir(folder)
-            except:
+            except Exception as e:
+                print(f'error reading folder {folder}\n{e.__class__.__name__}: {e}')
                 file_list = []
 
-            fnames = [
-                f
-                for f in file_list
-                if os.path.isfile(os.path.join(folder, f))
-                and f.lower().endswith((".png", ".gif", ",jpg"))
-            ]
+            fnames = [f for f in file_list if os.path.isfile(os.path.join(folder, f)) and f.lower().endswith((".png", ".gif", ".jpg"))]
             window["-FILE LIST-"].update(fnames)
         elif event == "-FILE LIST-":  # A file was chosen from the listbox
             try:
@@ -67,4 +73,3 @@ def opengui(_):
                 window["-IMAGE-"].update(filename=filename)
             except:
                 pass
-
