@@ -48,6 +48,7 @@ def open_gui(img_folder):
     window = sg.Window("Image Viewer", layout)
 
     # automatically read the folder we dumped the images to
+    folder = img_folder
     fnames = scan_folder(img_folder)
     window.finalize()
     window["-FILE LIST-"].update(fnames)
@@ -65,9 +66,10 @@ def open_gui(img_folder):
             window["-FILE LIST-"].update(fnames)
 
         elif event == "-FILE LIST-":  # A file was chosen from the listbox
+            filename = None
             try:
                 filename = os.path.join(
-                    values["-FOLDER-"], values["-FILE LIST-"][0]
+                    folder, values["-FILE LIST-"][0]
                 )
                 window["-TOUT-"].update(filename)
                 window["-IMAGE-"].update(filename=filename)

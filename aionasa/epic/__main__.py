@@ -51,7 +51,7 @@ async def setup(date, path, collection):
 
         # download the images asynchronously
         print('downloading', len(images), 'images.')
-        await asyncio.gather([_task(image.save, path + '/' + image.filename) for image in images])
+        await asyncio.gather(*[_task(image.save, path + '/' + image.filename) for image in images])
 
 
 async def main():
