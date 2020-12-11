@@ -3,7 +3,7 @@ import asyncio
 import os
 
 from .api import EPIC
-from .img_viewer import open_gui
+from .gui import open_gui
 from ..utils import date_strptime
 
 

@@ -18,6 +18,8 @@ Contents
    apod
    insight
 
+   epic
+
 
 Installing
 ----------
