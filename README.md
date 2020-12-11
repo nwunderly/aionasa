@@ -1,4 +1,4 @@
-# aio-nasa
+# aionasa
 An async python wrapper for NASA open APIs. ([api.nasa.gov](https://api.nasa.gov/))
 
 #### Disclaimer
@@ -55,29 +55,24 @@ async with InSight() as insight:
 
 data # this will be a dict containing the JSON data returned by the API.
 ```
+Where `pip` is the pip command relevant to your machine's Python 3.8 installation.
+This could be `pip`, `pip3`, `python -m pip`, or `python3 -m pip`.
 
-### Python Script Example - APOD
-This is a simple script that will return the title, explanation, and url from the most recent Astronomy Picture of the Day page,
-then download and save the image.
-```python
-import asyncio
-from aionasa import APOD
 
-async def main():
-    async with APOD() as apod:
-        apod_entry = await apod.get()
-        print(f'{apod_entry.title}\n{apod_entry.explanation}\n{apod_entry.hdurl}')
-        await apod_entry.save()
+### Running example code
 
-asyncio.run(main())
+Example code using this module can be found [here](https://github.com/nwunderly/aionasa/tree/enae380/examples).
+
+
+### Using the CLI/GUI
+
+The GUI tool is launched by running the `aionasa.epic` module as a script, with the `python -m` command.
+
+**(\_\_\_MORE EXPLANATION HERE\_\_\_)**
+
+The `--help` option will give a breakdown of how to use this command:
+
+```shell
+python -m aionasa.epic --help
 ```
 
-### CLI Example - APOD
-This command, like the above python script, will print data returned by the APOD API, then download and save the image.
-```
-python3 -m aionasa.apod --print --download .
-```
-
-#### Feedback
-I'd love to hear any feedback on this project so far. It's early in development so the library's design is still being worked out.
-Any design ideas or feature requests would be very helpful.
