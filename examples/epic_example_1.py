@@ -4,6 +4,11 @@ import random
 from aionasa import EPIC
 
 
+"""
+A sample script that prints out data on a random EPIC image.
+"""
+
+
 # define an async function to run the script in
 async def main():
 

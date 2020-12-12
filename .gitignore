@@ -127,7 +127,7 @@ dmypy.json
 
 # extra
 .idea/
-API_KEY.py
+misc/API_KEY.py
 misc
 logs
 
@@ -144,4 +144,4 @@ docs/crowdin.py
 *.jpg
 *.gif
 *.flac
-rate_limit_torture_test.py
+misc/rate_limit_torture_test.py
