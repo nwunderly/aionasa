@@ -74,8 +74,6 @@ Example code using this module can be found [here](https://github.com/nwunderly/
 
 ### Using the CLI/GUI
 
-**(\_\_\_MORE EXPLANATION HERE\_\_\_)**
-
 The GUI tool is launched by running the `aionasa.epic` module as a script, with the `python -m` command.
 
 The `--help` option will give a breakdown of how to use this command:
