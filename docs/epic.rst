@@ -5,7 +5,8 @@ EPIC API Reference
 
 This page provides a breakdown of the aionasa EPIC module.
 
-Parameters for EPIC API:
+The documentation for NASA's EPIC API can be found `here <https://epic.gsfc.nasa.gov/about/api>`_.
+
 
 Client
 ------
