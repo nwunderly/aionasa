@@ -18,6 +18,14 @@ Bugs are still being worked out and breaking changes are common.
 - Asteroids-NeoWs: Near Earth Object Web Service
     - API: **incomplete**
 
+### Requirements
+
+- Python 3.8
+- A NASA API key from [api.nasa.gov](https://api.nasa.gov/)
+    - without this, the API key `DEMO_KEY` will be used, which has a much more restrictive rate limit.
+- The `enae380` branch of this library installed from github (instructions below)
+
+
 ### Installing
 aionasa can be installed from pypi with the command:
 ```sh
@@ -66,9 +74,9 @@ Example code using this module can be found [here](https://github.com/nwunderly/
 
 ### Using the CLI/GUI
 
-The GUI tool is launched by running the `aionasa.epic` module as a script, with the `python -m` command.
-
 **(\_\_\_MORE EXPLANATION HERE\_\_\_)**
+
+The GUI tool is launched by running the `aionasa.epic` module as a script, with the `python -m` command.
 
 The `--help` option will give a breakdown of how to use this command:
 
