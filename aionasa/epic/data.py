@@ -6,8 +6,37 @@ from ..errors import *
 
 
 class EarthImage(Asset):
-    """A NASA EPIC image asset.
+    """A NASA EPIC image asset. Accessible as a full-resolution PNG, half-resolution JPG,
+    or a thumbnail JPG image.
 
+    Attributes
+    ----------
+    client: :class:`EPIC`
+        The EPIC client that was used to retrieve this data.
+    json: :class:`dict`
+        The JSON data returned by the API.
+    png_url:
+        The URL of the full-resolution PNG image.
+    jpg_url:
+        The URL of the half-resolution JPEG image.
+    thumb_url:
+        The URL of the thumbnail-size JPEG image.
+    date: :class:`datetime.Date`
+        The date this image was taken.
+    caption:
+        The caption for this image.
+    image:
+        The image name.
+    centroid_coordinates: :class:`EarthCoordinates`
+        Geographical coordinates that the satellite is looking at as a named tuple.
+    dscovr_j2000_position: :class:`J2000Coordinates`
+        Position of the satellite in space as a named tuple.
+    lunar_j2000_position: :class:`J2000Coordinates`
+        Position of the moon in space as a named tuple.
+    sun_j2000_position: :class:`J2000Coordinates`
+        Position of the sun in space as a named tuple.
+    attitude_quaternions: :class:`Attitude`
+        Satellite attitude as a named tuple.
     """
 
     def __init__(self, client, json, collection):
@@ -29,6 +58,7 @@ class EarthImage(Asset):
         self.caption = json['caption']
         self.centroid_coordinates = EarthCoordinates(**json['centroid_coordinates'])
         self.dscovr_j2000_position = J2000Coordinates(**json['dscovr_j2000_position'])
+        self.lunar_j2000_position = J2000Coordinates(**json['lunar_j2000_position'])
         self.sun_j2000_position = J2000Coordinates(**json['sun_j2000_position'])
         self.attitude_quaternions = Attitude(**json['attitude_quaternions'])
         # self.coords = json['coords']
@@ -74,17 +104,8 @@ class EarthImage(Asset):
         await self.save(path, 'thumb')
 
 
-# class J2000Coordinates:
-#     """Coordinates of an object according to the J2000_ coordinate system.
-#
-#     .. _J2000: https://en.wikipedia.org/wiki/Earth-centered_inertial
-#     """
-#     def __init__(self, x, y, z):
-#         self.x = x
-#         self.y = y
-#         self.z = z
-
-
 J2000Coordinates = namedtuple('J2000Coordinates', ['x', 'y', 'z'])
+
 Attitude = namedtuple('Attitude', ['q0', 'q1', 'q2', 'q3'])
+
 EarthCoordinates = namedtuple('EarthCoordinates', ['lat', 'lon'])
