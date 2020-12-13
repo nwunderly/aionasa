@@ -1,14 +1,25 @@
 
 import setuptools
 
-with open("./README.md", "r") as fh:
-    long_description = fh.read()
 
-with open('./aionasa/__init__.py', 'r') as f:
+with open("./README.md", "r") as fp:
+    long_description = fp.read()
+
+
+with open('./aionasa/__init__.py', 'r') as fp:
     # FIRST LINE:
     # __version__ = '<version>'
-    line = f.readline()
+    line = fp.readline()
     version = eval(line[14:])
+
+
+extras_require = {
+    'docs': [
+        'sphinx',
+        'sphinxcontrib_trio',
+    ]
+}
+
 
 setuptools.setup(
     name="aionasa",
@@ -18,7 +29,8 @@ setuptools.setup(
     description="An async python wrapper for NASA open APIs.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/nwunderly/aio-nasa",
+    extras_require=extras_require,
+    url="https://github.com/nwunderly/aionasa",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
