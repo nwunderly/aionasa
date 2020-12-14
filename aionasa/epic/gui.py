@@ -2,10 +2,10 @@ import os.path
 import PySimpleGUI as sg
 
 
-def scan_folder(folder):
+def scan_folder(img_folder):
     try:
         # Get list of files in folder
-        file_list = os.listdir(folder)
+        file_list = os.listdir(img_folder)
     except Exception as e:
         #Print out an error if there is a problem with getting or reading the folder
         print(f'error reading folder {folder}\n{e.__class__.__name__}: {e}')
