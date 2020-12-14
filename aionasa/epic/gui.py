@@ -8,11 +8,11 @@ def scan_folder(img_folder):
         file_list = os.listdir(img_folder)
     except Exception as e:
         #Print out an error if there is a problem with getting or reading the folder
-        print(f'error reading folder {folder}\n{e.__class__.__name__}: {e}')
+        print(f'error reading folder {img_folder}\n{e.__class__.__name__}: {e}')
         #Create an empty result
         file_list = []
         #Return all the files that are images of gif, png, and jpeg catgories
-    return [f for f in file_list if os.path.isfile(os.path.join(folder, f)) and f.lower().endswith((".png", ".gif", ",jpg"))]
+    return [f for f in file_list if os.path.isfile(os.path.join(img_folder, f)) and f.lower().endswith((".png", ".gif", ",jpg"))]
 
 
 def open_gui(img_folder):
