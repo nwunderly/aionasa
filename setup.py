@@ -33,7 +33,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     python_requires='>=3.8',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha'
+        'Development Status :: 2 - Pre-Alpha',
         'License :: OSI Approved :: MIT License',
         'Intended Audience :: Developers',
         'Natural Language :: English',
