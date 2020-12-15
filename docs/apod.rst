@@ -1,5 +1,6 @@
 .. currentmodule:: aionasa.apod
 
+
 APOD API Reference
 ==================
 
@@ -14,11 +15,13 @@ Parameters for APOD API:
   This is present for legacy purposes, it is always ignored by the service and high-resolution urls are returned regardless.
 - concept_tags: DISABLED FOR THIS ENDPOINT.
 
+
 Client
 ------
 
 .. autoclass:: APOD
     :members:
+
 
 Data Class
 ----------
@@ -26,14 +29,14 @@ Data Class
 .. autoclass:: AstronomyPicture
     :members:
 
+
 Example Code
---------------
+------------
 
 This is a simple script that will return the title, explanation, and url from the most recent Astronomy Picture of the Day page,
 then download and save the image.
 
 .. code-block:: python
-    :linenos:
 
     import asyncio
     from aionasa import APOD
@@ -41,10 +44,13 @@ then download and save the image.
     async def main():
         async with APOD() as apod:
             apod_entry = await apod.get()
-            print(f'{apod_entry.title}\n{apod_entry.explanation}\n{apod_entry.hdurl}')
+            print(f'{apod_entry.title}\n'
+                  f'{apod_entry.explanation}'
+                  f'\n{apod_entry.hdurl}')
             await apod_entry.save()
 
     asyncio.run(main())
+
 
 CLI Example
 -----------

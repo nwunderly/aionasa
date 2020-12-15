@@ -1,5 +1,6 @@
 .. currentmodule:: aionasa.epic
 
+
 EPIC API Reference
 ==================
 
@@ -14,21 +15,32 @@ Client
 .. autoclass:: EPIC
     :members:
 
+
 Data Class
 ----------
 
 .. autoclass:: EarthImage
     :members:
 
-CLI/GUI Tool
+
+Example Code
 ------------
 
-To use the GUI browser, run the aionasa.epic module as a script.
-This command will display help information for running the GUI from the command line.
+This is a sample script that will print out some data on
 
-.. code-block:: sh
+.. code-block:: python
 
-    $ python -m aionasa.epic --help
+    import asyncio
+    from aionasa import EPIC
 
+    async def main():
+        async with EPIC() as epic:
+            images = await epic.natural_images()
+            for i, image in enumerate(images):
+                print(f"Image {i+1} of {len(images)}\n"
+                      f"Url: {image.png_url}\n"
+                      f"Caption: {image.caption}\n")
 
+    if __name__ == "__main__":
+        asyncio.run(main())
 

@@ -1,5 +1,6 @@
 .. currentmodule:: aionasa.insight
 
+
 Insight API Reference
 =====================
 
@@ -11,18 +12,19 @@ Parameters for InSight API:
 - version: The version of this API. Locked to 1.0 currently.
 - feedtype: The format of what is returned. Currently the default is JSON and only JSON works.
 
+
 Client
 ------
 
 .. autoclass:: InSight
     :members:
 
+
 Example Code
 ------------
 
 .. code-block:: python
-    :linenos:
-    
+
     import asyncio
     import json
     from aionasa import InSight

@@ -3,6 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+
 Welcome to aionasa's documentation!
 ===================================
 
@@ -17,8 +18,8 @@ Contents
 
    apod
    insight
-
    epic
+   utilities
 
 
 Installing
@@ -49,10 +50,12 @@ Quickstart
 
 We'll be using IPython because it supports `await` expressions directly from the console.
 
+
 .. code-block:: sh
 
    $ pip install aionasa ipython
    $ ipython
+
 
 .. code-block:: python
 
