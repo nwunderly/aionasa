@@ -9,6 +9,7 @@ class Asset:
         self.client = client
         self._url = url
         self.filename = filename
+        self._response = None
 
     def __str__(self):
         return f"{self.__class__.__name__}({self.filename})"
@@ -65,3 +66,22 @@ class Asset:
                     f.write(chunk)
 
         return bytes_written
+
+    async def read_chunk(self, chunk_size: int, url=None):
+        if not url:
+            url = self._url
+
+        if not self._response:
+            response = await self.client._session.get(url)
+            if response.status != 200:
+                await response.close()
+                raise APIException(response.status, response.reason)
+            self._response = response
+
+        chunk = await self._response.content.read(chunk_size)
+        if not chunk:
+            await self._response.close()
+            self._response = None
+
+        return chunk
+

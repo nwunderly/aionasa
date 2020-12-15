@@ -45,7 +45,7 @@ class AstronomyPicture(Asset):
         site_formatted_date = f"{str(date.year)[2:]}{date.month:02d}{date.day:02d}"
         self.html_url = f"https://apod.nasa.gov/apod/ap{site_formatted_date}.html"
 
-        self._response = None
+        super().__init__(client, self.url, self.url.split('/')[-1])
 
     async def read(self, hdurl: bool = True):
         """Downloads the image associated with this AstronomyPicture.
@@ -91,18 +91,6 @@ class AstronomyPicture(Asset):
 
         return await super().save(path=path, url=url)
 
-    # def stream(self, hdurl: bool = True):
-    #     if hdurl and self.hdurl:
-    #         url = self.hdurl
-    #     else:
-    #         url = self.url
-    #
-    #     if not (url.startswith('http://apod.nasa.gov') or url.startswith('https://apod.nasa.gov')):
-    #         raise NotImplementedError("URLs from outside apod.nasa.gov are not currently supported.")
-    #
-    #     return _StreamReader(self, self.client._session.get(url))
-
-
     async def read_chunk(self, chunk_size: int, hdurl: bool = True):
         """Reads a chunk of the image associated with this AstronomyPicture.
 
@@ -118,37 +106,12 @@ class AstronomyPicture(Asset):
         :class:`bytes`
             The chunked data. Will be None if the image has been completely read.
         """
-        url = self.url
+        if hdurl:
+            url = self.hdurl or self.url
+        else:
+            url = self.url
 
         if not (url.startswith('http://apod.nasa.gov') or url.startswith('https://apod.nasa.gov')):
             raise NotImplementedError("URLs from outside apod.nasa.gov are not currently supported.")
 
-        if not self._response:
-            response = await self.client._session.get(url)
-            if response.status != 200:
-                await response.close()
-                raise APIException(response.status, response.reason)
-            self._response = response
-
-        chunk = await self._response.content.read(chunk_size)
-        if not chunk:
-            await self._response.close()
-            self._response = None
-        return chunk
-
-
-# class _StreamReader:
-#     def __init__(self, picture, response):
-#         self.picture = picture
-#         self.response = response
-#
-#     async def __aenter__(self):
-#         await self.response.__aenter__()
-#         if self.response.status != 200:
-#             raise APIException(self.response.status, self.response.reason)
-#         return self
-#
-#     async def __aexit__(self, exc_type, exc_val, exc_tb):
-#         return await self.response.__aexit__(exc_type, exc_val, exc_tb)
-#
-#     async def read(self, num):
+        await super().read_chunk(chunk_size, self.url)
