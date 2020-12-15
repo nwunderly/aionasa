@@ -6,12 +6,15 @@ This module is still in the development/testing phase.
 Bugs are still being worked out and breaking changes are common.
 
 
-#### Current Progress: 2/17 APIs
+#### Current Progress: 3/17 APIs
 - APOD: NASA Astronomy Picture of the Day
     - API: **complete**
     - CLI: **complete**
     - Documentation: **complete**
 - InSight: Mars Weather Data
+    - API: **complete**
+    - Documentation: **complete**
+- EPIC: Earth Polychromatic Imaging Camera
     - API: **complete**
     - Documentation: **complete**
 - Exoplanet: NASA Exoplanet Database
