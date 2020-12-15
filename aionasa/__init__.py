@@ -1,6 +1,8 @@
 __version__ = '0.1.1'
 
 from .asset import Asset
+from .client import BaseClient
+from .rate_limit import RateLimiter
 from .errors import *
 
 from .apod.api import APOD
