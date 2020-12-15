@@ -2,10 +2,10 @@ import argparse
 import asyncio
 import os
 
-from .api import EPIC
-from .gui import open_gui
-from ..utils import date_strptime
+from aionasa.epic.api import EPIC
+from aionasa.utils import date_strptime
 
+from gui import open_gui
 
 __doc__ = "Download some images from NASA's EPIC archive and open them in a gui browser."
 usage = "python -m aionasa.epic [-h] [--date DATE] [--collection COLLECTION] img_folder"

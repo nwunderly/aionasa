@@ -11,6 +11,9 @@ with open('./aionasa/__init__.py', 'r') as fp:
     line = fp.readline()
     version = eval(line[14:])
 
+packages = ['aionasa']
+packages.extend(setuptools.find_packages('./aionasa'))
+
 
 setuptools.setup(
     name='aionasa',
@@ -29,7 +32,7 @@ setuptools.setup(
             'sphinxcontrib_trio',
         ],
     },
-    packages=setuptools.find_packages(),
+    packages=packages,
     python_requires='>=3.8',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
