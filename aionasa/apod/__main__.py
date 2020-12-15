@@ -5,8 +5,6 @@ import argparse
 import json
 import yaml
 
-from datetime import date, timedelta, datetime
-
 from .api import APOD
 from ..errors import ArgumentError
 from ..utils import date_strptime

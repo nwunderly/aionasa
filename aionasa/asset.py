@@ -1,5 +1,4 @@
 from .errors import *
-from .client import BaseClient
 
 
 class Asset:

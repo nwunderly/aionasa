@@ -1,4 +1,3 @@
-
 import aiohttp
 import asyncio
 import datetime
@@ -9,7 +8,6 @@ except ImportError:
     pandas = None
 
 from ..client import BaseClient
-from ..errors import PandasNotFound
 
 
 class Exoplanet(BaseClient):

@@ -1,13 +1,2 @@
-
-
-
 class Asteroid:
     pass
-
-
-
-
-
-
-
-

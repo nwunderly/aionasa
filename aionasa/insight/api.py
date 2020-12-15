@@ -1,10 +1,4 @@
-
-import aiohttp
-import asyncio
-import datetime
 import logging
-
-from collections import namedtuple
 
 from ..client import BaseClient
 from ..errors import APIException

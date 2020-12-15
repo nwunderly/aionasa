@@ -1,4 +1,3 @@
-
 import aiohttp
 
 
@@ -6,7 +5,6 @@ class BaseClient:
     """
     Base class for NASA API clients.
     """
-
     def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=None, timeout=None):
         """
         Initializes the client class.
@@ -19,9 +17,6 @@ class BaseClient:
         self._session = session or aiohttp.ClientSession(timeout=timeout)
         self.rate_limiter = rate_limiter
 
-    # def __call__(self, *args, **kwargs):
-    #     return self.get(*args, **kwargs)
-
     async def __aenter__(self):
         return self
 
@@ -32,4 +27,3 @@ class BaseClient:
     async def close(self):
         if self._session:
             await self._session.close()
-

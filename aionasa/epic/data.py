@@ -2,7 +2,7 @@ import datetime
 from collections import namedtuple
 
 from ..asset import Asset
-from ..errors import *
+from ..errors import ArgumentError
 
 
 class EarthImage(Asset):
@@ -38,7 +38,6 @@ class EarthImage(Asset):
     attitude_quaternions: :class:`Attitude`
         Satellite attitude as a named tuple.
     """
-
     def __init__(self, client, json, collection):
         self.json = json
         self.client = client
