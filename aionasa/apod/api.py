@@ -133,6 +133,3 @@ class APOD(BaseClient):
                 result.append(entry)
 
             return result
-
-
-
