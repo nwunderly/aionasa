@@ -7,7 +7,7 @@ import logging
 from collections import namedtuple
 
 from ..client import BaseClient
-from ..errors import *
+from ..errors import APIException
 from ..rate_limit import insight_rate_limiter, demo_rate_limiter
 
 

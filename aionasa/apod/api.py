@@ -84,13 +84,7 @@ class APOD(BaseClient):
             entry = AstronomyPicture(
                 client=self,
                 date=date,
-                copyright=json.get('copyright'),
-                title=json.get('title'),
-                explanation=json.get('explanation'),
-                url=json.get('url'),
-                hdurl=json.get('hdurl'),
-                media_type=json.get('media_type'),
-                service_version=json.get('service_version'),
+                json=json
             )
             return entry
 
@@ -152,13 +146,7 @@ class APOD(BaseClient):
                 entry = AstronomyPicture(
                     client=self,
                     date=date,
-                    copyright=item.get('copyright'),
-                    title=item.get('title'),
-                    explanation=item.get('explanation'),
-                    url=item.get('url'),
-                    hdurl=item.get('hdurl'),
-                    media_type=item.get('media_type'),
-                    service_version=item.get('service_version')
+                    json=json
                 )
                 result.append(entry)
 

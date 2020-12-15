@@ -7,15 +7,13 @@ from ..errors import *
 from ..rate_limit import default_rate_limiter, demo_rate_limiter
 
 
-logger = logging.getLogger('aionasa.apod')
+logger = logging.getLogger('aionasa.neows')
 
 
 class NeoWs(BaseClient):
     """
-    Client for NASA Astronomy Picture of the Day.
+    Client for NASA Near Earth Object Weather Service
 
-    Parameters for NeoWs API:
-        -
     """
 
     def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):
