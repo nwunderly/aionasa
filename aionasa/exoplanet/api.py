@@ -9,7 +9,7 @@ except ImportError:
     pandas = None
 
 from ..client import BaseClient
-from ..errors import *
+from ..errors import PandasNotFound
 
 
 class Exoplanet(BaseClient):
