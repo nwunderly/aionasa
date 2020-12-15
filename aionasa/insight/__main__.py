@@ -1,6 +1,4 @@
-
 import asyncio
-import json
 
 from .api import InSight
 
@@ -12,8 +10,6 @@ async def main():
         # print(json.dumps(data, sort_keys=True, indent=4))
 
 
-
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
-

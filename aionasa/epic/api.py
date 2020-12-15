@@ -4,7 +4,7 @@ from typing import List
 
 from .data import EarthImage
 from ..client import BaseClient
-from ..errors import *
+from ..errors import APIException, ArgumentError
 from ..rate_limit import default_rate_limiter, demo_rate_limiter
 
 logger = logging.getLogger('aionasa.epic')
@@ -36,7 +36,6 @@ class EPIC(BaseClient):
     rate_limiter: Optional[:class:`RateLimiter`]
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
     """
-
     def __init__(self, use_nasa_mirror=False, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):
         if use_nasa_mirror:
             if api_key == 'DEMO_KEY' and rate_limiter:
@@ -78,7 +77,10 @@ class EPIC(BaseClient):
             await self.rate_limiter.wait()
 
         async with self._session.get(request) as response:
-            data = await response.json()
+            if response.status != 200:  # not success
+                raise APIException(response.status, response.reason)
+
+            json = await response.json()
 
         if self.rate_limiter:
             remaining = int(response.headers['X-RateLimit-Remaining'])
@@ -86,7 +88,7 @@ class EPIC(BaseClient):
 
         images = []
 
-        for item in data:
+        for item in json:
             image = EarthImage(client=self, json=item, collection=collection)
             images.append(image)
 
@@ -115,7 +117,10 @@ class EPIC(BaseClient):
             await self.rate_limiter.wait()
 
         async with self._session.get(request) as response:
-            data = await response.json()
+            if response.status != 200:  # not success
+                raise APIException(response.status, response.reason)
+
+            json = await response.json()
 
         if self.rate_limiter:
             remaining = int(response.headers['X-RateLimit-Remaining'])
@@ -123,7 +128,7 @@ class EPIC(BaseClient):
 
         dates = []
 
-        for item in data:
+        for item in json:
             date = datetime.datetime.strptime(item, '%Y-%m-%d').date()
             dates.append(date)
 

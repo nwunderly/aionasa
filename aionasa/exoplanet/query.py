@@ -1,5 +1,3 @@
-from ..errors import *
-
 """
 To anyone reading this:
     I'm sorry.
