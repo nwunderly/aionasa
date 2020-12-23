@@ -9,8 +9,7 @@ logger = logging.getLogger('aionasa.rate_limit')
 
 
 class RateLimiter:
-    """
-    Class that handles rate limit across the whole library.
+    """Class that handles rate limit across the whole library.
     This is necessary to ensure observation of rate limits even if multiple API endpoints are being used.
     """
     def __init__(self, limit, _repr=None):
@@ -22,6 +21,9 @@ class RateLimiter:
 
     @property
     def remaining(self):
+        """:class:`int`: The number of requests remaining.
+        Starts at the total request count specified on initialization and updates on each API request.
+        """
         return self._remaining
 
     async def wait(self):
@@ -47,5 +49,5 @@ class RateLimiter:
 
 
 default_rate_limiter = RateLimiter(1000, '<default_rate_limiter>')
-insight_rate_limiter = RateLimiter(2000)
+insight_rate_limiter = RateLimiter(2000, '<insight_rate_limiter>')
 demo_rate_limiter = RateLimiter(30)  # todo: figure out how to implement daily limit

@@ -8,14 +8,6 @@ from ..rate_limit import insight_rate_limiter, demo_rate_limiter
 logger = logging.getLogger('aionasa.insight')
 
 
-class _InSightRateLimiterRepr:
-    def __repr__(self):
-        return '<insight_rate_limiter>'
-
-
-_default = _InSightRateLimiterRepr()
-
-
 class InSight(BaseClient):
     """Client for NASA Insight Mars weather data.
 
@@ -27,14 +19,11 @@ class InSight(BaseClient):
         Optional ClientSession to be used for requests made by this client. Creates a new session by default.
     rate_limiter: Optional[:class:`RateLimiter`]
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
-
     """
 
-    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=_default, **kwargs):
+    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=insight_rate_limiter, **kwargs):
         if api_key == 'DEMO_KEY' and rate_limiter:
             rate_limiter = demo_rate_limiter
-        elif rate_limiter is _default:
-            rate_limiter = insight_rate_limiter
         super().__init__(api_key, session, rate_limiter, **kwargs)
 
     async def get(self, feedtype='json'):

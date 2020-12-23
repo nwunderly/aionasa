@@ -10,8 +10,7 @@ logger = logging.getLogger('aionasa.neows')
 
 
 class NeoWs(BaseClient):
-    """
-    Client for NASA Near Earth Object Weather Service
+    """Client for NASA Near Earth Object Weather Service
 
     """
 
@@ -21,8 +20,7 @@ class NeoWs(BaseClient):
         super().__init__(api_key, session, rate_limiter)
 
     async def feed(self, start_date: datetime.date, end_date: datetime.date = None):
-        """
-        Retrieve a list of Asteroids based on their closest approach date to Earth.
+        """Retrieve a list of Asteroids based on their closest approach date to Earth.
 
         :param start_date: Starting date for asteroid search.
         :param end_date: Ending date for asteroid search.
