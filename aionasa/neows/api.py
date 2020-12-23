@@ -10,7 +10,7 @@ logger = logging.getLogger('aionasa.neows')
 
 
 class NeoWs(BaseClient):
-    """Client for NASA Near Earth Object Weather Service
+    """Client for NASA Near Earth Object Weather Service.
 
     """
 
@@ -22,9 +22,17 @@ class NeoWs(BaseClient):
     async def feed(self, start_date: datetime.date, end_date: datetime.date = None):
         """Retrieve a list of Asteroids based on their closest approach date to Earth.
 
-        :param start_date: Starting date for asteroid search.
-        :param end_date: Ending date for asteroid search.
-        :return: A list of Asteroids returned by the API.
+        Parameters
+        ----------
+        start_date: :class:`datetime.date`
+            Starting date for asteroid search.
+        end_date: :class:`datetime.date`
+            Ending date for asteroid search.
+
+        Returns
+        -------
+        :class:`List[Asteroid]`
+            A list of Asteroids returned by the API.
         """
 
         start_date = 'start_date=' + start_date.strftime('%Y-%m-%d') + '&'
@@ -49,5 +57,54 @@ class NeoWs(BaseClient):
             remaining = int(response.headers['X-RateLimit-Remaining'])
             self.rate_limiter.update(remaining)
 
+        return json
+
+    async def lookup(self, asteroid_id: int):
+        """Retrieve a list of Asteroids based on their closest approach date to Earth.
+
+        Parameters
+        ----------
+        asteroid_id: :class:`int`
+            Asteroid SPK-ID correlates to the NASA JPL small body.
+
+        Returns
+        -------
+        :class:`Asteroid`
+            Data for the requested NEO.
+        """
+        request = f"https://api.nasa.gov/neo/rest/v1/neo/{asteroid_id}?api_key={self._api_key}"
+
+        if self.rate_limiter:
+            await self.rate_limiter.wait()
+
+        async with self._session.get(request) as response:
+            if response.status != 200:  # not success
+                raise APIException(response.status, response.reason)
+
+            json = await response.json()
+
+        if self.rate_limiter:
+            remaining = int(response.headers['X-RateLimit-Remaining'])
+            self.rate_limiter.update(remaining)
+
+        return json
+
+
+    async def browse(self, page: int = 0):
+        """Browse the overall asteroid dataset.
+
+        Parameters
+        ----------
+        page: :class:`int`
+            The page to request. Defaults to 'page 0'.
+
+        Returns
+        -------
+        :class:`List[...]`
+            The paginated NeoWs asteroid data.
+        """
+        raise NotImplementedError
+        # TODO: this
+        #   maybe use async iterator for this.
 
 
