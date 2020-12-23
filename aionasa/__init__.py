@@ -10,3 +10,5 @@ from .apod.data import AstronomyPicture
 from .insight.api import InSight
 from .epic.api import EPIC
 from .epic.data import EarthImage
+from .neows.api import NeoWs
+from .neows.data import Asteroid
