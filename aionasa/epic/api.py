@@ -7,6 +7,7 @@ from ..client import BaseClient
 from ..errors import APIException, ArgumentError
 from ..rate_limit import default_rate_limiter, demo_rate_limiter
 
+
 logger = logging.getLogger('aionasa.epic')
 
 
@@ -15,11 +16,6 @@ logger = logging.getLogger('aionasa.epic')
 #   https://epic.gsfc.nasa.gov/api/
 #   https://api.nasa.gov/EPIC/api/
 # ===============================
-
-
-# TODO:
-#   - plan methods for this class
-#   - data class for EPIC images
 
 
 class EPIC(BaseClient):
@@ -35,6 +31,11 @@ class EPIC(BaseClient):
         Optional ClientSession to be used for requests made by this client. Creates a new session by default.
     rate_limiter: Optional[:class:`RateLimiter`]
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
+
+    .. note ::
+        The api.nasa.gov mirror is rate limited (like other api.nasa.gov APIs).
+        The API at epic.nasa.gov, however, is not, nor does it require an API key to use.
+        These features will be ignored when using this API through epic.nasa.gov.
     """
     def __init__(self, use_nasa_mirror=False, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):
         if use_nasa_mirror:
