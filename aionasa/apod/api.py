@@ -17,9 +17,9 @@ class APOD(BaseClient):
     ----------
     api_key: :class:`str`
         NASA API key to be used by the client.
-    session: Optional[:class:`aiohttp.ClientSession`]
+    session: :class:`Optional[aiohttp.ClientSession]`
         Optional ClientSession to be used for requests made by this client. Creates a new session by default.
-    rate_limiter: Optional[:class:`RateLimiter`]
+    rate_limiter: :class:`Optional[RateLimiter]`
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
     """
     def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):
@@ -92,7 +92,7 @@ class APOD(BaseClient):
 
         Returns
         -------
-        List[:class:`AstronomyPicture`]
+        :class:`List[AstronomyPicture]`
             A list of AstronomyPicture objects containing data returned by the API.
         """
 

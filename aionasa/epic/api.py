@@ -27,9 +27,9 @@ class EPIC(BaseClient):
         Whether to use the api.nasa.gov mirror instead of epic.gsfc.nasa.gov
     api_key: :class:`str`
         NASA API key to be used by the client.
-    session: Optional[:class:`aiohttp.ClientSession`]
+    session: :class:`Optional[aiohttp.ClientSession]`
         Optional ClientSession to be used for requests made by this client. Creates a new session by default.
-    rate_limiter: Optional[:class:`RateLimiter`]
+    rate_limiter: :class:`Optional[RateLimiter]`
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
 
     .. note ::
@@ -146,7 +146,7 @@ class EPIC(BaseClient):
 
         Returns
         -------
-        List[:class:`EarthImage`]
+        :class:`List[EarthImage]`
             Data returned by the API.
         """
         return await self._get_metadata('natural', date)
@@ -156,7 +156,7 @@ class EPIC(BaseClient):
 
         Returns
         -------
-        List[:class:`datetime.date`]
+        :class:`List[datetime.date]`
             The dates returned by the API.
         """
         return await self._get_listing('natural')
@@ -172,7 +172,7 @@ class EPIC(BaseClient):
 
         Returns
         -------
-        List[:class:`EarthImage`]
+        :class:`List[EarthImage]`
             Data returned by the API.
         """
         return await self._get_metadata('enhanced', date)
@@ -182,7 +182,7 @@ class EPIC(BaseClient):
 
         Returns
         -------
-        List[:class:`datetime.date`]
+        :class:`List[datetime.date]`
             The dates returned by the API.
         """
         return await self._get_listing('enhanced')
