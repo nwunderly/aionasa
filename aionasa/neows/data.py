@@ -5,11 +5,35 @@ from ..utils import date_strptime
 class Asteroid:
     """NASA data on a single NEO.
 
+    Attributes
+    ----------
+    json: :class:`dict`
+        Raw JSON data from the API that was used to build this object.
+    id: :class:`int`
+        JPL NEO ID.
+    name: :class:`str`
+        Name of the NEO.
+    designation: :class:`str`
+        TODO
+    nasa_jpl_url: :class:`str`
+        TODO
+    absolute_magnitude_h: :class:`int`
+        TODO
+    is_potentially_hazardous_asteroid: :class:`bool`
+        TODO
+    is_sentry_object: :class:`bool`
+        TODO
+    estimated_diameter: :class:`dict`
+        TODO
+    close_approach_data: :class:`List[CloseApproach]`
+        TODO
+    orbital_data: :class:`OrbitalData`
+        TODO
     """
     def __init__(self, json):
         self.json = json
         self.id = int(json['id'])
-        self.neo_reference_id = int(json['neo_reference_id'])
+        # self.neo_reference_id = int(json['neo_reference_id'])
         self.name = json['name']
         self.designation = json['designation']
         self.nasa_jpl_url = json['nasa_jpl_url']
