@@ -27,11 +27,11 @@ class APOD(BaseClient):
 
     Parameters
     ----------
-    api_key: `str`
+    api_key: :class:`str`
         NASA API key to be used by the client.
-    session: `Optional[aiohttp.ClientSession]`
+    session: Optional[:class:`aiohttp.ClientSession`]
         Optional ClientSession to be used for requests made by this client. Creates a new session by default.
-    rate_limiter: Optional[`RateLimiter`]
+    rate_limiter: Optional[:class:`RateLimiter`]
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
     """
 
@@ -47,16 +47,16 @@ class APOD(BaseClient):
 
         Parameters
         ----------
-        date: `datetime.Date`
+        date: :class:`datetime.Date`
             The date of the APOD image to retrieve. Defaults to ``'today'``.
-        hd: `bool`
+        hd: :class:`bool`
             Bool indicating whether to retrieve the URL for the high resolution image. Defaults to ``False``.
-        as_json: `bool`
+        as_json: :class:`bool`
             Bool indicating whether to return the raw returned json data instead of the normal AstronomyPicture object. Defaults to ``False``.
 
         Returns
         -------
-     `AstronomyPicture`
+        :class:`AstronomyPicture`
             An AstronomyPicture containing data returned by the API.
         """
 
@@ -110,18 +110,18 @@ class APOD(BaseClient):
 
         Parameters
         ----------
-        start_date: `datetime.Date`
+        start_date: :class:`datetime.Date`
             The first date to return when requesting a range of dates.
-        end_date: `datetime.Date`
+        end_date: :class:`datetime.Date`
             The last date to return when requesting a range of dates. Range is inclusive.
-        hd: `bool`
+        hd: :class:`bool`
             Bool indicating whether to retrieve the URL for the high resolution image. Defaults to ``False``.
-        as_json: `bool`
+        as_json: :class:`bool`
             Bool indicating whether to return a list of dicts containing the raw returned json data instead of the normal ``List[AstronomyPicture]``. Defaults to ``False``.
 
         Returns
         -------
-        List `AstronomyPicture`]
+        List[:class:`AstronomyPicture`]
             A list of AstronomyPicture objects containing data returned by the API.
         """
 
