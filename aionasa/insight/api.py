@@ -15,9 +15,9 @@ class InSight(BaseClient):
     ----------
     api_key: :class:`str`
         NASA API key to be used by the client.
-    session: Optional[:class:`aiohttp.ClientSession`]
+    session: :class:`Optional[aiohttp.ClientSession]`
         Optional ClientSession to be used for requests made by this client. Creates a new session by default.
-    rate_limiter: Optional[:class:`RateLimiter`]
+    rate_limiter: :class:`Optional[RateLimiter]`
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
     """
 
