@@ -2,10 +2,10 @@ from datetime import datetime, date, timedelta
 
 
 def date_strptime(date_string):
-    """Converts a YYYY-MM-DD string into a datetime.date object.
+    """Converts a ``YYYY-MM-DD`` string into a datetime.date object.
 
-    Equivalent to strptime with format string "%Y-%m-%d".
-    Also accepts 'today' and 'yesterday' as shortcuts.
+    Equivalent to strptime with format string ``'%Y-%m-%d'``.
+    Also accepts ``'today'`` and ``'yesterday'`` as shortcuts.
 
     Parameters
     ----------
@@ -13,7 +13,8 @@ def date_strptime(date_string):
 
     Returns
     -------
-    datetime.date: The converted date.
+    :class:`datetime.date`
+        The converted date.
     """
     keywords = {
         'today': date.today(),
@@ -23,3 +24,26 @@ def date_strptime(date_string):
         return keywords[date_string]
 
     return datetime.strptime(date_string, f'%Y-%m-%d').date()
+
+
+def datetime_strptime(date_string, seconds=False):
+    """Converts a ``YYYY-MM-DD HH:MM`` string into a datetime.datetime object.
+
+    Equivalent to strptime with format string ``'%Y-%m-%d %H:%M'``.
+
+    Parameters
+    ----------
+    date_string: :class:`str`
+        String to format.
+    seconds: :class:`bool`
+        Uses format string ``'%Y-%m-%d %H:%M:%S'`` instead.
+
+    Returns
+    -------
+    :class:`datetime.datetime`
+        The converted datetime.
+    """
+    if seconds:
+        return datetime.strptime(date_string, '%Y-%m-%d %H:%M:%S')
+    else:
+        return datetime.strptime(date_string, '%Y-%m-%d %H:%M')
