@@ -49,6 +49,10 @@ class Asteroid:
         self.close_approach_data = CloseApproach._from_list(json['close_approach_data'])
         self.orbital_data = OrbitalData(json['orbital_data'])
 
+    @classmethod
+    def _from_list(cls, json):
+        return [cls(obj) for obj in json]
+
     def min_diameter(self, unit):
         return self.estimated_diameter[unit]['estimated_diameter_min']
 
@@ -175,9 +179,9 @@ class OrbitalData:
         self.mean_anomaly = float(json['mean_anomaly'])
         self.mean_motion = float(json['mean_motion'])
         self.equinox = json['equinox']
-        self.orbit_class = json['orbit_class']
+        self.orbit_class = json['orbit_class']  # TODO: clean this up
 
 
-# TODO: maybe make this an enum
-class OrbitClass:
-    pass
+# # TODO: maybe make this an enum
+# class OrbitClass:
+#     pass
