@@ -153,29 +153,29 @@ class OrbitalData:
     """
     def __init__(self, json):
         self.json = json
-        self.orbit_id = int(json["orbit_id"])
-        self.orbit_determination_date = datetime_strptime(json["orbit_determination_date"], seconds=True)
-        self.first_observation_date = date_strptime(json["first_observation_date"])
-        self.last_observation_date = date_strptime(json["last_observation_date"])
-        self.data_arc_in_days = int(json["data_arc_in_days"])
-        self.observations_used = int(json["observations_used"])
-        self.orbit_uncertainty = int(json["orbit_uncertainty"])  # TODO: INT OR FLOAT??
-        self.minimum_orbit_intersection = float(json["minimum_orbit_intersection"])
-        self.jupiter_tisserand_invariant = float(json["jupiter_tisserand_invariant"])
-        self.epoch_osculation = float(json["epoch_osculation"])
-        self.eccentricity = float(json["eccentricity"])
-        self.semi_major_axis = float(json["semi_major_axis"])
-        self.inclination = float(json["inclination"])
-        self.ascending_node_longitude = float(json["ascending_node_longitude"])
-        self.orbital_period = float(json["orbital_period"])
-        self.perihelion_distance = float(json["perihelion_distance"])
-        self.perihelion_argument = float(json["perihelion_argument"])
-        self.aphelion_distance = float(json["aphelion_distance"])
-        self.perihelion_time = float(json["perihelion_time"])
-        self.mean_anomaly = float(json["mean_anomaly"])
-        self.mean_motion = float(json["mean_motion"])
-        self.equinox = json["equinox"]
-        self.orbit_class = json["orbit_class"]
+        self.orbit_id = int(json['orbit_id'])
+        self.orbit_determination_date = datetime_strptime(json['orbit_determination_date'], seconds=True)
+        self.first_observation_date = date_strptime(json['first_observation_date'])
+        self.last_observation_date = date_strptime(json['last_observation_date'])
+        self.data_arc_in_days = int(json['data_arc_in_days'])
+        self.observations_used = int(json['observations_used'])
+        self.orbit_uncertainty = int(json['orbit_uncertainty'])  # TODO: INT OR FLOAT??
+        self.minimum_orbit_intersection = float(json['minimum_orbit_intersection'])
+        self.jupiter_tisserand_invariant = float(json['jupiter_tisserand_invariant'])
+        self.epoch_osculation = float(json['epoch_osculation'])
+        self.eccentricity = float(json['eccentricity'])
+        self.semi_major_axis = float(json['semi_major_axis'])
+        self.inclination = float(json['inclination'])
+        self.ascending_node_longitude = float(json['ascending_node_longitude'])
+        self.orbital_period = float(json['orbital_period'])
+        self.perihelion_distance = float(json['perihelion_distance'])
+        self.perihelion_argument = float(json['perihelion_argument'])
+        self.aphelion_distance = float(json['aphelion_distance'])
+        self.perihelion_time = float(json['perihelion_time'])
+        self.mean_anomaly = float(json['mean_anomaly'])
+        self.mean_motion = float(json['mean_motion'])
+        self.equinox = json['equinox']
+        self.orbit_class = json['orbit_class']
 
 
 # TODO: maybe make this an enum
