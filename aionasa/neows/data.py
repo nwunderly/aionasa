@@ -1,7 +1,11 @@
-from datetime import datetime
 from typing import List
 
 from ..utils import date_strptime, datetime_strptime
+
+
+##########################################################################
+# NOTE: "epoch" should generally refer to the J2000 epoch (January 2000) #
+##########################################################################
 
 
 class Asteroid:
@@ -12,34 +16,33 @@ class Asteroid:
     json: :class:`dict`
         Raw JSON data from the API that was used to build this object.
     id: :class:`int`
-        JPL NEO ID.
+        JPL NEO ID. In the JSON data, ``'neo_reference_id'`` is an alias for this.
     name: :class:`str`
-        Name of the NEO.
-    designation: :class:`str`
-        TODO
+        Name of the NEO. In the JSON data, ``'designation'`` is an alias for this.
     nasa_jpl_url: :class:`str`
-        TODO
-    absolute_magnitude_h: :class:`int`
-        TODO
+        NASA Jet Propulsion Laboratory website URL containing information regarding this NEO.
+    absolute_magnitude_h: :class:`float`
+        Absolute magnitude of the NEO (magnitude at 1 au from Sun and observer).
     is_potentially_hazardous_asteroid: :class:`bool`
-        TODO
+        :strike:`Self-explanatory, I hope.`
     is_sentry_object: :class:`bool`
-        TODO
+        `Sentry: Earth Impact Monitoring https://cneos.jpl.nasa.gov/sentry/`_
     estimated_diameter: :class:`dict`
-        TODO
+        Estimated diameter of the NEO. A dict containing minimum and maximum diameters in four units:
+        ``kilometers``, ``meters``, ``miles``, ``feet``.
     close_approach_data: :class:`List[CloseApproach]`
-        TODO
+        A list of close approach events between this NEO and Earth.
     orbital_data: :class:`OrbitalData`
-        TODO
+        Information regarding this NEO's orbit.
     """
     def __init__(self, json):
         self.json = json
         self.id = int(json['id'])
         # self.neo_reference_id = int(json['neo_reference_id'])
-        self.name = json['name']
-        self.designation = json['designation']
+        self.name = json['designation']
+        # self.designation = json['designation']
         self.nasa_jpl_url = json['nasa_jpl_url']
-        self.absolute_magnitude_h = json['absolute_magnitude_h']
+        self.absolute_magnitude_h = float(json['absolute_magnitude_h'])
         self.is_potentially_hazardous_asteroid = json['is_potentially_hazardous_asteroid']
         self.is_sentry_object = json['is_sentry_object']
         self.estimated_diameter = json['estimated_diameter']  # TODO: make this not terrible
@@ -60,19 +63,20 @@ class CloseApproach:
     Attributes
     ----------
     json: :class:`dict`
-        TODO
+        Raw JSON data from the API that was used to build this object.
     date: :class:`datetime.date`
-        TODO
+        The date of this close approach.
     date_full: :class:`datetime.datetime`
-        TODO
+        The full timestamp of this close approach.
     epoch_date: :class:`int`
-        TODO
+        The timestamp of this close approach, in seconds from the epoch.
     orbiting_body: :class:`str`
-        TODO
-    relative_velocity: :class:``
-        TODO
-    miss_distance: :class:``
-        TODO
+        The name of the body this NEO is orbiting.
+    relative_velocity: :class:`dict`
+        Relative velocity of this NEO with respect to Earth during this close approach.
+        TODO: uncertain about this one.
+    miss_distance: :class:`dict`
+        The distance by which this NEO missed the Earth during this close approach.
     """
     def __init__(self, json):
         self.json = json
@@ -98,51 +102,54 @@ class OrbitalData:
     Attributes
     ----------
     orbit_id: :class:`int`
-        TODO
+        JPL orbit ID (JPL 13, JPL 24, etc).
+        TODO: figure out what this actually means
     orbit_determination_date: :class:`datetime.datetime`
-        TODO
+        When orbit solution was computed.
     first_observation_date: :class:`datetime.date`
-        TODO
+        Date of the first recorded observation of this orbit.
     last_observation_date: :class:`datetime.date`
-        TODO
+        Date of the last recorded observation of this orbit.
     data_arc_in_days: :class:`int`
-        TODO
+        Number of days spanned by the data-arc.
     observations_used: :class:`int`
-        TODO
-    orbit_uncertainty: :class:`float`
-        TODO
+        Number of recorded observations of this orbit.
+    orbit_uncertainty: :class:`int`
+        MPC "U" parameter: orbit uncertainty estimate 0-9, with 0 being good, and 9 being highly uncertain.
     minimum_orbit_intersection: :class:`float`
-        TODO
+        Earth MOID (Minimum Orbit Intersection Distance), in au.
     jupiter_tisserand_invariant: :class:`float`
-        TODO
+        Jupiter Tisserand invariant.
     epoch_osculation: :class:`float`
-        TODO
+        When these orbital elements were determined, in seconds from the epoch.
     eccentricity: :class:`float`
-        TODO
+        Eccentricity of the orbit.
     semi_major_axis: :class:`float`
-        TODO
+        Semi-major axis of the orbit, in au.
     inclination: :class:`float`
-        TODO
+        Inclination of the NEO's orbit, in degrees.
     ascending_node_longitude: :class:`float`
-        TODO
+        Longitude of the ascending node, in degrees.
     orbital_period: :class:`float`
-        TODO
+        Orbital period, in days.
     perihelion_distance: :class:`float`
-        TODO
+        Perihelion distance, in au.
     perihelion_argument: :class:`float`
-        TODO
+        Argument of perihelion, in degrees.
     aphelion_distance: :class:`float`
-        TODO
+        Aphelion distance, in au.
     perihelion_time: :class:`float`
-        TODO
+        Time of perihelion passage, in `TDB`_ (Barycentric Dynamical Time).
     mean_anomaly: :class:`float`
-        TODO
+        Mean anomaly, in degrees.
     mean_motion: :class:`float`
-        TODO
+        Mean motion, in degrees per day.
     equinox: :class:`str`
-        TODO
+        Will most likely be J2000 (January 1, 2000)
     orbit_class: :class:`dict`
-        TODO
+        Orbital classification information.
+
+    .. _TDB: https://www.timeanddate.com/time/terrestrial-dynamic-time.html
     """
     def __init__(self, json):
         self.json = json
@@ -152,7 +159,7 @@ class OrbitalData:
         self.last_observation_date = date_strptime(json["last_observation_date"])
         self.data_arc_in_days = int(json["data_arc_in_days"])
         self.observations_used = int(json["observations_used"])
-        self.orbit_uncertainty = float(json["orbit_uncertainty"])  # TODO: INT OR FLOAT??
+        self.orbit_uncertainty = int(json["orbit_uncertainty"])  # TODO: INT OR FLOAT??
         self.minimum_orbit_intersection = float(json["minimum_orbit_intersection"])
         self.jupiter_tisserand_invariant = float(json["jupiter_tisserand_invariant"])
         self.epoch_osculation = float(json["epoch_osculation"])
