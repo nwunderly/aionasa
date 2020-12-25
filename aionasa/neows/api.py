@@ -1,7 +1,7 @@
 import datetime
 import logging
 
-from .feed import NeoWsFeedPage
+from .paginators import NeoWsFeedPage
 from ..client import BaseClient
 from ..errors import *
 from ..rate_limit import default_rate_limiter, demo_rate_limiter
@@ -50,7 +50,6 @@ class NeoWs(BaseClient):
         :class:`List[Asteroid]`
             A list of Asteroids returned by the API.
         """
-
         start_date = 'start_date=' + start_date.strftime('%Y-%m-%d') + '&'
 
         if end_date is None:  # parameter will be left out of the query.
@@ -59,9 +58,7 @@ class NeoWs(BaseClient):
             end_date = 'end_date=' + end_date.strftime('%Y-%m-%d') + '&'
 
         request = f"https://api.nasa.gov/neo/rest/v1/feed?{start_date}{end_date}api_key={self._api_key}"
-
         json = await self._get(request)
-
         return NeoWsFeedPage(self, json)
 
     async def lookup(self, asteroid_id: int):
@@ -78,9 +75,7 @@ class NeoWs(BaseClient):
             Data for the requested NEO.
         """
         request = f"https://api.nasa.gov/neo/rest/v1/neo/{asteroid_id}?api_key={self._api_key}"
-
         json = await self._get(request)
-
         return json
 
 
@@ -100,5 +95,3 @@ class NeoWs(BaseClient):
         raise NotImplementedError
         # TODO: this
         #   maybe use async iterator for this.
-
-
