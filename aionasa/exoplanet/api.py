@@ -27,7 +27,15 @@ class Exoplanet(BaseClient):
             rate_limiter = demo_rate_limiter
         super().__init__(api_key, session, rate_limiter)
 
-    async def _get(self, table, **query):
+    async def _get(self, querystring):
+        url = f"{BASE_URL}?{querystring}"
+
+        async with self._session.get(url) as resp:
+            json = await resp.json()
+
+        return json
+
+    async def _query(self, table, **query):
         """Query the database.
 
         Parameters
@@ -41,10 +49,11 @@ class Exoplanet(BaseClient):
         -------
         A dict containing the JSON data returned by the API.
         """
-        query = "&" + "&".join([f"{param}={value}" for param, value in query.items()]) if query else ""
-        url = f"{BASE_URL}?table={table}{query}"
-
-        async with self._session.get(url) as resp:
-            json = await resp.json()
-
+        querystring = f"?table={table}"
+        queries = [f"{param}={value}" for param, value in query.items() if value]
+        querystring += "&" + "&".join(queries) if query else ""
+        json = await self._get(querystring)
         return json
+
+    async def query(self, table, **query):
+        pass
