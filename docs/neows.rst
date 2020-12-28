@@ -7,6 +7,7 @@ Asteroids-NeoWs API Reference
 This page provides a breakdown of the aionasa Asteroids-NeoWs (Near Earth Object Web Service) module.
 
 The NeoWs REST API has three endpoints:
+
 - Feed: Retrieve a list of Asteroids based on their closest approach date to Earth.
     - ``GET https://api.nasa.gov/neo/rest/v1/feed``
 - Lookup: Lookup a specific Asteroid based on its NASA JPL small body ID (`SPK-ID`_).
