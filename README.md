@@ -6,7 +6,7 @@ This module is still in the development/testing phase.
 Bugs are still being worked out and breaking changes are common.
 
 
-#### Current Progress: 3/17 APIs
+#### Current Progress: 4/17 APIs
 - APOD: NASA Astronomy Picture of the Day
     - API: **complete**
     - CLI: **complete**
@@ -17,9 +17,10 @@ Bugs are still being worked out and breaking changes are common.
 - EPIC: Earth Polychromatic Imaging Camera
     - API: **complete**
     - Documentation: **complete**
-- Exoplanet: NASA Exoplanet Database
-    - API: **incomplete**
 - Asteroids-NeoWs: Near Earth Object Web Service
+    - API: **complete**
+    - Documentation: **nearly complete**
+- Exoplanet: NASA Exoplanet Database
     - API: **incomplete**
 
 
