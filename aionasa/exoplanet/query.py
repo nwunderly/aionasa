@@ -9,7 +9,7 @@ class _QueryString:
         self.str = string
 
     def __bool__(self):
-        return NotImplemented
+        return True
 
     def __str__(self):
         return self.str
@@ -23,13 +23,16 @@ class _QueryString:
     def __or__(self, other):
         return _QueryString(f"{self.str} or {other.str}")
 
+    def __add__(self, other):
+        return _QueryString(self.str + ',' + str(other))
+
 
 class _Query:
     def __init__(self, name):
         self.name = name
 
     def __bool__(self):
-        return NotImplemented
+        return True
 
     def __str__(self):
         return self.name
@@ -58,6 +61,9 @@ class _Query:
     def __contains__(self, item):
         return _QueryString(f"{self.name} like {item}")
 
+    def __add__(self, other):
+        return _QueryString(self.name + ',' + str(other))
+
 
 """
 PUT QUERY OPTIONS HERE
@@ -67,6 +73,10 @@ ex:
     dec = _Query('dec')
     pl_discmethod = _Query('pl_discmethod')
 """
+
+pl_hostname = _Query('pl_hostname')
+ra = _Query("ra")
+dec = _Query("dec")
 
 
 # =====================================================================================================================================================
@@ -80,6 +90,7 @@ class _Format:
 
 
 csv = _Format('csv')
+ipac = _Format('ipac')
 bar = _Format('bar')
 bar_delimited = _Format('bar_delimited')
 pipe = _Format('pipe')
