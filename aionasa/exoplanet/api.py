@@ -69,26 +69,26 @@ class Exoplanet(BaseClient):
 
         return await self._get_raw(querystring)
 
-    async def query_json(self, table, **query):
-        """Query the database. Format is requested as JSON and parsed before returning.
-
-        Parameters
-        ----------
-        table:
-            The table to query. This is required.
-        query:
-            Other query parameters to be included in the request.
-
-        Returns
-        -------
-        The parsed JSON data returned by the API.
-        """
-        querystring = f"table={table}"
-        query['format'] = 'json'
-        queries = [f"{param}={value}" for param, value in query.items() if value]
-        querystring += "&" + "&".join(queries) if query else ""
-
-        return await self._get_json(querystring)
+    # async def query_json(self, table, **query):
+    #     """Query the database. Format is requested as JSON and parsed before returning.
+    #
+    #     Parameters
+    #     ----------
+    #     table:
+    #         The table to query. This is required.
+    #     query:
+    #         Other query parameters to be included in the request.
+    #
+    #     Returns
+    #     -------
+    #     The parsed JSON data returned by the API.
+    #     """
+    #     querystring = f"table={table}"
+    #     query['format'] = 'json'
+    #     queries = [f"{param}={value}" for param, value in query.items() if value]
+    #     querystring += "&" + "&".join(queries) if query else ""
+    #
+    #     return await self._get_json(querystring)
 
     async def query_alias_table(self, objname, **query):
         """Query the database's alias table.
