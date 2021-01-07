@@ -32,7 +32,7 @@ class EPIC(BaseClient):
     rate_limiter: :class:`Optional[RateLimiter]`
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
 
-    .. note ::
+    ..note::
         The api.nasa.gov mirror is rate limited (like other api.nasa.gov APIs).
         The API at epic.nasa.gov, however, is not, nor does it require an API key to use.
         These features will be ignored when using this API through epic.nasa.gov.
