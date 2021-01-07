@@ -1,6 +1,7 @@
 # aionasa
 An async python wrapper for NASA open APIs. ([api.nasa.gov](https://api.nasa.gov/))
 
+
 #### Disclaimer
 This module is still in the development/testing phase.
 Bugs are still being worked out and breaking changes are common.
@@ -22,6 +23,7 @@ Bugs are still being worked out and breaking changes are common.
     - Documentation: **complete**
 - Exoplanet: NASA Exoplanet Database
     - API: **complete**
+    - Documentation: **complete**
 
 
 #### Installing
@@ -61,6 +63,3 @@ async with InSight() as insight:
 
 data # this will be a dict containing the JSON data returned by the API.
 ```
-Where `pip` is the pip command relevant to your machine's Python 3.8 installation.
-This could be `pip`, `pip3`, `python -m pip`, or `python3 -m pip`.
-
