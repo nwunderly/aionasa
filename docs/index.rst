@@ -19,6 +19,8 @@ Contents
    apod
    insight
    epic
+   neows
+   exoplanet
    utilities
 
 
