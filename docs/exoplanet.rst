@@ -44,3 +44,33 @@ Client
 .. autoclass:: Exoplanet
     :members:
 
+
+Example Code
+------------
+
+This is a sample query from the Exoplanet API documentation:
+
+``https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=pl_hostname,ra,dec&order=dec&format=ascii``
+
+
+With *curl*, this could be done using the command:
+
+.. code-block:: sh
+
+    curl "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=pl_hostname,ra,dec&order=dec&format=ascii"
+
+
+With aionasa, it could be done using a python script:
+
+.. code-block:: python
+
+    import asyncio
+    from aionasa import Exoplanet
+
+    async def main():
+        async with Exoplanet() as exoplanet:
+            text = await exoplanet.query('exoplanets', select='pl_hostname,ra,dec', order='dec', format='ascii')
+            print(text)
+
+    if __name__ == "__main__":
+        asyncio.run(main())
