@@ -12,3 +12,4 @@ from .epic.api import EPIC
 from .epic.data import EarthImage
 from .neows.api import NeoWs
 from .neows.data import Asteroid
+from .exoplanet.api import Exoplanet
