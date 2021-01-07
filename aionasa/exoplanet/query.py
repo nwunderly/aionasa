@@ -1,6 +1,9 @@
 """
-To anyone reading this:
-    I'm sorry.
+To anyone reading this: I'm sorry.
+
+.. note ::
+    This file is HIGHLY experimental and using anything
+    from it is likely a bad idea.
 """
 
 
