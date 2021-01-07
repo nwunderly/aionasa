@@ -22,7 +22,7 @@ BASE_URL = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nsted
 class Exoplanet(BaseClient):
     """Client for NASA Exoplanet Archive API.
 
-    .. note ::
+    ..note::
         Requests to this API do not seem to be subject to api.nasa.gov rate limits.
     """
     def __init__(self, api_key='DEMO_KEY', session=None):
@@ -91,7 +91,7 @@ class Exoplanet(BaseClient):
         """Query the database.
         Format is requested as CSV and parsed to a pandas DataFrame before returning.
 
-        .. note ::
+        ..note::
             ``pandas`` must be installed for this to work.
 
         Returns
@@ -155,7 +155,7 @@ class Exoplanet(BaseClient):
         """Query the database's alias table.
         Format is requested as CSV and parsed to a pandas DataFrame before returning.
 
-        .. note ::
+        ..note::
             ``pandas`` must be installed for this to work.
 
         Returns
