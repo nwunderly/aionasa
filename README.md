@@ -6,7 +6,7 @@ This module is still in the development/testing phase.
 Bugs are still being worked out and breaking changes are common.
 
 
-#### Current Progress: 4/17 APIs
+#### Current Progress: 5/17 APIs
 - APOD: NASA Astronomy Picture of the Day
     - API: **complete**
     - CLI: **complete**
@@ -19,9 +19,9 @@ Bugs are still being worked out and breaking changes are common.
     - Documentation: **complete**
 - Asteroids-NeoWs: Near Earth Object Web Service
     - API: **complete**
-    - Documentation: **nearly complete**
+    - Documentation: **complete**
 - Exoplanet: NASA Exoplanet Database
-    - API: **incomplete**
+    - API: **complete**
 
 
 #### Installing
