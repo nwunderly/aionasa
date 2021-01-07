@@ -5,10 +5,9 @@ import argparse
 import json
 import yaml
 
-from datetime import date, timedelta, datetime
-
 from .api import APOD
 from ..errors import ArgumentError
+from ..utils import date_strptime
 
 
 __doc__ = """
@@ -34,17 +33,6 @@ parser.add_argument('--key', help="Manual input option for API key. If this is l
 parser.add_argument('--timeout', type=int, help="Configures timeout settings for the underlying aiohttp.ClientSession. Overrides the 'total' attribute.")
 
 
-def process_date(day):
-    keywords = {
-        'today': date.today(),
-        'yesterday': date.today() - timedelta(days=1)
-    }
-    if day in keywords.keys():
-        return keywords[day]
-
-    return datetime.strptime(day, f'%Y-%m-%d').date()
-
-
 def dump_to_json(data, filename):
     with open(filename, 'w') as f:
         json.dump(data, f)
@@ -65,13 +53,15 @@ def dump_to_yaml(data, filename):
 
 
 async def get(day, _print, dump, download, key, timeout):
-    day = process_date(day)
+    day = date_strptime(day)
     if timeout is not None:
         timeout = aiohttp.ClientTimeout(total=timeout)
     else:
         timeout = aiohttp.ClientTimeout()
-        
-    async with APOD(key or 'DEMO_KEY', timeout=timeout) as apod:
+    
+    session = aiohttp.ClientSession(timeout=timeout)
+
+    async with APOD(key or 'DEMO_KEY', session=session) as apod:
         picture = await apod.get(day)
         data = picture.json()
 
@@ -97,14 +87,16 @@ async def get(day, _print, dump, download, key, timeout):
 
 
 async def batch_get(start_date, end_date, _print, dump, download, key, timeout):
-    start_date = process_date(start_date)
-    end_date = process_date(end_date)
+    start_date = date_strptime(start_date)
+    end_date = date_strptime(end_date)
     if timeout is not None:
         timeout = aiohttp.ClientTimeout(total=timeout)
     else:
         timeout = aiohttp.ClientTimeout()
     
-    async with APOD(key or 'DEMO_KEY', timeout=timeout) as apod:
+    session = aiohttp.ClientSession(timeout=timeout)
+    
+    async with APOD(key or 'DEMO_KEY', session=session) as apod:
         data = await apod.batch_get(start_date, end_date)
         json_data = [picture.json() for picture in data]
 

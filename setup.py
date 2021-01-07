@@ -1,4 +1,3 @@
-
 import setuptools
 
 
@@ -11,6 +10,9 @@ with open('./aionasa/__init__.py', 'r') as fp:
     # __version__ = '<version>'
     line = fp.readline()
     version = eval(line[14:])
+
+# packages = ['aionasa']
+# packages.extend(setuptools.find_packages('./aionasa'))
 
 
 setuptools.setup(
