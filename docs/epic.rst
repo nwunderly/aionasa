@@ -26,7 +26,8 @@ Data Class
 Example Code
 ------------
 
-This is a sample script that will print out some data on
+This is a sample script that will print out some data on all
+images from the most recent available date.
 
 .. code-block:: python
 
