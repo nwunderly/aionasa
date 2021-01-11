@@ -20,7 +20,6 @@ class InSight(BaseClient):
     rate_limiter: :class:`Optional[RateLimiter]`
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
     """
-
     def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=insight_rate_limiter, **kwargs):
         if api_key == 'DEMO_KEY' and rate_limiter:
             rate_limiter = demo_rate_limiter
@@ -33,7 +32,7 @@ class InSight(BaseClient):
         ----------
         feedtype: :class:`str`
             The format of what is returned. Currently the default is JSON and only JSON works.
-        
+
         Returns
         -------
         :class:`dict`
