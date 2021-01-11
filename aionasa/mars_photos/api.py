@@ -46,27 +46,81 @@ class MarsPhotos(BaseClient):
             self.base_url = 'https://mars-photos.herokuapp.com/api/v1'
         super().__init__(api_key, session, rate_limiter)
 
+    async def _get_json(self, relative_url):
+        url = self.base_url + relative_url
+
+        if self._api_key:
+            if '?' in url:
+                url += ('&api_key=' + self._api_key)
+            else:
+                url += ('?api_key=' + self._api_key)
+
+        if self.rate_limiter:
+            await self.rate_limiter.wait()
+
+        async with self._session.get(url) as resp:
+            if resp.status != 200:
+                raise APIException(resp.status, resp.reason)
+            data = await resp.json()
+
+        if self.rate_limiter:
+            remaining = int(resp.headers['X-RateLimit-Remaining'])
+            self.rate_limiter.update(remaining)
+
+        return data
+
     async def manifest(self, rover):
         """Retrieve a rover's mission manifest.
 
         Parameters
         ----------
-        rover:
+        rover: :class:`str`
 
         Returns
         -------
-
+        :class:`Rover`
+            The requested mission manifest.
         """
+        return await self._get_json(f'/manifests/{rover}')
 
-    async def photos(self, rover):
-        """
+    async def photos(self, rover, sol=None, date=None, camera=None, page=None):
+        """Query the API by rover and Martian sol/Earth date.
 
         Parameters
         ----------
-        rover
+        rover: :class:`str`
+            Rover to request images for.
+        sol: :class:`int`
+            Query by Martian sol.
+        date: :class:`datetime.date`
+            Query by Earth date.
+        camera: :class:`str`
+            Query by camera.
+
+        .. note::
+            Either a Martian sol or an Earth date must be specified.
+            The API will return an empty response if no date information is given.
+            These two parameters cannot both be included.
 
         Returns
         -------
-
+        :class:`List[MarsPicture]`
+            A list of pictures for the requested rover/date.
         """
+        url = f'/{rover}/photos'
+
+        if sol and not date:
+            url += f'?sol={sol}'
+        elif date and not sol:
+            date = date.strftime('%Y-%m-%d')
+            url += f'?earth_date={date}'
+        else:
+            raise ValueError("Either 'sol' or 'date' parameter must be provided.")
+
+        if camera:
+            url += f'&camera={camera}'
+        if page:
+            url += f'&page={page}'
+
+        return await self._get_json(url)
 
