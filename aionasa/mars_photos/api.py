@@ -55,6 +55,8 @@ class MarsPhotos(BaseClient):
             else:
                 url += ('?api_key=' + self._api_key)
 
+        print(url)
+
         if self.rate_limiter:
             await self.rate_limiter.wait()
 
@@ -107,11 +109,11 @@ class MarsPhotos(BaseClient):
         :class:`List[MarsPicture]`
             A list of pictures for the requested rover/date.
         """
-        url = f'/{rover}/photos'
+        url = f'/rovers/{rover}/photos'
 
-        if sol and not date:
+        if (sol is not None) and (not date):
             url += f'?sol={sol}'
-        elif date and not sol:
+        elif (date is not None) and (not sol):
             date = date.strftime('%Y-%m-%d')
             url += f'?earth_date={date}'
         else:
