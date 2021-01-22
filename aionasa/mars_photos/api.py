@@ -1,5 +1,6 @@
 import logging
 
+from .data import RoverManifest, MarsPhoto
 from ..client import BaseClient
 from ..errors import APIException
 from ..rate_limit import default_rate_limiter, demo_rate_limiter
@@ -55,8 +56,6 @@ class MarsPhotos(BaseClient):
             else:
                 url += ('?api_key=' + self._api_key)
 
-        print(url)
-
         if self.rate_limiter:
             await self.rate_limiter.wait()
 
@@ -83,7 +82,8 @@ class MarsPhotos(BaseClient):
         :class:`RoverManifest`
             The requested mission manifest.
         """
-        return await self._get_json(f'/manifests/{rover}')
+        json = await self._get_json(f'/manifests/{rover}')
+        return RoverManifest(json['photo_manifest'])
 
     async def photos(self, rover, sol=None, date=None, camera=None, page=None):
         """Query the API by rover and Martian sol/Earth date.
@@ -125,5 +125,5 @@ class MarsPhotos(BaseClient):
         if page:
             url += f'&page={page}'
 
-        return await self._get_json(url)
-
+        json = await self._get_json(url)
+        return MarsPhoto._from_list(self, json['photos'])

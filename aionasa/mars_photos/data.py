@@ -20,10 +20,9 @@ class RoverManifest:
     max_date: :class:`datetime.date`
         The last Earth date with available photos.
     total_photos: :class:`int`
-
+        Total number of available photos from this date.
     """
     def __init__(self, data):
-        data = data['photo_manifest']
         self.name = data['name']
         self.landing_date = date_strptime(data['landing_date'])
         self.launch_date = date_strptime(data['launch_date'])
@@ -113,6 +112,10 @@ class MarsPhoto(Asset):
         """
         return await super().save(path, self.img_src)
 
+    @classmethod
+    def _from_list(cls, client, data):
+        return [cls(client, d) for d in data]
+
 
 class RoverCamera:
     """A Mars rover camera.
@@ -122,11 +125,11 @@ class RoverCamera:
     id: :class:`int`
         The camera id.
     name: :class:`str`
-        The camera's name, i.e. "MAST"
+        The camera's name, i.e. "MAST".
     rover_id: :class:`int`
         The rover id.
     full_name: :class:`str`
-        The camera's full name, i.e. "Mast Camera"
+        The camera's full name, i.e. "Mast Camera".
     """
     def __init__(self, data):
         self.id = data['id']
