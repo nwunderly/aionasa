@@ -80,7 +80,7 @@ class MarsPhotos(BaseClient):
 
         Returns
         -------
-        :class:`Rover`
+        :class:`RoverManifest`
             The requested mission manifest.
         """
         return await self._get_json(f'/manifests/{rover}')
@@ -98,6 +98,7 @@ class MarsPhotos(BaseClient):
             Query by Earth date.
         camera: :class:`str`
             Query by camera.
+        page: :class:`int`
 
         .. note::
             Either a Martian sol or an Earth date must be specified.
@@ -106,7 +107,7 @@ class MarsPhotos(BaseClient):
 
         Returns
         -------
-        :class:`List[MarsPicture]`
+        :class:`List[MarsPhoto]`
             A list of pictures for the requested rover/date.
         """
         url = f'/rovers/{rover}/photos'

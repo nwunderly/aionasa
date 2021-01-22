@@ -12,6 +12,7 @@
 #
 import os
 import sys
+import re
 # sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
 
@@ -26,10 +27,7 @@ master_doc = 'index'
 
 
 with open('../aionasa/__init__.py', 'r') as f:
-    # FIRST LINE:
-    # __version__ = '<version>'
-    line = f.readline()
-    version = eval(line[14:])
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', fp.read(), re.MULTILINE).group(1)
 
 
 # The full version, including alpha/beta/rc tags

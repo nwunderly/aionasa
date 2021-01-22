@@ -65,6 +65,18 @@ class EarthImage(Asset):
         super().__init__(client, self.png_url, json['image'] + '.png')
 
     async def read(self, filetype='png'):
+        """Downloads the file associated with this EarthImage.
+
+        Parameters
+        ----------
+        filetype: :class:`str`
+            The file type to download. Can be ``'png'``, ``'jpg'``, or ``'thumb'``. Defaults to ``'png'``.
+
+        Returns
+        -------
+        :class:`bytes`
+            The file, downloaded from the URL.
+        """
         url = {'png': self.png_url,
                'jpg': self.jpg_url,
                'thumb': self.thumb_url}.get(filetype)
@@ -72,9 +84,24 @@ class EarthImage(Asset):
         if not url:
             raise ArgumentError("Invalid file type. Expected 'png', 'jpg', or 'thumb'.")
 
-        await super().read(url)
+        return await super().read(url)
 
     async def save(self, path=None, filetype='png'):
+        """Downloads the file associated with this EarthImage and saves to the requested path.
+
+        Parameters
+        ----------
+        path:
+            The file path at which to save the file.
+            If ``None``, saves the image to the working directory using the filename from the asset url.
+        filetype: :class:`str`
+            The file type to download. Can be ``'png'``, ``'jpg'``, or ``'thumb'``. Defaults to ``'png'``.
+
+        Returns
+        -------
+        :class:`int`
+            The number of bytes written.
+        """
         url = {'png': self.png_url,
                'jpg': self.jpg_url,
                'thumb': self.thumb_url}.get(filetype)
@@ -82,25 +109,25 @@ class EarthImage(Asset):
         if not url:
             raise ArgumentError("Invalid file type. Expected 'png', 'jpg', or 'thumb'.")
 
-        await super().save(path, url)
+        return await super().save(path, url)
 
     async def read_png(self):
-        await self.read('png')
+        return await self.read('png')
 
     async def save_png(self, path=None):
-        await self.save(path, 'png')
+        return await self.save(path, 'png')
 
     async def read_jpg(self):
-        await self.read('jpg')
+        return await self.read('jpg')
 
     async def save_jpg(self, path=None):
-        await self.save(path, 'jpg')
+        return await self.save(path, 'jpg')
 
     async def read_thumb(self):
-        await self.read('thumb')
+        return await self.read('thumb')
 
     async def save_thumb(self, path=None):
-        await self.save(path, 'thumb')
+        return await self.save(path, 'thumb')
 
 
 J2000Coordinates = namedtuple('J2000Coordinates', ['x', 'y', 'z'])

@@ -47,6 +47,11 @@ class Asset:
         path:
             The file path at which to save the file.
             If ``None``, saves the image to the working directory using the filename from the asset url.
+
+        Returns
+        -------
+        :class:`int`
+            The number of bytes written.
         """
         if not url:
             url = self._url

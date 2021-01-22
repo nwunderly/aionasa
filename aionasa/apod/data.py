@@ -80,6 +80,11 @@ class AstronomyPicture(Asset):
             If ``None``, saves the image to the working directory using the filename from the image url.
         hdurl: :class:`bool`
             Indicates that the HD image should be downloaded, if possible.
+
+        Returns
+        -------
+        :class:`int`
+            The number of bytes written.
         """
         if hdurl:
             url = self.hdurl or self.url
