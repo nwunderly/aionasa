@@ -21,6 +21,7 @@ Contents
    epic
    neows
    exoplanet
+   mars_photos
    utilities
 
 
