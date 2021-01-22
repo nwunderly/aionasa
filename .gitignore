@@ -127,10 +127,9 @@ dmypy.json
 
 # extra
 .idea/
-misc/API_KEY.py
+tests/API_KEY.py
 API_KEY.py
-misc
-logs
+logs/
 
 *.json
 *.egg-info
@@ -145,4 +144,3 @@ docs/crowdin.py
 *.jpg
 *.gif
 *.flac
-misc/rate_limit_torture_test.py

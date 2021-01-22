@@ -1,4 +1,5 @@
-from .api import Exoplanet
+import asyncio
+from aionasa.exoplanet.api import Exoplanet
 
 
 async def _test_method(ref, name, *args, **kwargs):
@@ -30,3 +31,7 @@ async def _run_tests():
         await _test_method(exoplanet.query_aliastable_df, 'query_aliastable_df', 'bet Pic')
 
         print("Done.")
+
+
+if __name__ == '__main__':
+    asyncio.run(_run_tests())
