@@ -26,7 +26,7 @@ author = 'nwunderly'
 master_doc = 'index'
 
 
-with open('../aionasa/__init__.py', 'r') as f:
+with open('../aionasa/__init__.py', 'r') as fp:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', fp.read(), re.MULTILINE).group(1)
 
 
