@@ -6,12 +6,20 @@ from ..client import BaseClient
 from ..errors import *
 from ..rate_limit import default_rate_limiter, demo_rate_limiter
 
-
 logger = logging.getLogger('aionasa.neows')
 
 
 class NeoWs(BaseClient):
     """Client for NASA Near Earth Object Weather Service.
+
+    Parameters
+    ----------
+    api_key: :class:`str`
+        NASA API key to be used by the client.
+    session: :class:`Optional[aiohttp.ClientSession]`
+        Optional ClientSession to be used for requests made by this client. Creates a new session by default.
+    rate_limiter: :class:`Optional[RateLimiter]`
+        Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
     """
 
     def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):

@@ -1,12 +1,10 @@
 import datetime
 import logging
-from typing import List
 
 from .data import EarthImage
 from ..client import BaseClient
 from ..errors import APIException, ArgumentError
 from ..rate_limit import default_rate_limiter, demo_rate_limiter
-
 
 logger = logging.getLogger('aionasa.epic')
 

@@ -20,7 +20,9 @@ class RoverManifest:
     max_date: :class:`datetime.date`
         The last Earth date with available photos.
     total_photos: :class:`int`
-        Total number of available photos from this date.
+        Total number of available photos for this rover.
+    photos: :class:`List[MarsPhotoDate]`
+        Information for each date with available photos.
     """
     def __init__(self, data):
         self.name = data['name']

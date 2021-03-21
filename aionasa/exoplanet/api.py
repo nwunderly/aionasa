@@ -1,5 +1,6 @@
 import io
 import json
+import logging
 
 try:
     import pandas
@@ -10,10 +11,10 @@ from ..client import BaseClient
 from ..rate_limit import default_rate_limiter, demo_rate_limiter
 from ..errors import APIException, PandasNotFound
 
+logger = logging.getLogger('aionasa.exoplanet')
 
-####################################################################################################################################
-# Note: in-depth documentation for this API can be found at https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.html #
-####################################################################################################################################
+
+# Documentation: https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.html
 
 
 BASE_URL = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI"

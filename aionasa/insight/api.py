@@ -4,7 +4,6 @@ from ..client import BaseClient
 from ..errors import APIException
 from ..rate_limit import insight_rate_limiter, demo_rate_limiter
 
-
 logger = logging.getLogger('aionasa.insight')
 
 
