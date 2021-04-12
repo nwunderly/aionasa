@@ -19,7 +19,7 @@ def _from_list(cls, data):
 class DONKI(BaseClient):
     """Client for NASA Space Weather Database of Notifications, Knowledge, Information (DONKI).
 
-    ..note::
+    .. note::
         The api.nasa.gov mirror is rate limited (like other api.nasa.gov APIs).
         The API at kauai.ccmc.gsfc.nasa.gov, however, is not, nor does it require an API key to use.
         These features will be ignored when using this API through kauai.ccmc.gsfc.nasa.gov.

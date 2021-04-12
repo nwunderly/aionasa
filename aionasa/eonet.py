@@ -14,7 +14,7 @@ class EONET(BaseClient):
     session: :class:`Optional[aiohttp.ClientSession]`
         Optional ClientSession to be used for requests made by this client. Creates a new session by default.
 
-    ..note::
+    .. note::
         Requests to this API do not seem to be subject to api.nasa.gov rate limits.
     """
     def __init__(self, session=None):

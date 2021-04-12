@@ -27,7 +27,7 @@ class Exoplanet(BaseClient):
     session: :class:`Optional[aiohttp.ClientSession]`
         Optional ClientSession to be used for requests made by this client. Creates a new session by default.
 
-    ..note::
+    .. note::
         Requests to this API do not seem to be subject to api.nasa.gov rate limits.
     """
     def __init__(self, session=None):
@@ -96,7 +96,7 @@ class Exoplanet(BaseClient):
         """Query the database.
         Format is requested as CSV and parsed to a pandas DataFrame before returning.
 
-        ..note::
+        .. note::
             ``pandas`` must be installed for this to work.
 
         Returns
@@ -160,7 +160,7 @@ class Exoplanet(BaseClient):
         """Query the database's alias table.
         Format is requested as CSV and parsed to a pandas DataFrame before returning.
 
-        ..note::
+        .. note::
             ``pandas`` must be installed for this to work.
 
         Returns
