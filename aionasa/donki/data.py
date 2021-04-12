@@ -14,6 +14,7 @@ class CME:
     catalog
     """
     def __init__(self, data):
+        self.data = data
         self.activity_id = data['activityID']
         self.start_time = data['startTime']
         self.source_location = data['sourceLocation']
@@ -42,6 +43,7 @@ class CMEAnalysis:
     catalog
     """
     def __init__(self, data):
+        self.data = data
         self.time21_5 = data['time21_5']
         self.latitude = data['latitude']
         self.longitude = data['longitude']
@@ -65,6 +67,7 @@ class GMS:
     linked_events
     """
     def __init__(self, data):
+        self.data = data
         self.gst_id = data['gstID']
         self.start_time = data['start_time']
         self.all_kp_index = data['allKpIndex']
@@ -83,6 +86,7 @@ class IPS:
     instruments
     """
     def __init__(self, data):
+        self.data = data
         self.catalog = data['catalog']
         self.activity_id = data['activityID']
         self.location = data['location']
@@ -106,6 +110,7 @@ class FLR:
     linked_events
     """
     def __init__(self, data):
+        self.data = data
         self.flr_id = data['flrID']
         self.instrument = data['instrument']
         self.begin_time = data['beginTime']
@@ -128,6 +133,7 @@ class SEP:
     linked_events
     """
     def __init__(self, data):
+        self.data = data
         self.sep_id = data['sepID']
         self.event_time = data['eventTime']
         self.instruments = data['instruments']
@@ -145,6 +151,7 @@ class MPC:
     linked_events
     """
     def __init__(self, data):
+        self.data = data
         self.mpc_id = data['mpcID']
         self.event_time = data['eventTime']
         self.instruments = data['instruments']
@@ -162,6 +169,7 @@ class RBE:
     linked_events
     """
     def __init__(self, data):
+        self.data = data
         self.rbe_id = data['rbeID']
         self.event_time = data['eventTime']
         self.instruments = data['instruments']
@@ -179,6 +187,7 @@ class HSS:
     linked_events
     """
     def __init__(self, data):
+        self.data = data
         self.hss_id = data['hssID']
         self.event_time = data['eventTime']
         self.instruments = data['instruments']
@@ -205,6 +214,7 @@ class WSAEnlilSim:
     impact_list
     """
     def __init__(self, data):
+        self.data = data
         self.simulation_id = data['simulationID']
         self.model_completion_time = data['modelCompletionTime']
         self.au = data['au']
@@ -232,6 +242,7 @@ class Notification:
     message_body
     """
     def __init__(self, data):
+        self.data = data
         self.message_type = data['messageType']
         self.message_id = data['messageID']
         self.message_url = data['messageURL']
