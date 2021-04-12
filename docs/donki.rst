@@ -22,32 +22,42 @@ Data Classes
 .. autoclass:: CME
     :members:
 
- .. autoclass:: CMEAnalysis
+
+.. autoclass:: CMEAnalysis
     :members:
 
- .. autoclass:: GMS
+
+.. autoclass:: GMS
     :members:
 
- .. autoclass:: IPS
+
+.. autoclass:: IPS
     :members:
 
- .. autoclass:: FLR
+
+.. autoclass:: FLR
     :members:
 
- .. autoclass:: SEP
+
+.. autoclass:: SEP
     :members:
 
- .. autoclass:: MPC
+
+.. autoclass:: MPC
     :members:
 
- .. autoclass:: RBE
+
+.. autoclass:: RBE
     :members:
 
- .. autoclass:: HSS
+
+.. autoclass:: HSS
     :members:
 
- .. autoclass:: WSAEnlilSim
+
+.. autoclass:: WSAEnlilSim
     :members:
 
- .. autoclass:: Notification
+
+.. autoclass:: Notification
     :members:

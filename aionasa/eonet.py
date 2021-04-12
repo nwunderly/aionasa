@@ -54,6 +54,7 @@ class EONET(BaseClient):
             Pass multiple sources in a list or tuple; this operates as a boolean OR.
         status: :class:`str`
             Sort by the events' status. Defaults to ``open``.
+
             Options: ``open``, ``closed``, ``all``
         limit: :class:`int`
             Limits the number of events returned.
@@ -107,6 +108,7 @@ class EONET(BaseClient):
             Pass multiple sources in a list or tuple; this operates as a boolean OR.
         status: :class:`str`
             Sort by the events' status. Defaults to ``open``.
+
             Options: ``open``, ``closed``, ``all``
         limit: :class:`int`
             Limits the number of events returned.

@@ -121,6 +121,7 @@ class DONKI(BaseClient):
             Lower limit on half angular width, in degrees. Defaults to 0.
         catalog: :class:`str`
             Catalog to search. Defaults to ``ALL``.
+
             Options: ``ALL``, ``SWRC_CATALOG``, ``JANG_ET_AL_CATALOG``
         keyword: :class:`str`
             Keyword to search. Defaults to None
@@ -171,9 +172,11 @@ class DONKI(BaseClient):
             The last date to return data for. Defaults to the current UTC date.
         location: :class:`str`
             Location to search. Defaults to ``ALL``.
+
             Options: ``Earth``, ``MESSENGER``, ``STEREO A``, ``STEREO B``
         catalog: :class:`str`
             Catalog to search. Defaults to ``ALL``.
+
             Options: ``ALL``, ``SWRC_CATALOG``, ``WINSLOW_MESSENGER_ICME_CATALOG``
 
         Returns
@@ -303,6 +306,7 @@ class DONKI(BaseClient):
             The last date to return data for. Defaults to the current UTC date.
         type: :class:`str`
             The event type. Defaults to ``all``.
+
             Options: ``all``, ``FLR``, ``SEP``, ``CME``, ``IPS``, ``MPC``, ``GST``, ``RBE``, ``report``
 
         Returns
