@@ -2,7 +2,7 @@ import argparse
 import asyncio
 import os
 
-from aionasa.epic.api import EPIC
+from aionasa.epic import EPIC
 from aionasa.utils import date_strptime
 
 from gui import open_gui

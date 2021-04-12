@@ -1,5 +1,5 @@
 import asyncio
-from aionasa.mars_photos.api import MarsPhotos
+from aionasa.mars_photos import MarsPhotos
 
 
 async def main():

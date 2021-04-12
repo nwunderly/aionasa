@@ -19,7 +19,7 @@ from .rate_limit import RateLimiter
 from .errors import *
 
 from .apod import APOD, AstronomyPicture
-from .donki import DONKI, CME, CMEAnalysis, GMS, IPS, FLR, SEP, MPC, RBE, HSS, WSAEnlilSim, Notification
+from .donki import DONKI, CME, CMEAnalysis, GST, IPS, FLR, SEP, MPC, RBE, HSS, WSAEnlilSim, Notification
 from .insight import InSight
 from .epic import EPIC, EarthImage
 from .neows import NeoWs, Asteroid

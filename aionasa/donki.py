@@ -1,5 +1,7 @@
 import logging
 
+import aiohttp
+
 from .client import BaseClient
 from .errors import APIException
 from .rate_limit import default_rate_limiter, demo_rate_limiter
@@ -58,10 +60,15 @@ class DONKI(BaseClient):
         if self.rate_limiter:
             await self.rate_limiter.wait()
 
+        print(url)
+
         async with self._session.get(url) as resp:
             if resp.status != 200:
                 raise APIException(resp.status, resp.reason)
-            data = await resp.json()
+            try:
+                data = await resp.json()
+            except aiohttp.ContentTypeError:
+                return []
 
         if self.rate_limiter:
             remaining = int(resp.headers['X-RateLimit-Remaining'])
@@ -70,10 +77,11 @@ class DONKI(BaseClient):
         return data
 
     async def _get_for_date_range(self, path, start_date, end_date):
-        query = {
-            'start_date': start_date.strftime('%Y-%m-%d') if start_date else None,
-            'end_date': end_date.strftime('%Y-%m-%d') if end_date else None,
-        }
+        query = {}
+        if start_date:
+            query['startDate'] = start_date.strftime('%Y-%m-%d')
+        if end_date:
+            query['endDate'] = end_date.strftime('%Y-%m-%d')
         json = await self._get_json(path, query)
         return json
 
@@ -147,10 +155,10 @@ class DONKI(BaseClient):
 
         Returns
         -------
-        :class:`List[GMS]`
+        :class:`List[GST]`
         """
-        json = await self._get_for_date_range('/GMS', start_date, end_date)
-        return _from_list(GMS, json)
+        json = await self._get_for_date_range('/GST', start_date, end_date)
+        return _from_list(GST, json)
 
     async def interplanetary_shocks(self, start_date=None, end_date=None, location=None, catalog=None):
         """Get information on interplanetary shock events for a particular date range.
@@ -307,7 +315,7 @@ class DONKI(BaseClient):
             'type': type,
         }
 
-        json = await self._get_json('/WSAEnlilSimulations', query)
+        json = await self._get_json('/notifications', query)
         return _from_list(Notification, json)
 
 
@@ -369,7 +377,7 @@ class CMEAnalysis:
         self.catalog = data['catalog']
 
 
-class GMS:
+class GST:
     """A geomagnetic storm event.
 
     Attributes
@@ -382,7 +390,7 @@ class GMS:
     def __init__(self, data):
         self.data = data
         self.gst_id = data['gstID']
-        self.start_time = data['start_time']
+        self.start_time = data['startTime']
         self.all_kp_index = data['allKpIndex']
         self.linked_events = data['linkedEvents']
 

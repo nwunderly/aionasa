@@ -1,5 +1,5 @@
 import asyncio
-from aionasa.exoplanet.api import Exoplanet
+from aionasa.exoplanet import Exoplanet
 
 
 async def _test_method(ref, name, *args, **kwargs):

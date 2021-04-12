@@ -17,11 +17,13 @@ Contents
    :maxdepth: 2
 
    apod
-   insight
+   donki
    epic
-   neows
+   eonet
    exoplanet
+   insight
    mars_photos
+   neows
    utilities
 
 

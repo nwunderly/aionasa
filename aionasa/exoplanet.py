@@ -22,11 +22,16 @@ BASE_URL = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nsted
 class Exoplanet(BaseClient):
     """Client for NASA Exoplanet Archive API.
 
+    Parameters
+    ----------
+    session: :class:`Optional[aiohttp.ClientSession]`
+        Optional ClientSession to be used for requests made by this client. Creates a new session by default.
+
     ..note::
         Requests to this API do not seem to be subject to api.nasa.gov rate limits.
     """
-    def __init__(self, api_key='DEMO_KEY', session=None):
-        super().__init__(api_key, session, None)
+    def __init__(self, session=None):
+        super().__init__(api_key=None, session=session, rate_limiter=None)
 
     async def _get_raw(self, querystring):
         url = f"{BASE_URL}?{querystring}"
