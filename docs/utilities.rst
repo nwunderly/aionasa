@@ -37,5 +37,5 @@ Class used internally by aionasa API clients to follow NASA API rate limits.
 Miscellaneous utilities
 -----------------------
 
-.. automodule:: utils
+.. automodule:: .utils
     :members:
