@@ -1,5 +1,5 @@
 """
-aio-nasa exceptions
+aionasa exceptions
 """
 
 

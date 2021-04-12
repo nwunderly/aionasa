@@ -7,12 +7,10 @@ Mars Rover Photos API Reference
 This page provides a breakdown of the aionasa Mars Rover Photos module.
 
 
-Mars Rover Photos API request structure:
-----------------------------------------
+Mars Rover Photos API request structure
+---------------------------------------
 
-This API is maintained by Chris Cerami. The repo can be found `here`_.
-
-.. _here: https://github.com/chrisccerami/mars-photo-api
+This API is maintained by Chris Cerami. The repo can be found `here <https://github.com/chrisccerami/mars-photo-api>`_.
 
 
 Client

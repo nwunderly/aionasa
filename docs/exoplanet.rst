@@ -7,8 +7,8 @@ Exoplanet API Reference
 This page provides a breakdown of the aionasa Exoplanet module.
 
 
-Exoplanet API request structure:
---------------------------------
+Exoplanet API request structure
+-------------------------------
 
 See the exoplanet API `documentation`_ for in-depth information about the REST API, including table schema and query syntax.
 
