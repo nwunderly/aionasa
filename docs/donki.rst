@@ -27,7 +27,7 @@ Data Classes
     :members:
 
 
-.. autoclass:: GMS
+.. autoclass:: GST
     :members:
 
 
