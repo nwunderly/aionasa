@@ -136,6 +136,7 @@ class APOD(BaseClient):
 
 class AstronomyPicture(Asset):
     """A class representing a single daily APOD picture.
+
     Attributes
     ----------
     client: :class:`APOD`

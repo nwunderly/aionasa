@@ -2,28 +2,23 @@
 An async python wrapper for NASA open APIs. ([api.nasa.gov](https://api.nasa.gov/))
 
 
+[![PyPI version](https://badge.fury.io/py/aionasa.svg)](https://pypi.org/project/aionasa)
+
+
 #### Disclaimer
 This module is still in the development/testing phase.
 Bugs are still being worked out and breaking changes are common.
 
 
-#### Current Progress: 5/17 APIs
+#### Current Progress: 8/17 APIs
 - APOD: NASA Astronomy Picture of the Day
-    - API: **complete**
-    - CLI: **complete**
-    - Documentation: **complete**
 - InSight: Mars Weather Data
-    - API: **complete**
-    - Documentation: **complete**
 - EPIC: Earth Polychromatic Imaging Camera
-    - API: **complete**
-    - Documentation: **complete**
 - Asteroids-NeoWs: Near Earth Object Web Service
-    - API: **complete**
-    - Documentation: **complete**
 - Exoplanet: NASA Exoplanet Database
-    - API: **complete**
-    - Documentation: **complete**
+- Mars Rover Photos
+- DONKI: Space Weather Database Of Notifications, Knowledge, Information
+- EONET: Earth Observatory Natural Event Tracker
 
 
 #### Installing
@@ -51,15 +46,10 @@ $ ipython
 ```
 
 ```python
-from aionasa import APOD, InSight
+from aionasa import APOD
 
 async with APOD() as apod:
     picture = await apod.get()
 
 picture.url # this will be the most recent APOD image URL.
-
-async with InSight() as insight:
-    data = await insight.get()
-
-data # this will be a dict containing the JSON data returned by the API.
 ```
