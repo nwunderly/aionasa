@@ -1,8 +1,8 @@
 import logging
 
-from ..client import BaseClient
-from ..errors import APIException
-from ..rate_limit import insight_rate_limiter, demo_rate_limiter
+from .client import BaseClient
+from .errors import APIException
+from .rate_limit import insight_rate_limiter, demo_rate_limiter
 
 logger = logging.getLogger('aionasa.insight')
 
@@ -54,4 +54,3 @@ class InSight(BaseClient):
             self.rate_limiter.update(remaining)
 
         return json
-

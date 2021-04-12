@@ -18,11 +18,9 @@ from .client import BaseClient
 from .rate_limit import RateLimiter
 from .errors import *
 
-from .apod.api import APOD
-from .apod.data import AstronomyPicture
-from .insight.api import InSight
-from .epic.api import EPIC
-from .epic.data import EarthImage
-from .neows.api import NeoWs
-from .neows.data import Asteroid
-from .exoplanet.api import Exoplanet
+from .apod import APOD, AstronomyPicture
+from .donki import DONKI, CME, CMEAnalysis, GMS, IPS, FLR, SEP, MPC, RBE, HSS, WSAEnlilSim, Notification
+from .insight import InSight
+from .epic import EPIC, EarthImage
+from .neows import NeoWs, Asteroid
+from .exoplanet import Exoplanet

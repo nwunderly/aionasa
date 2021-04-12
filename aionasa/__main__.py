@@ -5,9 +5,9 @@ import argparse
 import json
 import yaml
 
-from .api import APOD
-from ..errors import ArgumentError
-from ..utils import date_strptime
+from .apod import APOD
+from .errors import ArgumentError
+from .utils import date_strptime
 
 
 __doc__ = """

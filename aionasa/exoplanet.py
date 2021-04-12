@@ -7,9 +7,8 @@ try:
 except ImportError:
     pandas = None
 
-from ..client import BaseClient
-from ..rate_limit import default_rate_limiter, demo_rate_limiter
-from ..errors import APIException, PandasNotFound
+from .client import BaseClient
+from .errors import APIException, PandasNotFound
 
 logger = logging.getLogger('aionasa.exoplanet')
 
