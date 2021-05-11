@@ -1,4 +1,5 @@
 import setuptools
+import re
 
 
 with open('./README.md', 'r') as fp:
@@ -6,10 +7,12 @@ with open('./README.md', 'r') as fp:
 
 
 with open('./aionasa/__init__.py', 'r') as fp:
-    # FIRST LINE:
-    # __version__ = '<version>'
-    line = fp.readline()
-    version = eval(line[14:])
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', fp.read(), re.MULTILINE).group(1)
+
+
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
+
 
 # packages = ['aionasa']
 # packages.extend(setuptools.find_packages('./aionasa'))
@@ -26,14 +29,15 @@ setuptools.setup(
     description='An async python wrapper for NASA open APIs.',
     long_description=long_description,
     long_description_content_type='text/markdown',
+    install_requires=requirements,
     extras_require={
         'docs': [
             'sphinx',
             'sphinxcontrib_trio',
         ],
     },
-    packages=setuptools.find_packages(),
     python_requires='>=3.8',
+    packages=setuptools.find_packages(),
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'License :: OSI Approved :: MIT License',
