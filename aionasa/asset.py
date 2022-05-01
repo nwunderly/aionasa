@@ -2,8 +2,7 @@ from .errors import *
 
 
 class Asset:
-    """Generic class representing a file asset URL.
-    """
+    """Generic class representing a file asset URL."""
 
     def __init__(self, client, url, filename):
         self.client = client
@@ -56,7 +55,7 @@ class Asset:
         async with self.client._session.get(url) as response:
             if response.status != 200:
                 raise APIException(response.status, response.reason)
-            with open(path, 'wb') as f:
+            with open(path, "wb") as f:
                 bytes_written = 0
                 while True:
                     chunk = await response.content.read(1000)
@@ -84,4 +83,3 @@ class Asset:
             self._response = None
 
         return chunk
-

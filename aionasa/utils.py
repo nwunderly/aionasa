@@ -1,4 +1,4 @@
-from datetime import datetime, date, timedelta
+from datetime import date, datetime, timedelta
 
 
 def date_strptime(date_string):
@@ -16,14 +16,11 @@ def date_strptime(date_string):
     :class:`datetime.date`
         The converted date.
     """
-    keywords = {
-        'today': date.today(),
-        'yesterday': date.today() - timedelta(days=1)
-    }
+    keywords = {"today": date.today(), "yesterday": date.today() - timedelta(days=1)}
     if date_string in keywords.keys():
         return keywords[date_string]
 
-    return datetime.strptime(date_string, f'%Y-%m-%d').date()
+    return datetime.strptime(date_string, f"%Y-%m-%d").date()
 
 
 def datetime_strptime(date_string, seconds=False):
@@ -44,6 +41,6 @@ def datetime_strptime(date_string, seconds=False):
         The converted datetime.
     """
     if seconds:
-        return datetime.strptime(date_string, '%Y-%m-%d %H:%M:%S')
+        return datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S")
     else:
-        return datetime.strptime(date_string, '%Y-%m-%d %H:%M')
+        return datetime.strptime(date_string, "%Y-%m-%d %H:%M")

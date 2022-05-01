@@ -7,9 +7,8 @@ except ImportError:
     pandas = None
 
 from ..client import BaseClient
-from ..rate_limit import default_rate_limiter, demo_rate_limiter
 from ..errors import APIException, PandasNotFound
-
+from ..rate_limit import default_rate_limiter, demo_rate_limiter
 
 ####################################################################################################################################
 # Note: in-depth documentation for this API can be found at https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.html #
@@ -25,7 +24,8 @@ class Exoplanet(BaseClient):
     ..note::
         Requests to this API do not seem to be subject to api.nasa.gov rate limits.
     """
-    def __init__(self, api_key='DEMO_KEY', session=None):
+
+    def __init__(self, api_key="DEMO_KEY", session=None):
         super().__init__(api_key, session, None)
 
     async def _get_raw(self, querystring):
@@ -80,7 +80,7 @@ class Exoplanet(BaseClient):
             The parsed JSON data returned by the API.
         """
         querystring = f"table={table}"
-        query['format'] = 'json'
+        query["format"] = "json"
         queries = [f"{param}={value}" for param, value in query.items() if value]
         querystring += "&" + "&".join(queries) if query else ""
 
@@ -100,7 +100,7 @@ class Exoplanet(BaseClient):
             The parsed JSON data returned by the API.
         """
         querystring = f"table={table}"
-        query['format'] = 'csv'
+        query["format"] = "csv"
         queries = [f"{param}={value}" for param, value in query.items() if value]
         querystring += "&" + "&".join(queries) if query else ""
 
@@ -144,7 +144,7 @@ class Exoplanet(BaseClient):
             The alias table returned by the API.
         """
         querystring = f"table=aliastable&objname={objname}"
-        query['format'] = 'json'
+        query["format"] = "json"
         queries = [f"{param}={value}" for param, value in query.items() if value]
         querystring += "&" + "&".join(queries) if query else ""
 
@@ -164,7 +164,7 @@ class Exoplanet(BaseClient):
             The alias table returned by the API.
         """
         querystring = f"table=aliastable&objname={objname}"
-        query['format'] = 'csv'
+        query["format"] = "csv"
         queries = [f"{param}={value}" for param, value in query.items() if value]
         querystring += "&" + "&".join(queries) if query else ""
 
