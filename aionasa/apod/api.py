@@ -2,12 +2,12 @@ import datetime
 import logging
 from typing import List
 
-from .data import AstronomyPicture
 from ..client import BaseClient
 from ..errors import *
 from ..rate_limit import default_rate_limiter, demo_rate_limiter
+from .data import AstronomyPicture
 
-logger = logging.getLogger('aionasa.apod')
+logger = logging.getLogger("aionasa.apod")
 
 
 class APOD(BaseClient):
@@ -22,8 +22,11 @@ class APOD(BaseClient):
     rate_limiter: :class:`Optional[RateLimiter]`
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
     """
-    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):
-        if api_key == 'DEMO_KEY' and rate_limiter:
+
+    def __init__(
+        self, api_key="DEMO_KEY", session=None, rate_limiter=default_rate_limiter
+    ):
+        if api_key == "DEMO_KEY" and rate_limiter:
             rate_limiter = demo_rate_limiter
         super().__init__(api_key, session, rate_limiter)
 
@@ -44,9 +47,9 @@ class APOD(BaseClient):
         """
 
         if date is None:  # parameter will be left out of the query.
-            date = ''
+            date = ""
         else:
-            date = 'date=' + date.strftime('%Y-%m-%d') + '&'
+            date = "date=" + date.strftime("%Y-%m-%d") + "&"
 
         request = f"https://api.nasa.gov/planetary/apod?{date}api_key={self._api_key}"
 
@@ -60,25 +63,22 @@ class APOD(BaseClient):
             json = await response.json()
 
         if self.rate_limiter:
-            remaining = int(response.headers['X-RateLimit-Remaining'])
+            remaining = int(response.headers["X-RateLimit-Remaining"])
             self.rate_limiter.update(remaining)
 
         if as_json:
             return json
 
         else:
-            date = json.get('date')
-            date = datetime.datetime.strptime(date, '%Y-%m-%d').date() if date else None
+            date = json.get("date")
+            date = datetime.datetime.strptime(date, "%Y-%m-%d").date() if date else None
 
-            entry = AstronomyPicture(
-                client=self,
-                date=date,
-                json=json
-            )
+            entry = AstronomyPicture(client=self, date=date, json=json)
             return entry
 
-    async def batch_get(self, start_date: datetime.date, end_date: datetime.date,
-                        as_json: bool = False):
+    async def batch_get(
+        self, start_date: datetime.date, end_date: datetime.date, as_json: bool = False
+    ):
         """Retrieves multiple items from NASA's APOD API. Returns a list of APOD entries.
 
         Parameters
@@ -96,8 +96,8 @@ class APOD(BaseClient):
             A list of AstronomyPicture objects containing data returned by the API.
         """
 
-        start_date = 'start_date=' + start_date.strftime('%Y-%m-%d') + '&'
-        end_date = 'end_date=' + end_date.strftime('%Y-%m-%d') + '&'
+        start_date = "start_date=" + start_date.strftime("%Y-%m-%d") + "&"
+        end_date = "end_date=" + end_date.strftime("%Y-%m-%d") + "&"
 
         request = f"https://api.nasa.gov/planetary/apod?{start_date}{end_date}api_key={self._api_key}"
 
@@ -111,7 +111,7 @@ class APOD(BaseClient):
             json = await response.json()
 
         if self.rate_limiter:
-            remaining = int(response.headers['X-RateLimit-Remaining'])
+            remaining = int(response.headers["X-RateLimit-Remaining"])
             self.rate_limiter.update(remaining)
 
         if as_json:
@@ -122,14 +122,14 @@ class APOD(BaseClient):
 
             for item in json:
 
-                date = item.get('date')
-                date = datetime.datetime.strptime(date, '%Y-%m-%d').date() if date else None
-
-                entry = AstronomyPicture(
-                    client=self,
-                    date=date,
-                    json=json
+                date = item.get("date")
+                date = (
+                    datetime.datetime.strptime(date, "%Y-%m-%d").date()
+                    if date
+                    else None
                 )
+
+                entry = AstronomyPicture(client=self, date=date, json=json)
                 result.append(entry)
 
             return result

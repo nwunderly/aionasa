@@ -2,10 +2,9 @@ import logging
 
 from ..client import BaseClient
 from ..errors import APIException
-from ..rate_limit import insight_rate_limiter, demo_rate_limiter
+from ..rate_limit import demo_rate_limiter, insight_rate_limiter
 
-
-logger = logging.getLogger('aionasa.insight')
+logger = logging.getLogger("aionasa.insight")
 
 
 class InSight(BaseClient):
@@ -21,19 +20,25 @@ class InSight(BaseClient):
         Optional RateLimiter class to be used by this client. Uses the library's internal global rate limiting by default.
     """
 
-    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=insight_rate_limiter, **kwargs):
-        if api_key == 'DEMO_KEY' and rate_limiter:
+    def __init__(
+        self,
+        api_key="DEMO_KEY",
+        session=None,
+        rate_limiter=insight_rate_limiter,
+        **kwargs,
+    ):
+        if api_key == "DEMO_KEY" and rate_limiter:
             rate_limiter = demo_rate_limiter
         super().__init__(api_key, session, rate_limiter, **kwargs)
 
-    async def get(self, feedtype='json'):
+    async def get(self, feedtype="json"):
         """Retrieves Mars weather data from the last seven available days.
 
         Parameters
         ----------
         feedtype: :class:`str`
             The format of what is returned. Currently the default is JSON and only JSON works.
-        
+
         Returns
         -------
         :class:`dict`
@@ -52,8 +57,7 @@ class InSight(BaseClient):
             json = await response.json()
 
         if self.rate_limiter:
-            remaining = int(response.headers['X-RateLimit-Remaining'])
+            remaining = int(response.headers["X-RateLimit-Remaining"])
             self.rate_limiter.update(remaining)
 
         return json
-

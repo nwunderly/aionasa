@@ -30,22 +30,23 @@ class AstronomyPicture(Asset):
     service_version:
         The API service version. The API version is currently ``'v1'``.
     """
+
     def __init__(self, client, date: datetime.date, json):
         self.client = client
         self.date = date
         self.json = json
-        self.copyright = json.get('copyright')
-        self.title = json.get('title')
-        self.explanation = json.get('explanation')
-        self.url = json.get('url')
-        self.hdurl = json.get('hdurl')
-        self.media_type = json.get('media_type')
-        self.service_version = json.get('service_version')
+        self.copyright = json.get("copyright")
+        self.title = json.get("title")
+        self.explanation = json.get("explanation")
+        self.url = json.get("url")
+        self.hdurl = json.get("hdurl")
+        self.media_type = json.get("media_type")
+        self.service_version = json.get("service_version")
 
         site_formatted_date = f"{str(date.year)[2:]}{date.month:02d}{date.day:02d}"
         self.html_url = f"https://apod.nasa.gov/apod/ap{site_formatted_date}.html"
 
-        super().__init__(client, self.url, self.url.split('/')[-1])
+        super().__init__(client, self.url, self.url.split("/")[-1])
 
     async def read(self, hdurl: bool = True):
         """Downloads the image associated with this AstronomyPicture.
@@ -65,8 +66,13 @@ class AstronomyPicture(Asset):
         else:
             url = self.url
 
-        if not (url.startswith('http://apod.nasa.gov') or url.startswith('https://apod.nasa.gov')):
-            raise NotImplementedError("URLs from outside apod.nasa.gov are not currently supported.")
+        if not (
+            url.startswith("http://apod.nasa.gov")
+            or url.startswith("https://apod.nasa.gov")
+        ):
+            raise NotImplementedError(
+                "URLs from outside apod.nasa.gov are not currently supported."
+            )
 
         return await super().read(url)
 
@@ -86,8 +92,13 @@ class AstronomyPicture(Asset):
         else:
             url = self.url
 
-        if not (url.startswith('http://apod.nasa.gov') or url.startswith('https://apod.nasa.gov')):
-            raise NotImplementedError("URLs from outside apod.nasa.gov are not currently supported.")
+        if not (
+            url.startswith("http://apod.nasa.gov")
+            or url.startswith("https://apod.nasa.gov")
+        ):
+            raise NotImplementedError(
+                "URLs from outside apod.nasa.gov are not currently supported."
+            )
 
         return await super().save(path=path, url=url)
 
@@ -111,7 +122,12 @@ class AstronomyPicture(Asset):
         else:
             url = self.url
 
-        if not (url.startswith('http://apod.nasa.gov') or url.startswith('https://apod.nasa.gov')):
-            raise NotImplementedError("URLs from outside apod.nasa.gov are not currently supported.")
+        if not (
+            url.startswith("http://apod.nasa.gov")
+            or url.startswith("https://apod.nasa.gov")
+        ):
+            raise NotImplementedError(
+                "URLs from outside apod.nasa.gov are not currently supported."
+            )
 
         await super().read_chunk(chunk_size, self.url)

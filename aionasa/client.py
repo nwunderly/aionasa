@@ -5,7 +5,10 @@ class BaseClient:
     """
     Base class for NASA API clients.
     """
-    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=None, timeout=None):
+
+    def __init__(
+        self, api_key="DEMO_KEY", session=None, rate_limiter=None, timeout=None
+    ):
         """
         Initializes the client class.
 

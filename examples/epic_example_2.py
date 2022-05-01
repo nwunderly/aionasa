@@ -1,8 +1,7 @@
-import os
 import asyncio
+import os
 
 from aionasa import EPIC
-
 
 """
 A sample script that downloads all enhanced images from the most recent date
@@ -21,8 +20,8 @@ async def main():
         images = await epic.enhanced_images()
 
         # the images will be downloaded to a new folder
-        os.mkdir('epic-images')
-        os.chdir('epic-images')
+        os.mkdir("epic-images")
+        os.chdir("epic-images")
 
         # the library allows for images to be downloaded easily with the
         # asynchronous Asset.save() method.
@@ -31,7 +30,7 @@ async def main():
             await image.save()
             n += 1
 
-        print(f'Downloaded {n} images.')
+        print(f"Downloaded {n} images.")
 
 
 # run the 'main' coroutine
