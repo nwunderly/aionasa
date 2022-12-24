@@ -2,7 +2,6 @@ from typing import List
 
 from ..utils import date_strptime, datetime_strptime
 
-
 ##########################################################################
 # NOTE: "epoch" should generally refer to the J2000 epoch (January 2000) #
 ##########################################################################
@@ -35,30 +34,34 @@ class Asteroid:
     orbital_data: :class:`OrbitalData`
         Information regarding this NEO's orbit.
     """
+
     def __init__(self, json):
         self.json = json
-        self.id = int(json['id'])
+        self.id = int(json["id"])
         # self.neo_reference_id = int(json['neo_reference_id'])
-        self.name = json['designation']
+        self.name = json["designation"]
         # self.designation = json['designation']
-        self.nasa_jpl_url = json['nasa_jpl_url']
-        self.absolute_magnitude_h = float(json['absolute_magnitude_h'])
-        self.is_potentially_hazardous_asteroid = json['is_potentially_hazardous_asteroid']
-        self.is_sentry_object = json['is_sentry_object']
-        self.estimated_diameter = json['estimated_diameter']  # TODO: make this not terrible
-        self.close_approach_data = CloseApproach._from_list(json['close_approach_data'])
-        self.orbital_data = OrbitalData(json['orbital_data'])
+        self.nasa_jpl_url = json["nasa_jpl_url"]
+        self.absolute_magnitude_h = float(json["absolute_magnitude_h"])
+        self.is_potentially_hazardous_asteroid = json[
+            "is_potentially_hazardous_asteroid"
+        ]
+        self.is_sentry_object = json["is_sentry_object"]
+        self.estimated_diameter = json[
+            "estimated_diameter"
+        ]  # TODO: make this not terrible
+        self.close_approach_data = CloseApproach._from_list(json["close_approach_data"])
+        self.orbital_data = OrbitalData(json["orbital_data"])
 
     @classmethod
     def _from_list(cls, json):
         return [cls(obj) for obj in json]
 
     def min_diameter(self, unit):
-        return self.estimated_diameter[unit]['estimated_diameter_min']
+        return self.estimated_diameter[unit]["estimated_diameter_min"]
 
     def max_diameter(self, unit):
-        return self.estimated_diameter[unit]['estimated_diameter_max']
-
+        return self.estimated_diameter[unit]["estimated_diameter_max"]
 
 
 class CloseApproach:
@@ -82,18 +85,21 @@ class CloseApproach:
     miss_distance: :class:`dict`
         The distance by which this NEO missed the Earth during this close approach.
     """
+
     def __init__(self, json):
         self.json = json
-        close_approach_date = json['close_approach_date']
-        close_approach_time = json['close_approach_date_full'].split()[1]
+        close_approach_date = json["close_approach_date"]
+        close_approach_time = json["close_approach_date_full"].split()[1]
         self.date = date_strptime(close_approach_date)
-        self.date_full = datetime_strptime(f'{close_approach_date} {close_approach_time}')
-        self.epoch_date = int(json['epoch_date'])
-        self.orbiting_body = json['orbiting_body']
+        self.date_full = datetime_strptime(
+            f"{close_approach_date} {close_approach_time}"
+        )
+        self.epoch_date = int(json["epoch_date"])
+        self.orbiting_body = json["orbiting_body"]
 
         # TODO: make these nicer
-        self.relative_velocity = json['relative_velocity']
-        self.miss_distance = json['miss_distance']
+        self.relative_velocity = json["relative_velocity"]
+        self.miss_distance = json["miss_distance"]
 
     @classmethod
     def _from_list(cls, json):
@@ -155,31 +161,34 @@ class OrbitalData:
 
     .. _TDB: https://www.timeanddate.com/time/terrestrial-dynamic-time.html
     """
+
     def __init__(self, json):
         self.json = json
-        self.orbit_id = int(json['orbit_id'])
-        self.orbit_determination_date = datetime_strptime(json['orbit_determination_date'], seconds=True)
-        self.first_observation_date = date_strptime(json['first_observation_date'])
-        self.last_observation_date = date_strptime(json['last_observation_date'])
-        self.data_arc_in_days = int(json['data_arc_in_days'])
-        self.observations_used = int(json['observations_used'])
-        self.orbit_uncertainty = int(json['orbit_uncertainty'])  # TODO: INT OR FLOAT??
-        self.minimum_orbit_intersection = float(json['minimum_orbit_intersection'])
-        self.jupiter_tisserand_invariant = float(json['jupiter_tisserand_invariant'])
-        self.epoch_osculation = float(json['epoch_osculation'])
-        self.eccentricity = float(json['eccentricity'])
-        self.semi_major_axis = float(json['semi_major_axis'])
-        self.inclination = float(json['inclination'])
-        self.ascending_node_longitude = float(json['ascending_node_longitude'])
-        self.orbital_period = float(json['orbital_period'])
-        self.perihelion_distance = float(json['perihelion_distance'])
-        self.perihelion_argument = float(json['perihelion_argument'])
-        self.aphelion_distance = float(json['aphelion_distance'])
-        self.perihelion_time = float(json['perihelion_time'])
-        self.mean_anomaly = float(json['mean_anomaly'])
-        self.mean_motion = float(json['mean_motion'])
-        self.equinox = json['equinox']
-        self.orbit_class = json['orbit_class']  # TODO: clean this up
+        self.orbit_id = int(json["orbit_id"])
+        self.orbit_determination_date = datetime_strptime(
+            json["orbit_determination_date"], seconds=True
+        )
+        self.first_observation_date = date_strptime(json["first_observation_date"])
+        self.last_observation_date = date_strptime(json["last_observation_date"])
+        self.data_arc_in_days = int(json["data_arc_in_days"])
+        self.observations_used = int(json["observations_used"])
+        self.orbit_uncertainty = int(json["orbit_uncertainty"])  # TODO: INT OR FLOAT??
+        self.minimum_orbit_intersection = float(json["minimum_orbit_intersection"])
+        self.jupiter_tisserand_invariant = float(json["jupiter_tisserand_invariant"])
+        self.epoch_osculation = float(json["epoch_osculation"])
+        self.eccentricity = float(json["eccentricity"])
+        self.semi_major_axis = float(json["semi_major_axis"])
+        self.inclination = float(json["inclination"])
+        self.ascending_node_longitude = float(json["ascending_node_longitude"])
+        self.orbital_period = float(json["orbital_period"])
+        self.perihelion_distance = float(json["perihelion_distance"])
+        self.perihelion_argument = float(json["perihelion_argument"])
+        self.aphelion_distance = float(json["aphelion_distance"])
+        self.perihelion_time = float(json["perihelion_time"])
+        self.mean_anomaly = float(json["mean_anomaly"])
+        self.mean_motion = float(json["mean_motion"])
+        self.equinox = json["equinox"]
+        self.orbit_class = json["orbit_class"]  # TODO: clean this up
 
 
 # # TODO: maybe make this an enum

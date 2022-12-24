@@ -12,17 +12,18 @@ class NeoWsFeedPage:
     element_count: :class:`int`
         Number of Asteroids on this page.
     """
+
     def __init__(self, client, json):
         self.json = json
         self._client = client
         self._session = client.session
-        self._url_self = json['links']['self']
-        self._url_prev = json['links']['prev']
-        self._url_next = json['links']['next']
-        self.element_count = json['element_count']
+        self._url_self = json["links"]["self"]
+        self._url_prev = json["links"]["prev"]
+        self._url_next = json["links"]["next"]
+        self.element_count = json["element_count"]
 
         self.near_earth_objects = {}
-        for date, asteroids in json['near_earth_objects'].items():
+        for date, asteroids in json["near_earth_objects"].items():
             self.near_earth_objects[date] = Asteroid._from_list(asteroids)
 
     async def next(self):
@@ -65,21 +66,22 @@ class NeoWsBrowsePage:
     element_count
         Number of Asteroids on this page.
     """
+
     def __init__(self, client, json):
         self.json = json
         self._client = client
         self._session = client.session
-        self._url_self = json['links']['self']
+        self._url_self = json["links"]["self"]
 
         # one of these might be None (if it's the first or last page)
-        self._url_prev = json['links'].get('prev')
-        self._url_next = json['links'].get('next')
+        self._url_prev = json["links"].get("prev")
+        self._url_next = json["links"].get("next")
 
-        self.page_number = json['page']['number']
-        self.page_size = json['page']['size']
-        self.page_count = json['page']['total_pages']
-        self.element_count = json['page']['total_elements']
-        self.near_earth_objects = Asteroid._from_list(json['near_earth_objects'])
+        self.page_number = json["page"]["number"]
+        self.page_size = json["page"]["size"]
+        self.page_count = json["page"]["total_pages"]
+        self.element_count = json["page"]["total_elements"]
+        self.near_earth_objects = Asteroid._from_list(json["near_earth_objects"])
 
     async def next(self):
         """Returns the next page in the browse feed.
@@ -90,7 +92,9 @@ class NeoWsBrowsePage:
             The next page in the feed.
         """
         if not self._url_next:
-            raise ValueError(f"Last page has no next page available. (Page {self.page_number})")
+            raise ValueError(
+                f"Last page has no next page available. (Page {self.page_number})"
+            )
         json = await self._client._get(self._url_next)
         return NeoWsBrowsePage(self._client, json)
 
@@ -103,6 +107,8 @@ class NeoWsBrowsePage:
             The previous page in the feed.
         """
         if not self._url_prev:
-            raise ValueError(f"First page has no previous page available. (Page {self.page_number})")
+            raise ValueError(
+                f"First page has no previous page available. (Page {self.page_number})"
+            )
         json = await self._client._get(self._url_prev)
         return NeoWsBrowsePage(self._client, json)

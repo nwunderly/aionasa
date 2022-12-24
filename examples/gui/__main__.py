@@ -2,12 +2,14 @@ import argparse
 import asyncio
 import os
 
+from gui import open_gui
+
 from aionasa.epic.api import EPIC
 from aionasa.utils import date_strptime
 
-from gui import open_gui
-
-__doc__ = "Download some images from NASA's EPIC archive and open them in a gui browser."
+__doc__ = (
+    "Download some images from NASA's EPIC archive and open them in a gui browser."
+)
 usage = "python -m aionasa.epic [-h] [--date DATE] [--collection COLLECTION] img_folder"
 
 
@@ -16,17 +18,15 @@ def argument_parser():
     parser = argparse.ArgumentParser(description=__doc__, usage=usage)
 
     parser.add_argument(
-        '--date', '-d', type=date_strptime, default=None,
-        help="Format: YYYY-MM-DD"
+        "--date", "-d", type=date_strptime, default=None, help="Format: YYYY-MM-DD"
     )
     parser.add_argument(
-        '--collection', '-c', default='natural',
-        help="Collection to get images from. Should be 'natural', 'enhanced', or 'natural,enhanced'"
+        "--collection",
+        "-c",
+        default="natural",
+        help="Collection to get images from. Should be 'natural', 'enhanced', or 'natural,enhanced'",
     )
-    parser.add_argument(
-        'img_folder',
-        help='Directory to download the images to.'
-    )
+    parser.add_argument("img_folder", help="Directory to download the images to.")
 
     return parser
 
@@ -48,22 +48,22 @@ async def setup(date, path, collection):
     async with EPIC() as epic:
         # API request, gets images (urls etc)
         images = []
-        if 'natural' in collection:
+        if "natural" in collection:
             images += await epic.natural_images(date)
-        if 'enhanced' in collection:
+        if "enhanced" in collection:
             images += await epic.enhanced_images(date)
 
         # download the images asynchronously
-        print('downloading', len(images), 'images.')
-        tasks = [_task(image.save, path + '/' + image.filename) for image in images]
+        print("downloading", len(images), "images.")
+        tasks = [_task(image.save, path + "/" + image.filename) for image in images]
         await asyncio.gather(*tasks)
 
 
 async def main():
-    await setup(args.date, args.img_folder, args.collection.split(','))
+    await setup(args.date, args.img_folder, args.collection.split(","))
     open_gui(args.img_folder)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = argument_parser().parse_args()
     asyncio.run(main())

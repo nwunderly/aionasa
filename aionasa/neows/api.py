@@ -1,21 +1,21 @@
 import datetime
 import logging
 
-from .paginators import NeoWsFeedPage
 from ..client import BaseClient
 from ..errors import *
 from ..rate_limit import default_rate_limiter, demo_rate_limiter
+from .paginators import NeoWsFeedPage
 
-
-logger = logging.getLogger('aionasa.neows')
+logger = logging.getLogger("aionasa.neows")
 
 
 class NeoWs(BaseClient):
-    """Client for NASA Near Earth Object Weather Service.
-    """
+    """Client for NASA Near Earth Object Weather Service."""
 
-    def __init__(self, api_key='DEMO_KEY', session=None, rate_limiter=default_rate_limiter):
-        if api_key == 'DEMO_KEY' and rate_limiter:
+    def __init__(
+        self, api_key="DEMO_KEY", session=None, rate_limiter=default_rate_limiter
+    ):
+        if api_key == "DEMO_KEY" and rate_limiter:
             rate_limiter = demo_rate_limiter
         super().__init__(api_key, session, rate_limiter)
 
@@ -30,7 +30,7 @@ class NeoWs(BaseClient):
             json = await response.json()
 
         if self.rate_limiter:
-            remaining = int(response.headers['X-RateLimit-Remaining'])
+            remaining = int(response.headers["X-RateLimit-Remaining"])
             self.rate_limiter.update(remaining)
 
         return json
@@ -50,12 +50,12 @@ class NeoWs(BaseClient):
         :class:`List[Asteroid]`
             A list of Asteroids returned by the API.
         """
-        start_date = 'start_date=' + start_date.strftime('%Y-%m-%d') + '&'
+        start_date = "start_date=" + start_date.strftime("%Y-%m-%d") + "&"
 
         if end_date is None:  # parameter will be left out of the query.
-            end_date = ''
+            end_date = ""
         else:
-            end_date = 'end_date=' + end_date.strftime('%Y-%m-%d') + '&'
+            end_date = "end_date=" + end_date.strftime("%Y-%m-%d") + "&"
 
         request = f"https://api.nasa.gov/neo/rest/v1/feed?{start_date}{end_date}api_key={self._api_key}"
         json = await self._get(request)
@@ -77,7 +77,6 @@ class NeoWs(BaseClient):
         request = f"https://api.nasa.gov/neo/rest/v1/neo/{asteroid_id}?api_key={self._api_key}"
         json = await self._get(request)
         return json
-
 
     async def browse(self, page: int = 0):
         """Browse the overall asteroid dataset.
