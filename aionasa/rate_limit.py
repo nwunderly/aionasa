@@ -16,7 +16,7 @@ class RateLimiter:
         self._requests = deque(iterable=[time.monotonic()] * limit, maxlen=limit)
         self._limit = limit
         self._remaining = limit
-        self._repr = _repr or f"<{self.__class__}>"
+        self._repr = _repr or f'<{self.__qualname__}>'
 
     @property
     def remaining(self):
