@@ -31,20 +31,32 @@ class AstronomyPicture(Asset):
         The API service version. The API version is currently ``'v1'``.
     """
 
-    def __init__(self, client, date: datetime.date, json):
+    def __init__(self, client, date: datetime.date, json: dict, legacy_api: bool = False):
         self.client = client
         self.date = date
         self.json = json
         self.copyright = json.get("copyright")
         self.title = json.get("title")
         self.explanation = json.get("explanation")
-        self.url = json.get("url")
+        # self.url = json.get("url")
         self.hdurl = json.get("hdurl")
         self.media_type = json.get("media_type")
-        self.service_version = json.get("service_version")
+        self.service_version = json.get("service_version")  # will be None for new WP API
 
-        site_formatted_date = f"{str(date.year)[2:]}{date.month:02d}{date.day:02d}"
-        self.html_url = f"https://apod.nasa.gov/apod/ap{site_formatted_date}.html"
+        # legacy scraper API
+        if legacy_api:
+            self.url = json.get("url")
+            site_formatted_date = f"{str(date.year)[2:]}{date.month:02d}{date.day:02d}"
+            # NOTE: This just redirects to https://science.nasa.gov/apod/ now
+            # but leaving it like this for now.
+            # Unfortunately, there is no way to get the Wordpress page URL with just
+            # the date, without making a web request.
+            self.html_url = f"https://apod.nasa.gov/apod/ap{site_formatted_date}.html"
+
+        # new WP API
+        else:
+            self.url = json.get("url")
+            self.html_url = json.get("permalink")
 
         super().__init__(client, self.url, self.url.split("/")[-1])
 
@@ -66,12 +78,9 @@ class AstronomyPicture(Asset):
         else:
             url = self.url
 
-        if not (
-            url.startswith("http://apod.nasa.gov")
-            or url.startswith("https://apod.nasa.gov")
-        ):
+        if "nasa.gov" not in url:
             raise NotImplementedError(
-                "URLs from outside apod.nasa.gov are not currently supported."
+                "URLs from outside nasa.gov are not currently supported."
             )
 
         return await super().read(url)
@@ -92,10 +101,7 @@ class AstronomyPicture(Asset):
         else:
             url = self.url
 
-        if not (
-            url.startswith("http://apod.nasa.gov")
-            or url.startswith("https://apod.nasa.gov")
-        ):
+        if "nasa.gov" not in url:
             raise NotImplementedError(
                 "URLs from outside apod.nasa.gov are not currently supported."
             )
@@ -122,10 +128,7 @@ class AstronomyPicture(Asset):
         else:
             url = self.url
 
-        if not (
-            url.startswith("http://apod.nasa.gov")
-            or url.startswith("https://apod.nasa.gov")
-        ):
+        if "nasa.gov" not in url:
             raise NotImplementedError(
                 "URLs from outside apod.nasa.gov are not currently supported."
             )
