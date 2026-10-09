@@ -1,0 +1,49 @@
+[project]
+name = "aionasa"
+version = "0.2.1"
+description = "An async python wrapper for NASA open APIs."
+authors = [
+    {name = "nwunderly",email = "nwunder.dev@gmail.com"}
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.12"
+# keywords = []
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+
+    # topics
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+
+dependencies = [
+    "aiohttp (>=3,<4)",
+    "pyyaml (>=6,<7)"
+]
+
+
+[project.urls]
+Homepage = "https://github.com/nwunderly/aionasa"
+Documentation = "https://aionasa.rtfd.org/"
+Repository = "https://github.com/nwunderly/aionasa.git"
+Issues = "https://github.com/nwunderly/aionasa/issues"
+
+
+[dependency-groups]
+dev = [
+    "black (>=26.10.0,<27.0.0)",
+    "sphinx (>=9.1.0,<10.0.0)",
+    "sphinxcontrib-trio (>=1.2.0,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
