@@ -36,6 +36,13 @@ Repository = "https://github.com/nwunderly/aionasa.git"
 Issues = "https://github.com/nwunderly/aionasa/issues"
 
 
+[project.optional-dependencies]
+docs = [
+    "sphinx (>=9.1.0,<10.0.0)",
+    "sphinxcontrib-trio (>=1.2.0,<2.0.0)"
+]
+
+
 [dependency-groups]
 dev = [
     "black (>=26.10.0,<27.0.0)",
